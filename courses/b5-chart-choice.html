@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 5 · Chart choice + dashboard grammar - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 5 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 5 of 10</div>
+    <h1>Chart choice + dashboard <span class="accent">grammar</span></h1>
+    <p class="sub">You have a modeled star (b3) and governed measures (b4). Now: which picture? Most bad dashboards are not bad data - they are the right number in the wrong chart, buried under clutter. Tonight you get a decision rule that picks the chart from the question, Stephen Few's compact library of dashboard-native displays, and a declutter pass you can run on any chart in two minutes.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip audience">Runs in your browser · no install</span>
+      <span class="chip time">45 min live + self-study</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Recap</span>
+      <span class="a2" style="flex:4">3-20 · Chart grammar</span>
+      <span class="a3" style="flex:5">20-42 · Build-along: chart doctor</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Stage 4: visualize - but grammar first</h2>
+    </div>
+    <p class="lede">Stage 4 of the five-stage workflow: <strong>Visualize</strong>. Every BI tool offers forty chart types; a working dashboard uses about six of them, chosen by rule, not taste. This session is the grammar - which chart answers which question, which displays earn their pixels on a dashboard, and what to delete. b6 then assembles these pieces into the actual Daybreak dashboard.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A question-to-chart decision rule you can apply in five seconds, Few's compact dashboard library (KPI card, bullet graph, sparkline), and a declutter checklist that turns any default chart into a professional one. Plus a formally logged mystery: the March dip, spotted on a proper trend line at last.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE QUESTION PICKS THE CHART ============ -->
+  <section class="section" id="question-picks">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers Knaflic ch2 "Choosing an Effective Visual", Few ch7-8</span>
+      <h2>The question picks the chart <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">You never choose a chart - the question already chose it. <strong>Trend over time</strong> → line. <strong>Compare categories</strong> → bar, horizontal when labels are long. <strong>Part-of-whole</strong> → stacked bar, or honestly just a table; pie only when there are 2-3 slices. <strong>Distribution</strong> → histogram. <strong>Relationship between two measures</strong> → scatter. <strong>Exact lookup</strong> → a table beats every chart. Memorize the six mappings and you out-chart most of the industry.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Decision flow from question type to chart type with small chart glyphs">
+        <style>
+          .cfQ { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
+          .cfA { font: 400 11.5px Inter, sans-serif; fill: #EAF1F9; }
+          .cfN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .cfArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#cfAh); }
+          .cfG { fill: #EAF1F9; stroke: #8FB4DC; }
+          .cfM { stroke: #3B77B8; stroke-width: 2.5; fill: none; }
+        </style>
+        <defs>
+          <marker id="cfAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="30" width="200" height="72" rx="10" fill="#122B4A"/>
+        <text class="cfQ" x="46" y="58">Trend over time?</text>
+        <text class="cfA" x="46" y="82">→ line chart</text>
+        <rect class="cfG" x="280" y="30" width="150" height="72" rx="8"/>
+        <path class="cfM" d="M296,88 L326,60 L352,74 L382,44 L414,52"/>
+        <circle cx="352" cy="74" r="4" fill="#C99700"/>
+        <path class="cfArr" d="M234,66 L274,66"/>
+        <rect x="470" y="30" width="200" height="72" rx="10" fill="#122B4A"/>
+        <text class="cfQ" x="486" y="58">Compare categories?</text>
+        <text class="cfA" x="486" y="82">→ bar, horizontal if long</text>
+        <rect class="cfG" x="720" y="30" width="130" height="72" rx="8"/>
+        <rect x="734" y="42" width="90" height="12" fill="#C99700"/>
+        <rect x="734" y="60" width="66" height="12" fill="#3B77B8"/>
+        <rect x="734" y="78" width="42" height="12" fill="#3B77B8"/>
+        <path class="cfArr" d="M674,66 L714,66"/>
+        <rect x="30" y="140" width="200" height="72" rx="10" fill="#1D4E79"/>
+        <text class="cfQ" x="46" y="168">Part-of-whole?</text>
+        <text class="cfA" x="46" y="192">→ stacked bar (pie ≤ 3)</text>
+        <rect class="cfG" x="280" y="140" width="150" height="72" rx="8"/>
+        <rect x="300" y="164" width="52" height="22" fill="#122B4A"/>
+        <rect x="352" y="164" width="38" height="22" fill="#3B77B8"/>
+        <rect x="390" y="164" width="22" height="22" fill="#8FB4DC"/>
+        <path class="cfArr" d="M234,176 L274,176"/>
+        <rect x="470" y="140" width="200" height="72" rx="10" fill="#1D4E79"/>
+        <text class="cfQ" x="486" y="168">Distribution?</text>
+        <text class="cfA" x="486" y="192">→ histogram</text>
+        <rect class="cfG" x="720" y="140" width="130" height="72" rx="8"/>
+        <rect x="736" y="180" width="18" height="20" fill="#3B77B8"/>
+        <rect x="754" y="166" width="18" height="34" fill="#3B77B8"/>
+        <rect x="772" y="154" width="18" height="46" fill="#3B77B8"/>
+        <rect x="790" y="170" width="18" height="30" fill="#3B77B8"/>
+        <rect x="808" y="188" width="18" height="12" fill="#3B77B8"/>
+        <path class="cfArr" d="M674,176 L714,176"/>
+        <rect x="30" y="250" width="200" height="72" rx="10" fill="#3B77B8"/>
+        <text class="cfQ" x="46" y="278">Two measures related?</text>
+        <text class="cfA" x="46" y="302">→ scatter plot</text>
+        <rect class="cfG" x="280" y="250" width="150" height="72" rx="8"/>
+        <circle cx="302" cy="304" r="4" fill="#1D4E79"/>
+        <circle cx="322" cy="292" r="4" fill="#1D4E79"/>
+        <circle cx="336" cy="298" r="4" fill="#1D4E79"/>
+        <circle cx="352" cy="280" r="4" fill="#1D4E79"/>
+        <circle cx="372" cy="284" r="4" fill="#1D4E79"/>
+        <circle cx="388" cy="268" r="4" fill="#1D4E79"/>
+        <circle cx="406" cy="262" r="4" fill="#C99700"/>
+        <path class="cfArr" d="M234,286 L274,286"/>
+        <rect x="470" y="250" width="200" height="72" rx="10" fill="#3B77B8"/>
+        <text class="cfQ" x="486" y="278">Exact values needed?</text>
+        <text class="cfA" x="486" y="302">→ a table wins</text>
+        <rect class="cfG" x="720" y="250" width="130" height="72" rx="8"/>
+        <path class="cfM" d="M734,272 L836,272" stroke="#8FB4DC" stroke-width="1.5"/>
+        <path class="cfM" d="M734,290 L836,290" stroke="#8FB4DC" stroke-width="1.5"/>
+        <path class="cfM" d="M734,308 L836,308" stroke="#8FB4DC" stroke-width="1.5"/>
+        <path class="cfM" d="M772,262 L772,314 M806,262 L806,314" stroke="#8FB4DC" stroke-width="1.5"/>
+        <path class="cfArr" d="M674,286 L714,286"/>
+        <rect x="30" y="368" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="cfN" x="54" y="380">Say the question out loud first. If it starts with "how has", it is a line. If "which", it is a bar.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - six questions, six charts: the whole decision rule on one screen</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The pie intervention<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Daybreak sells in eight cities. Picture those eight as pie slices: to rank them you must compare <strong>angles</strong>, and human eyes are terrible at angles. Is the 11% slice bigger than the 13% one? You genuinely cannot tell without the labels doing all the work - at which point the pie is decoration around a list of numbers.</p>
+        <p>Now the same data as a sorted bar chart. Ranking is instant, differences are lengths (which eyes judge brilliantly), and the top city announces itself in gold:</p>
+        <div class="bibox" data-dim="city" data-measure="revenue" data-chart="bar"
+             data-caption="The makeover: eight cities as sorted bars. Every comparison the pie hid is now instant."></div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The polite rule of thumb.</strong> When a stakeholder asks for a pie, do not lecture - ask how many slices. Two or three big ones ("Pro vs Basic") and a pie is fine, even friendly. More than that, show them the sorted bar next to it and let their own eyes make the argument. The bar wins the meeting every time.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>When a table beats every chart<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Charts show <em>shape</em>: trends, gaps, outliers. But some questions have no shape - they are lookups. "What was Berlin's exact revenue in April?" A chart makes the reader squint at an axis; a table hands over the number.</p>
+        <ul>
+          <li><strong>Choose a table when:</strong> the reader needs precise values, will look up individual rows, or must compare across multiple units (revenue AND orders AND AOV per city - three scales, one grid).</li>
+          <li><strong>Make it a good table:</strong> right-align numbers, consistent decimals, sort by the column that matters, and no zebra-striping heavier than the data.</li>
+          <li><strong>Hybrid trick:</strong> a table with one embedded sparkline column (Part 2) gives lookup precision AND trend shape - a Few favorite for dashboards.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: FEW'S DASHBOARD LIBRARY ============ -->
+  <section class="section" id="few-library">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers Few ch8 "An Ideal Library of Graphs", ch9 bullet graphs, ch10 sparklines</span>
+      <h2>Few's dashboard library <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">A dashboard is not a slideshow - it is a dense, single-screen display where every square centimeter is contested. Stephen Few's "Information Dashboard Design" gives the dashboard-native displays that earn their space: the <strong>KPI card</strong> (a level, its delta, its target), the <strong>bullet graph</strong> (his invention - a measure against target and qualitative bands, replacing the space-hogging gauge), and the <strong>sparkline</strong> (Tufte's word-sized trend, perfect inside a table cell).</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Anatomy of a bullet graph, a sparkline row, and a KPI card">
+        <style>
+          .dlT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .dlH { font: 700 12px Inter, sans-serif; fill: #122B4A; }
+          .dlB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .dlK { font: 700 26px Inter, sans-serif; fill: #122B4A; }
+          .dlN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .dlSp { stroke: #1D4E79; stroke-width: 2; fill: none; }
+        </style>
+        <rect x="30" y="30" width="260" height="34" rx="8" fill="#122B4A"/>
+        <text class="dlT" x="48" y="52">Bullet graph</text>
+        <rect x="30" y="64" width="260" height="160" rx="8" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <text class="dlH" x="48" y="90">Revenue vs target</text>
+        <rect x="48" y="104" width="224" height="24" fill="#EAF1F9"/>
+        <rect x="48" y="104" width="168" height="24" fill="#8FB4DC"/>
+        <rect x="48" y="104" width="100" height="24" fill="#3B77B8"/>
+        <rect x="48" y="111" width="150" height="10" fill="#122B4A"/>
+        <rect x="206" y="100" width="4" height="32" fill="#C99700"/>
+        <text class="dlB" x="48" y="152">Bands = poor / ok / good ranges</text>
+        <text class="dlB" x="48" y="172">Dark bar = the measure</text>
+        <text class="dlB" x="48" y="192">Gold tick = the target</text>
+        <text class="dlB" x="48" y="212">All of a gauge, in one flat row</text>
+        <rect x="310" y="30" width="260" height="34" rx="8" fill="#1D4E79"/>
+        <text class="dlT" x="328" y="52">Sparkline row</text>
+        <rect x="310" y="64" width="260" height="160" rx="8" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <text class="dlH" x="328" y="96">Revenue</text>
+        <path class="dlSp" d="M410,96 L426,88 L442,92 L458,78 L474,84 L490,72"/>
+        <circle cx="490" cy="72" r="3.5" fill="#C99700"/>
+        <text class="dlH" x="510" y="96">48.2k</text>
+        <text class="dlH" x="328" y="136">Orders</text>
+        <path class="dlSp" d="M410,136 L426,130 L442,138 L458,126 L474,130 L490,120"/>
+        <circle cx="490" cy="120" r="3.5" fill="#C99700"/>
+        <text class="dlH" x="510" y="136">1,204</text>
+        <text class="dlB" x="328" y="176">Word-sized trend in a table cell:</text>
+        <text class="dlB" x="328" y="196">shape only - no axes, no labels,</text>
+        <text class="dlB" x="328" y="216">current value printed beside it</text>
+        <rect x="590" y="30" width="260" height="34" rx="8" fill="#3B77B8"/>
+        <text class="dlT" x="608" y="52">KPI card</text>
+        <rect x="590" y="64" width="260" height="160" rx="8" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <text class="dlB" x="608" y="92">MONTHLY REVENUE</text>
+        <text class="dlK" x="608" y="128">$412k</text>
+        <text class="dlH" x="608" y="156" fill="#C99700">▲ 6% vs last month</text>
+        <text class="dlB" x="608" y="184">Level + delta + target context.</text>
+        <text class="dlB" x="608" y="204">Never a lonely number - a number</text>
+        <text class="dlB" x="608" y="222">with its comparison attached</text>
+        <rect x="30" y="258" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="dlN" x="54" y="270">These three carry most executive dashboards. b6 builds Daybreak's top row out of exactly these.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the three dashboard-native displays: bullet graph, sparkline, KPI card</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Bullet graphs - the gauge that respects space<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Dashboards inherited round gauges from car dashboards, and Few spent a chapter politely demolishing them: a gauge burns a big square of screen to show <em>one number</em>, and its needle angle is as hard to read as a pie slice. His replacement, the bullet graph, shows strictly more in a fraction of the space:</p>
+        <ul>
+          <li><strong>The bar</strong> is the measure - length, the encoding eyes read best.</li>
+          <li><strong>The gold tick</strong> is the target - you see at a glance whether the bar crossed it.</li>
+          <li><strong>The background bands</strong> are qualitative ranges (poor / ok / good) - context without a legend.</li>
+          <li><strong>It stacks:</strong> five bullet graphs fit in one gauge's footprint, so a whole KPI family scans in a single eye sweep.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>In Power BI / In Tableau</strong>
+          Tableau ships a native bullet graph (Show Me, or a bar with a reference line and distribution bands). Power BI gets there with a bar plus target line, or a bullet visual from AppSource. Either way the recipe is the same: measure bar, target line, quiet bands.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Sparklines: trend, not values<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A sparkline is a line chart shrunk until only the <em>shape</em> survives - no axes, no gridlines, no labels, roughly the size of a word. That is not a compromise; it is the point. In a table of ten metrics, a sparkline column answers "which of these is trending badly?" in one glance, and the printed value beside it handles precision.</p>
+        <ul>
+          <li><strong>Use for:</strong> direction and volatility at a glance, especially one-per-row in tables.</li>
+          <li><strong>Do not use for:</strong> reading values, comparing magnitudes across rows (each sparkline scales to its own range), or as a main chart.</li>
+          <li><strong>Mark sparingly:</strong> one dot for the latest point or the minimum is plenty - our playground's gold minimum marker follows the same instinct.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: DECLUTTER ============ -->
+  <section class="section" id="declutter">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers Knaflic ch3 "Clutter Is Your Enemy", IBCS Simplify</span>
+      <h2>Declutter: every pixel fights for attention <span class="tag concept">5 min live</span></h2>
+    </div>
+    <p class="lede">Knaflic's rule: anything on the chart that does not carry information is <strong>clutter</strong>, and clutter taxes the reader. Default tool output arrives pre-cluttered - heavy gridlines, borders, legends, a rainbow of series colors. The professional move is subtraction: delete until only data and the minimum scaffolding remain, then spend <strong>one accent color</strong> on the single point you want remembered, gray for everything else. Our playground's gold top bar and gold minimum marker are exactly that convention, automated.</p>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The declutter pass<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Run this checklist top to bottom on any chart. Two minutes, every time, before anything ships:</p>
+        <table class="clean">
+          <thead>
+            <tr><th>Element</th><th>Before (tool default)</th><th>After (decluttered)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Gridlines</td><td>Dark, both axes, every tick</td><td>Faint horizontal only - or none</td></tr>
+            <tr><td>Chart border + background</td><td>Boxed and shaded</td><td>Gone; whitespace separates</td></tr>
+            <tr><td>3D effects</td><td>Beveled 3D bars</td><td>Never. No exceptions, ever</td></tr>
+            <tr><td>Legend</td><td>Floating box, eyes ping-pong</td><td>Direct labels on the data</td></tr>
+            <tr><td>Series colors</td><td>Every bar its own color</td><td>One accent for the point, gray context</td></tr>
+            <tr><td>Axis labels</td><td>Rotated 45°, unreadable</td><td>Horizontal bar chart instead</td></tr>
+            <tr><td>Data labels</td><td>On every point</td><td>Only where the reader needs the value</td></tr>
+            <tr><td>Title</td><td>"Chart 1" or "Revenue"</td><td>The takeaway: "Revenue dipped in March"</td></tr>
+          </tbody>
+        </table>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The squint test.</strong> Lean back and squint at your chart until the labels blur. Whatever still stands out is what the reader's eye will visit first. If it is a legend box or a bright gridline rather than your data point, the pixels are fighting the message - delete and re-squint.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>IBCS in one paragraph<span class="mini">2 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>IBCS (the International Business Communication Standards) turns these instincts into a shared notation for business reporting, organized as the SUCCESS families. Two of them are tonight's session in standards form: <strong>Express</strong> - choose the proper visualization for the message - and <strong>Simplify</strong> - avoid clutter, remove everything not needed to convey the message. The deeper IBCS idea is <em>consistent notation</em>: the same thing always looks the same, so a reader who learned one report can read them all - actuals, plan, and forecast each get one fixed visual treatment across every page. If your company reports monthly to a board, IBCS is worth an afternoon of reading.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Five questions, five right charts <span class="tag demo">★ 12 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">One playground, five reconfigurations. For each question below, set the dimension, measure, and chart type - then say out loud why that chart wins before moving on. The saying-out-loud is the training.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>"How is revenue trending?"</strong> Month · Revenue · Line. Time on the x-axis, and there it is: the playground marks the minimum gold, and the minimum is <strong>March</strong>. Log it formally - "2026-03 revenue dip, cause unknown." b9 is the investigation; tonight we only chart it honestly.</p></div>
+      <div class="step"><p><strong>"Which cities lead?"</strong> City · Revenue · Bar. A ranking question, so lengths, sorted. A line here would invent a trend between cities that does not exist.</p></div>
+      <div class="step"><p><strong>"What is the category mix?"</strong> Category · Revenue · Bar. Part-of-whole with three categories - a pie would survive, but the bar still ranks faster and handles the small slice better.</p></div>
+      <div class="step"><p><strong>"How big are we overall?"</strong> KPI · Revenue. No dimension at all - one governed number. Resist the urge to decorate it.</p></div>
+      <div class="step"><p><strong>"Do Pro customers order bigger baskets?"</strong> Plan · AOV · Bar. Note the measure choice from b4: average order value, not total revenue - a comparison of behavior, not of size.</p></div>
+    </div>
+
+    <div class="bibox" data-dim="month" data-measure="revenue" data-chart="line"
+         data-caption="Work all five steps in this one box. Step 1 first - find the gold point, name the month, log the mystery."></div>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Chart choice is an interview question.</strong> "Select an appropriate visualization" is literally a tested skill on the PL-300, and some version of "here is a question, which chart?" appears in most BI interviews. The decision flow from Part 1 is the answer key - question type first, chart second, taste never.</p>
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: chart-doctor <span class="tag demo">★ 10 min · build your own</span></h2>
+    </div>
+    <p class="lede">Three patients. Two need a chart chosen; one arrives with the wrong chart already fitted, and your job is to name the disease before you cure it.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q1 · Revenue by channel - would a pie work here?<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Daybreak sells through a handful of channels. Build the bar, count the categories, and make the call: is this one of the rare legitimate pie cases, or does the bar still win? Defend your answer with the slice-count rule.</p>
+        <div class="bibox" data-dim="channel" data-measure="revenue" data-chart="bar"
+             data-caption="Few slices, big differences - the edge of pie territory. Which display ranks them faster?"></div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q2 · Buying customers per month<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Trend question → line. And remember the b4 warning: this measure is a COUNT(DISTINCT ...), semi-additive - you cannot sum these months to get "customers this half-year". Does the customer trend echo the March revenue dip, or does it tell a different story? Note what you see; it is evidence for b9.</p>
+        <div class="bibox" data-dim="month" data-measure="customers" data-chart="line"
+             data-caption="Distinct buying customers by month. Compare its March against revenue's March - same shape, or not?"></div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Q3 · The wrong chart, on purpose<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Below is a deliberate malpractice case: <strong>cities on a line chart</strong>. Before touching anything, describe the disease in one sentence. (Diagnosis: a line implies order and continuity between points - but Amsterdam to Berlin is not a journey, cities have no time order, so the line invents a trend that does not exist.) Then fix the patient: switch the chart type to bar and watch the fake trend become an honest ranking.</p>
+        <div class="bibox" data-dim="city" data-measure="revenue" data-chart="line"
+             data-caption="The disease: connected points with no order between them. The cure is one dropdown away."></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>Chart-doctor two real charts at work: name the question each is trying to answer, run it through the Part 1 decision flow, and check whether the chart type matches. Fix one if you can.</li>
+      <li>Run the full declutter checklist on one chart you own. Count what you deleted - the number is usually embarrassing and always instructive.</li>
+      <li>Find one gauge on any dashboard you use and sketch its bullet-graph replacement: bar, gold target tick, quiet bands. Notice how much space you got back.</li>
+      <li>Apply the squint test to your team's main dashboard. Write down the first three things your eye lands on - are they the three things that matter?</li>
+      <li>Bring to b6: the one question your stakeholders ask most. It becomes the top-left tile of the Daybreak dashboard we assemble next.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">Tonight leaned on the two canonical visualization books plus the reporting standard, all tool-agnostic. This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Knaflic · Storytelling with Data, ch2-3</span><span class="note">Part 1 (choosing an effective visual) + Part 3 (clutter is your enemy); ch7 narrative returns in b7</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Few · Information Dashboard Design 2e, ch7-10</span><span class="note">Part 1 (advantages of graphics, ideal library) + Part 2 (bullet graphs, sparklines)</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Select an appropriate visual</span><span class="note">Demo 1 · the decision flow is the exam answer key, tool-agnostic</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">IBCS · SUCCESS families: Express + Simplify</span><span class="note">Part 3 · the one-paragraph version; full notation system stays with IBCS</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · "How has monthly revenue developed since January?" The chart is...</p>
+      <button class="qopt" type="button">A · A pie chart - it shows the months as parts of the year</button>
+      <button class="qopt" type="button">B · A bar chart per month - bars are always safest</button>
+      <button class="qopt" type="button">C · A line chart - trend over time puts time on the x-axis and connects it</button>
+      <p class="qwhy">"How has ... developed" is a trend question, and trend over time → line. Bars per month work too, but the line shows the shape of change - which is what was asked.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · Why does a pie chart fail with 8 city slices?</p>
+      <button class="qopt" type="button">A · Ranking slices means comparing angles, and human eyes judge angles poorly - lengths are far easier</button>
+      <button class="qopt" type="button">B · Pies can only display percentages, not revenue amounts</button>
+      <button class="qopt" type="button">C · Eight colors are too expensive to render</button>
+      <p class="qwhy">The failure is perceptual: angle comparison is hard, length comparison is easy. That is why the sorted bar chart wins the makeover - same data, better encoding.</p>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · The professional color rule for a chart is...</p>
+      <button class="qopt" type="button">A · A distinct color per category, so every bar is identifiable</button>
+      <button class="qopt" type="button">B · One accent color on the point that matters, gray for context</button>
+      <button class="qopt" type="button">C · Your company's full brand palette, applied in order</button>
+      <p class="qwhy">Color is attention. Spend it on the one thing you want remembered and mute everything else - the playground's gold top bar and gold minimum marker are this rule, automated.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 5 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The rule</b><span>The question picks the chart: trend → line, compare → bar, distribution → histogram, relationship → scatter, lookup → table.</span></div>
+      <div class="cheat-item"><b>Bar charts</b><span>Ranking and comparison. Sort them, go horizontal when labels are long, never 3D.</span></div>
+      <div class="cheat-item"><b>Pie rule</b><span>2-3 slices maximum. Beyond that, angles become unreadable - use a sorted bar or a table.</span></div>
+      <div class="cheat-item"><b>KPI card</b><span>Level + delta + target. Never a lonely number - always attach its comparison.</span></div>
+      <div class="cheat-item"><b>Bullet graph</b><span>Few's gauge replacement: measure bar, gold target tick, quiet bands. Five fit where one gauge sat.</span></div>
+      <div class="cheat-item"><b>Sparkline</b><span>Word-sized trend for table cells. Shape only - no axes, value printed beside it.</span></div>
+      <div class="cheat-item"><b>Declutter</b><span>Delete gridlines, borders, 3D, legends-when-labels-work. One accent color, gray context. Squint test.</span></div>
+      <div class="cheat-item"><b>Running project</b><span>The March dip is now formally logged from the trend line. b6 builds the dashboard; b9 solves the mystery.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 5 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b4-measures-that-mean.html">← Session 4</a> &nbsp;·&nbsp; <a href="b6-build-the-dashboard.html">Next: Build the dashboard →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 7 · Storytelling + analytics extras - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 7 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 7 of 10</div>
+    <h1>Storytelling + analytics <span class="accent">extras</span></h1>
+    <p class="sub">Your dashboard from b6 shows the numbers. This session makes it say something. First the storytelling craft: a narrative arc, titles that state the takeaway, and the discipline of one accent color on the one point that matters. Then the analytics extras that mark senior BI work - reference lines, forecasts with honest uncertainty, anomaly flags, and the new AI narratives. Daybreak's March dip is our raw material throughout.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip audience">Runs in your browser · no install</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-20 · Story + attention</span>
+      <span class="a3" style="flex:5">20-42 · Extras + build-along</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>From showing data to saying something</h2>
+    </div>
+    <p class="lede">Two dashboards can hold identical charts and land completely differently. One is a wall of numbers the reader must decode; the other walks them through context, points their eye at the deviation, and ends with what to do. The difference is not more data - it is narrative structure plus attention control, the craft Cole Nussbaumer Knaflic codified in <em>Storytelling with Data</em>. Tonight we apply it to Daybreak's March dip, then add the analytics-pane features that give a story its spine: reference lines, forecasts, and anomaly detection.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The three-act narrative arc applied to a real chart, the takeaway-title habit, the one-accent attention discipline, a finished March-dip story slide, and a working map of the analytics extras (reference lines, forecasting, anomaly detection, AI narratives) that separate senior BI work from chart-dumping.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: NARRATIVE ARC ============ -->
+  <section class="section" id="narrative-arc">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers Knaflic ch1 (context), ch7-8 (storytelling, pulling it together)</span>
+      <h2>The narrative arc <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Every effective data story has three acts. <strong>Context</strong>: what the audience already knows and what they need to decide. <strong>Conflict</strong>: the deviation from expected - for Daybreak, revenue dipped in March. <strong>Resolution</strong>: what we recommend doing about it. A dashboard without conflict is wallpaper; a chart without resolution is homework you handed the reader. The cheapest place to install the arc is the title: <em>"Revenue dipped in March"</em> beats <em>"Monthly Revenue"</em> because it does act two for the reader before they even parse the axes.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three-act narrative arc mapped onto a revenue line chart with the March dip as the conflict beat">
+        <style>
+          .naT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .naS { font: 400 11.5px Inter, sans-serif; fill: #EAF1F9; }
+          .naX { font: 400 12px Inter, sans-serif; fill: #5A6B80; }
+          .naN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .naLine { stroke: #3B77B8; stroke-width: 3; fill: none; }
+          .naDrop { stroke: #8FB4DC; stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; }
+        </style>
+        <rect x="60" y="30" width="200" height="58" rx="10" fill="#1D4E79"/>
+        <text class="naT" x="78" y="54">Act 1 · Context</text>
+        <text class="naS" x="78" y="74">what they know + need</text>
+        <rect x="300" y="30" width="180" height="58" rx="10" fill="#122B4A"/>
+        <text class="naT" x="318" y="54">Act 2 · Conflict</text>
+        <text class="naS" x="318" y="74">the March dip</text>
+        <rect x="520" y="30" width="280" height="58" rx="10" fill="#1D4E79"/>
+        <text class="naT" x="538" y="54">Act 3 · Resolution</text>
+        <text class="naS" x="538" y="74">what we do about it</text>
+        <path class="naDrop" d="M160,88 L160,140"/>
+        <path class="naDrop" d="M385,88 L385,205"/>
+        <path class="naDrop" d="M660,88 L660,130"/>
+        <polyline class="naLine" points="100,155 240,140 385,220 530,155 660,140 800,125"/>
+        <circle cx="385" cy="220" r="8" fill="#C99700"/>
+        <line x1="80" y1="250" x2="820" y2="250" stroke="#8FB4DC" stroke-width="1.5"/>
+        <text class="naX" x="92" y="268">Jan</text>
+        <text class="naX" x="234" y="268">Feb</text>
+        <text class="naX" x="376" y="268">Mar</text>
+        <text class="naX" x="522" y="268">Apr</text>
+        <text class="naX" x="652" y="268">May</text>
+        <text class="naX" x="790" y="268">Jun</text>
+        <rect x="60" y="296" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="naN" x="84" y="308">The gold point is act two. Without a conflict beat, there is no story - only a chart.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the three-act arc mapped straight onto Daybreak's revenue line</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Takeaway titles - the rewrite exercise<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A label title names the data; a takeaway title states the conclusion. The reader gets your point in the two seconds they were going to spend anyway. Rewrite every title on your b6 dashboard through this table:</p>
+        <table class="clean">
+          <thead><tr><th>Label title (names the data)</th><th>Takeaway title (states the point)</th></tr></thead>
+          <tbody>
+            <tr><td>Monthly Revenue</td><td>Revenue dipped in March</td></tr>
+            <tr><td>Revenue by City</td><td>One city carries an outsized share of revenue</td></tr>
+            <tr><td>AOV by Plan</td><td>Pro customers place larger orders than Basic</td></tr>
+            <tr><td>Orders by Status</td><td>Cancellations stay a small slice of orders</td></tr>
+            <tr><td>Units by Category</td><td>Volume and dollars crown different category winners</td></tr>
+          </tbody>
+        </table>
+        <p>Test: cover the chart and read only the title. If the reader still learns something, it is a takeaway title. If they learn only what the chart is <em>about</em>, keep rewriting.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Know your audience's first question<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Knaflic's chapter one is really one exercise: before building anything, write down who the audience is and what you need them to know or do. Different readers bring different first questions to the same dip:</p>
+        <ul>
+          <li><strong>The exec asks "how bad, and what now?"</strong> - they want magnitude, trajectory, and a recommendation in the first breath. Lead with the KPI delta and the action.</li>
+          <li><strong>The analyst asks "which segment?"</strong> - they want the dip decomposed: which city, which plan, which channel moved. Lead with the breakdown views.</li>
+          <li><strong>The ops lead asks "is it still happening?"</strong> - they want the freshest point and an alert. Lead with recency.</li>
+        </ul>
+        <p>One dataset, three stories. If you cannot name the audience, you cannot pick the arc - which is why "who is this for?" was the first question in b6's layout session too.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: ATTENTION ============ -->
+  <section class="section" id="attention">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers Knaflic ch4 (focus your audience's attention)</span>
+      <h2>Attention - the gold accent discipline <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Preattentive attributes - color, size, position - steer the eye in under 200 milliseconds, before conscious reading starts. That is a superpower with one rule: spend it in exactly one place. <strong>One accent on THE point, gray everything else.</strong> Ten highlighted bars is zero highlighted bars. Our playground has been demonstrating this all course: the line chart marks its minimum point gold automatically, so the March dip lights up before you have read a single axis label.</p>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Where does your eye land first?<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Run the trend chart and answer honestly: what did you see first?</p>
+        <div class="bibox" data-dim="month" data-measure="revenue" data-chart="line"
+             data-caption="The gold dot on the minimum is a preattentive accent doing its job - your eye went to March before you decided to look."></div>
+        <p>That landing was engineered. One saturated point against a calm line is Knaflic ch4 in a single pixel decision: the designer chose your first fixation for you. When you build, make that choice deliberately - accent the point your story is about, and only that point. Everything else earns gray.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Annotation grammar - point, label, source<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>An accent says <em>look here</em>; an annotation says <em>here is what you are looking at</em>. The grammar is three parts, and shorter is stronger:</p>
+        <ul>
+          <li><strong>The point:</strong> a marker or thin arrow touching the exact data point - not floating near it.</li>
+          <li><strong>The label:</strong> six words or fewer, stating the event, not the number the axis already shows. "March: revenue dips below trend" works; a paragraph does not.</li>
+          <li><strong>The source:</strong> a small muted line ("Source: Daybreak warehouse, Jan-Jun 2026") so the chart survives being screenshotted into a deck without you attached.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>In Power BI / In Tableau</strong>
+          Power BI: text boxes and smart narrative visuals for annotations; custom tooltips and bookmarks (both PL-300 "enhance reports for usability and storytelling" skills) let you stage the story. Tableau: point annotations and mark labels live on the worksheet; the analytics pane supplies the reference layers we cover next.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: ANALYTICS EXTRAS ============ -->
+  <section class="section" id="analytics-extras">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers PL-300 "identify patterns and trends", Tableau analytics pane</span>
+      <h2>Analytics extras - the senior toolkit <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">A bare number is an orphan; the extras give it relatives. Reference lines answer "compared to what?", forecasts answer "where is this heading?", anomaly detection answers "which points deserve a second look?". PL-300 tests these under "identify patterns and trends" (Analyze feature, grouping and binning, AI visuals, reference lines, error bars, forecasting, anomaly detection); Tableau ships them as the analytics pane (totals, reference lines and bands, average lines, trend lines, distribution bands, forecasting, predictive model). Same ideas, two toolbars.</p>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Reference lines and targets - the cheapest analytics<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Context is the cheapest analytics you will ever add. A single dashed line transforms "revenue was X" into "revenue was X, <em>below</em> where it should be":</p>
+        <ul>
+          <li><strong>Target line:</strong> the number leadership promised. Every gap to it is a conversation starter.</li>
+          <li><strong>Average line:</strong> the self-generated benchmark - our March-dip slide uses the average of prior months, so the dip has something to dip <em>below</em>.</li>
+          <li><strong>Bands:</strong> a normal range (say, min-max of the trailing months). Points outside the band earn attention; points inside earn silence.</li>
+        </ul>
+        <p>Rule of thumb: if a viewer could reasonably ask "is that good?", the chart owes them a reference line.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Forecasting and anomalies - use with a spine<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Forecasts are models wearing a chart costume, and models have assumptions. Two rules keep you honest:</p>
+        <ul>
+          <li><strong>Show the confidence band, always.</strong> A forecast drawn as a single confident line is a lie of omission - the band is the honest part. Tableau's default forecast draws it; keep it.</li>
+          <li><strong>Say the assumption out loud.</strong> "Assumes seasonality repeats and nothing structural changes" belongs next to the forecast, in words. If March's dip was structural, a naive forecast trained through it is quietly wrong.</li>
+        </ul>
+        <p>Anomaly detection is the mirror image: the tool <strong>flags</strong>, humans <strong>explain</strong>. An algorithm can mark March as an outlier in seconds; only b9's investigation can say why. Shipping the flag without the explanation just outsources your homework to every viewer.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>AI narratives - trust follows governance<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The newest extra writes the story for you: Power BI's Copilot can generate narrative visuals and summarize the semantic model, and both are now PL-300 exam material under patterns and trends. Two things to hold at once:</p>
+        <ul>
+          <li><strong>It is real leverage.</strong> A generated first-draft summary of "what changed this month" saves the analyst the boilerplate paragraph and often catches a mover they missed.</li>
+          <li><strong>It is only as trustworthy as the model underneath.</strong> An AI narrative over an ungoverned semantic model fluently narrates wrong numbers. This is leader session a6's point wearing builder clothes: governance first, then generation. Your b4 measures are exactly what make a Copilot summary safe to ship.</li>
+        </ul>
+        <p>Review AI narratives like you review a junior analyst's draft: check the numbers against the governed measures before it leaves the building.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>The March-dip story slide <span class="tag demo">★ 12 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">We turn the raw trend chart into a slide an exec reads in five seconds. Five moves, in order - each one is a technique from parts 1-3. Sketch it on paper or in your tool of choice; the target is the mock below.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Start from the trend.</strong> Rebuild the month x revenue line from part 2's playground - that is the skeleton. The gold minimum marker is already doing the accent work.</p></div>
+      <div class="step"><p><strong>Write the takeaway title.</strong> Not "Monthly Revenue 2026" - write <em>"Revenue dipped in March"</em>. Act two, delivered in the title, before the reader parses a single point.</p></div>
+      <div class="step"><p><strong>Place the annotation.</strong> A short arrow touching the March point, label above-right of it, six words max: "March: revenue drops below trend". Point, label, done.</p></div>
+      <div class="step"><p><strong>Add the reference line.</strong> A dashed horizontal at the average of the prior months (Jan-Feb), labeled quietly at the right edge. Now the dip visibly dips <em>below something</em>.</p></div>
+      <div class="step"><p><strong>End with the so-what.</strong> One sentence under the chart: "We investigate the drivers in the March review and bring a recovery plan." Act three - a resolution, promised. (b9 delivers it.)</p></div>
+    </div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The finished March-dip story slide: takeaway title, annotated line chart with gold dip marker, dashed average reference line, and source line">
+        <style>
+          .ssTitle { font: 700 17px Inter, sans-serif; fill: #182230; }
+          .ssBody { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .ssMut { font: 400 10.5px Inter, sans-serif; fill: #5A6B80; }
+          .ssCall { font: 600 11.5px Inter, sans-serif; fill: #1D4E79; }
+          .ssN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .ssLine { stroke: #3B77B8; stroke-width: 3; fill: none; }
+          .ssRef { stroke: #5A6B80; stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+          .ssArr { stroke: #182230; stroke-width: 1.5; fill: none; marker-end: url(#ssAh); }
+          .ssPt { stroke: #8FB4DC; stroke-width: 1.5; stroke-dasharray: 3 3; fill: none; }
+        </style>
+        <defs>
+          <marker id="ssAh" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0,0 L7,4 L0,8 z" fill="#182230"/>
+          </marker>
+        </defs>
+        <rect x="150" y="20" width="580" height="310" rx="10" fill="#FFFFFF" stroke="#8FB4DC" stroke-width="1.5"/>
+        <text class="ssTitle" x="180" y="56">Revenue dipped in March</text>
+        <line class="ssRef" x1="180" y1="140" x2="700" y2="140"/>
+        <text class="ssMut" x="588" y="132">avg of prior months</text>
+        <polyline class="ssLine" points="200,150 300,142 400,225 500,160 600,148 690,138"/>
+        <circle cx="400" cy="225" r="7" fill="#C99700"/>
+        <path class="ssArr" d="M475,190 L412,218"/>
+        <text class="ssBody" x="452" y="182">March: revenue drops below trend</text>
+        <line x1="180" y1="255" x2="700" y2="255" stroke="#8FB4DC" stroke-width="1.5"/>
+        <text class="ssMut" x="194" y="271">Jan</text>
+        <text class="ssMut" x="294" y="271">Feb</text>
+        <text class="ssMut" x="392" y="271">Mar</text>
+        <text class="ssMut" x="492" y="271">Apr</text>
+        <text class="ssMut" x="592" y="271">May</text>
+        <text class="ssMut" x="678" y="271">Jun</text>
+        <text class="ssBody" x="180" y="296">We investigate the drivers in the March review and bring a recovery plan.</text>
+        <text class="ssMut" x="180" y="318">Source: Daybreak warehouse · Jan-Jun 2026</text>
+        <text class="ssCall" x="20" y="52">Takeaway title →</text>
+        <path class="ssPt" d="M132,48 L148,48"/>
+        <text class="ssCall" x="748" y="144">← Reference line</text>
+        <text class="ssCall" x="748" y="232">← One gold accent</text>
+        <path class="ssPt" d="M744,228 L410,226"/>
+        <text class="ssCall" x="20" y="300">So-what line →</text>
+        <path class="ssPt" d="M126,296 L148,296"/>
+        <rect x="150" y="352" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="ssN" x="174" y="364">Five elements, one story: title, accent, annotation, reference, resolution.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the finished story slide, every part 1-3 technique in one frame</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: title it, dress it, restrain it <span class="tag demo">★ 10 min · build your own</span></h2>
+    </div>
+    <p class="lede">Two fresh panels, no recipe. For each: read the chart, write a takeaway title, then decide which single analytics extra it deserves - and defend the choice out loud. The third card is the hardest skill of the night: choosing to add nothing.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Panel 1 · Category revenue - title it, then pick its extra<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <div class="bibox" data-dim="category" data-measure="revenue" data-chart="bar"
+             data-caption="Write the takeaway title first. Then: does this earn a reference line (an average across categories?) or nothing at all?"></div>
+        <p>Defend your extra: a category bar chart rarely earns a forecast (categories do not trend through time), but an average line can separate the carrying categories from the passengers. If the gold top bar already tells the story, the honest answer may be a title and nothing else.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Panel 2 · AOV by plan - title it, then pick its extra<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <div class="bibox" data-dim="plan" data-measure="aov" data-chart="bar"
+             data-caption="Two bars, one comparison. What title states the conclusion? What reference makes 'is that good?' answerable?"></div>
+        <p>With two bars the comparison IS the story - your title should state which plan wins and roughly by how much. A useful extra here is the overall AOV as a reference line, so each plan reads as above or below the blended number.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Panel 3 · What you would NOT add<span class="mini">2 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Restraint is the senior move. For each panel above, name one extra you deliberately left off and why:</p>
+        <ul>
+          <li><strong>No forecast on categories</strong> - forecasting needs a time axis and a believable continuation; a categorical bar has neither.</li>
+          <li><strong>No anomaly flags on two bars</strong> - with two data points, "anomaly" is just "the smaller one". Detection needs enough points to define normal.</li>
+          <li><strong>No second accent</strong> - if the gold bar and your annotation both shout, neither is heard. One accent per chart, full stop.</li>
+        </ul>
+        <p>Knaflic's ch8 synthesis is exactly this: everything on the page either advances the story or competes with it. Delete the competitors.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 25-35 min total</span></h2>
+    </div>
+    <ul>
+      <li>Rewrite three chart titles at work from labels into takeaways. Cover-the-chart test each one: does the title alone teach something?</li>
+      <li>Add one reference line (target or average) to a real chart you own. Watch whether the next meeting's questions change.</li>
+      <li>Find one forecast in the wild - an earnings deck, a news chart, a colleague's dashboard - and identify its unstated assumption. Write the sentence its author should have printed under it.</li>
+      <li>Bring to b8: the story slide you built tonight. Next session we ship it - refresh schedules, security, and distribution.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">This session carries the storytelling canon plus the analytics-features slice of both major exams. Hands-on vendor click-paths stay with the vendors (mapped in b10). This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Knaflic, Storytelling with Data · ch1, ch4, ch7-8</span><span class="note">Parts 1-2 + Demo 1 · context, attention, narrative arc, pulling it together</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Identify patterns and trends</span><span class="note">Part 3 · Analyze, grouping/binning, AI visuals, reference lines, error bars, forecasting, anomaly detection</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Tableau Data Analyst · analytics pane</span><span class="note">Part 3 · totals, reference lines/bands, trend lines, distribution bands, forecasting, predictive model - feature map here; hands-on stays with Tableau</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">PL-300 · Copilot narrative visuals + semantic model summaries</span><span class="note">Part 3 self-study · concept and governance framing; portal usage stays with Microsoft</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What makes "Revenue dipped in March" a better title than "Monthly Revenue"?</p>
+      <button class="qopt" type="button">A · It is shorter, so it fits the layout better</button>
+      <button class="qopt" type="button">B · It states the conclusion, so the reader gets the point before parsing the chart</button>
+      <button class="qopt" type="button">C · It mentions a month, which makes the time axis unnecessary</button>
+      <p class="qwhy">A takeaway title does act two of the story in the space the reader was going to skim anyway. Cover the chart: a good title still teaches something.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · You want the exec's eye to land on the March point first. The Knaflic ch4 move is...</p>
+      <button class="qopt" type="button">A · Color every month differently so each one stands out</button>
+      <button class="qopt" type="button">B · Add a bold border and a drop shadow to the whole chart</button>
+      <button class="qopt" type="button">C · One accent color on the March point, gray for everything else</button>
+      <p class="qwhy">Preattentive attributes steer the eye in under 200ms, but only if the accent is scarce. Ten highlighted points is zero highlighted points - our playground's single gold dot is the move.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · A forecast is going on the exec dashboard. What must ship with the line?</p>
+      <button class="qopt" type="button">A · The confidence band and a stated assumption - the forecast is a model, not a fact</button>
+      <button class="qopt" type="button">B · Nothing extra - the tool computed it, so it is objective</button>
+      <button class="qopt" type="button">C · A second forecast from a different tool, for balance</button>
+      <p class="qwhy">A single confident line hides the uncertainty that is the honest part of any forecast. Show the band, print the assumption ("assumes seasonality repeats"), and let viewers judge.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 7 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Three-act arc</b><span>Context (what they know) → Conflict (the deviation) → Resolution (what to do). No conflict, no story.</span></div>
+      <div class="cheat-item"><b>Takeaway titles</b><span>State the conclusion, not the topic. "Revenue dipped in March" beats "Monthly Revenue". Cover-the-chart test.</span></div>
+      <div class="cheat-item"><b>Preattentive attributes</b><span>Color, size, position steer the eye in under 200ms - before conscious reading starts. Knaflic ch4.</span></div>
+      <div class="cheat-item"><b>Accent discipline</b><span>ONE accent on THE point, gray everything else. Ten highlights = zero highlights.</span></div>
+      <div class="cheat-item"><b>Annotation grammar</b><span>Point (touch the data) + label (six words max) + source line. Charts get screenshotted; travel prepared.</span></div>
+      <div class="cheat-item"><b>Reference lines</b><span>The cheapest analytics: target, average, or band answers "is that good?" for free.</span></div>
+      <div class="cheat-item"><b>Forecasts + anomalies</b><span>Show the confidence band, say the assumption out loud. Tools flag anomalies; humans explain them.</span></div>
+      <div class="cheat-item"><b>AI narratives</b><span>Copilot narrative visuals are PL-300 material - trustworthy only over governed measures (b4, leader a6).</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 7 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b6-build-the-dashboard.html">← Session 6</a> &nbsp;·&nbsp; <a href="b8-ship-it.html">Next: Ship it →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 2 · Shape the data - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 2 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 2 of 10</div>
+    <h1>Shape the <span class="accent">data</span></h1>
+    <p class="sub">Stage 2 of the BI workflow: prepare. Before any chart deserves to exist, someone has to profile the raw tables, fix what is genuinely dirty, and reshape what is merely inconvenient. Tonight you learn a profiling routine you can run on any table in ten minutes, plus the six transforms that cover 90% of real prep work - all live, on Daybreak, in your browser.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip audience">Runs in your browser · no install</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Profile + transforms</span>
+      <span class="a3" style="flex:5">18-42 · Build-along: dirt hunts</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Why prep comes before pretty</h2>
+    </div>
+    <p class="lede">Every BI horror story starts the same way: someone charted a table nobody had profiled. Duplicated keys double the revenue, a text column refuses to sum, a mystery NULL silently drops rows from a join. This session is the vaccine. You will profile every Daybreak table, meet the four kinds of dirt, and learn the six transforms that BI tools - Power Query, Tableau Prep, dbt - all implement under different names.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ SQL box - editable, runnable</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A 10-minute profiling routine (row counts, distincts, nulls, ranges) you can run on any table at work tomorrow, the six-move transform toolbox, the merge-vs-append distinction that trips up every beginner, and the habit of verifying keys before you trust them - the exact skills the PL-300 "Prepare the data" domain weighs at 25-30% of the exam.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: PROFILE ============ -->
+  <section class="section" id="profile">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers PL-300 "profile the data" + "resolve data quality issues"</span>
+      <h2>Profile before you touch <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Profiling is asking each column four questions: how many rows, how many distinct values, how many nulls, and what is the range? Power BI shows this in Power Query's column quality bar; Tableau shows it in the Data Interpreter and profile pane. We will compute it with SQL so you see exactly what those panes are doing. While profiling, you are hunting <strong>four dirt types</strong>: wrong types (a date stored as text), missing values, duplicates, and inconsistent categories ("Coffee" vs "coffee" vs "COFFEE").</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Profiling dashboard wireframe: one card per column showing distinct counts, null percentage and range">
+        <style>
+          .pfH { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .pfT { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+          .pfB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .pfM { font: 400 11.5px Inter, sans-serif; fill: #5A6B80; }
+          .pfN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+        </style>
+        <rect x="30" y="20" width="820" height="34" rx="8" fill="#122B4A"/>
+        <text class="pfH" x="48" y="42">Profile: products - one card per column, four questions each</text>
+        <rect x="30" y="74" width="190" height="30" rx="8" fill="#1D4E79"/>
+        <text class="pfT" x="44" y="94">product_id</text>
+        <rect x="30" y="104" width="190" height="120" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="pfB" x="44" y="128">distinct = row count</text>
+        <text class="pfB" x="44" y="148">nulls: 0%</text>
+        <rect x="44" y="160" width="160" height="10" rx="3" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <text class="pfM" x="44" y="192">unique + not null</text>
+        <text class="pfM" x="44" y="210">= key candidate</text>
+        <rect x="240" y="74" width="190" height="30" rx="8" fill="#1D4E79"/>
+        <text class="pfT" x="254" y="94">category</text>
+        <rect x="240" y="104" width="190" height="120" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="pfB" x="254" y="128">distinct: 3 values</text>
+        <text class="pfB" x="254" y="148">nulls: 0%</text>
+        <rect x="254" y="160" width="160" height="10" rx="3" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <text class="pfM" x="254" y="192">Coffee · Equipment</text>
+        <text class="pfM" x="254" y="210">· Add-on - consistent</text>
+        <rect x="450" y="74" width="190" height="30" rx="8" fill="#3B77B8"/>
+        <text class="pfT" x="464" y="94">roast</text>
+        <rect x="450" y="104" width="190" height="120" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="pfB" x="464" y="128">distinct: 3 roasts</text>
+        <text class="pfB" x="464" y="148">nulls: every non-Coffee</text>
+        <rect x="464" y="160" width="160" height="10" rx="3" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <rect x="464" y="160" width="66" height="10" rx="3" fill="#3B77B8"/>
+        <text class="pfM" x="464" y="192">null bar lights up -</text>
+        <text class="pfM" x="464" y="210">is that dirt? Part 1 says</text>
+        <rect x="660" y="74" width="190" height="30" rx="8" fill="#1D4E79"/>
+        <text class="pfT" x="674" y="94">price</text>
+        <rect x="660" y="104" width="190" height="120" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="pfB" x="674" y="128">min / max range</text>
+        <text class="pfB" x="674" y="148">nulls: 0%</text>
+        <rect x="674" y="160" width="160" height="10" rx="3" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <text class="pfM" x="674" y="192">numeric type - sums</text>
+        <text class="pfM" x="674" y="210">and averages cleanly</text>
+        <rect x="30" y="252" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="pfN" x="54" y="264">Four questions per column: rows, distincts, nulls, range. Power Query's quality bar is this picture.</text>
+        <text class="pfN" x="54" y="288">A null bar is a prompt to investigate - not an order to delete or fill.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the profiling dashboard every BI tool draws, wireframed</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The 10-minute profile routine<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>One query pattern answers all four questions for a table. Run it on <code>products</code>, then edit it to profile <code>orders</code> (swap the table and the columns - try <code>status</code> and <code>channel</code> for the distincts).</p>
+        <div class="sqlbox" data-caption="The routine: COUNT(*) for rows, COUNT(DISTINCT) for cardinality, SUM(CASE WHEN ... IS NULL) for nulls, MIN/MAX for range.">
+          <pre class="sql-src">SELECT COUNT(*)                                        AS row_count,
+       COUNT(DISTINCT product_id)                      AS distinct_ids,
+       COUNT(DISTINCT category)                        AS distinct_categories,
+       SUM(CASE WHEN roast IS NULL THEN 1 ELSE 0 END)  AS null_roasts,
+       MIN(price)                                      AS min_price,
+       MAX(price)                                      AS max_price
+FROM products;</pre>
+        </div>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>distinct_ids = row_count is the headline.</strong> When those two numbers match, the column can serve as a key. When they do not, and you assumed they did, every join against this table will fan out and inflate your measures. Ten minutes of this routine has saved careers.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>NULL is a fact, not dirt<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>In Daybreak, <code>roast</code> is NULL for every Equipment and Add-on product - and that is <strong>correct</strong>. A grinder has no roast level. This is the difference between <em>absence of a value</em> (the attribute does not apply) and <em>missing data</em> (the value exists in reality but never got recorded).</p>
+        <ul>
+          <li><strong>Keep the NULL</strong> when the attribute genuinely does not apply. Filling it with "N/A" or "Unknown" pollutes the category list and skews distinct counts.</li>
+          <li><strong>Fill or fix</strong> when the value should exist: a missing order date, a blank city on a shipped order. Fill from the source system if you can; flag it if you cannot.</li>
+          <li><strong>Never fill blindly with zero.</strong> A NULL price averaged as 0 drags every mean down. NULL and 0 are different facts.</li>
+        </ul>
+        <p>PL-300 phrases this as "evaluate and transform column data types" and "resolve inconsistencies, unexpected or null values" - note the verb is <em>resolve</em>, not <em>remove</em>. Sometimes resolving a null means documenting why it belongs there.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: TRANSFORM TOOLBOX ============ -->
+  <section class="section" id="toolbox">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers PL-300 "transform and load" + Tableau "combine sources / pivot / split"</span>
+      <h2>The transform toolbox: six moves <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Every prep tool ships hundreds of buttons, but real work is six moves: <strong>change type</strong> (text to date, text to number), <strong>split or derive a column</strong> (year out of a date, domain out of an email), <strong>filter rows</strong>, <strong>group and aggregate</strong>, <strong>pivot or unpivot</strong> (reshape wide to tall and back), and <strong>merge or append</strong> (combine two tables). The last pair is the most-confused pair in all of BI, so let us nail it: <strong>merge is a join - it adds COLUMNS</strong> by matching keys. <strong>Append is a union - it adds ROWS</strong> by stacking same-shaped tables.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Merge versus append: merge joins two tables side by side adding columns, append stacks two tables adding rows">
+        <style>
+          .maH { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .maT { font: 700 11.5px Inter, sans-serif; fill: #FFFFFF; }
+          .maB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .maM { font: 400 11.5px Inter, sans-serif; fill: #5A6B80; }
+          .maN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .maArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#maAh); }
+        </style>
+        <defs>
+          <marker id="maAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="20" width="400" height="34" rx="8" fill="#122B4A"/>
+        <text class="maH" x="48" y="42">Merge = join · adds COLUMNS</text>
+        <rect x="50" y="80" width="150" height="26" rx="6" fill="#1D4E79"/>
+        <text class="maT" x="62" y="98">orders</text>
+        <rect x="50" y="106" width="150" height="50" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="maB" x="62" y="126">order_id · date</text>
+        <text class="maB" x="62" y="146">customer_id 🔑</text>
+        <rect x="240" y="80" width="150" height="26" rx="6" fill="#1D4E79"/>
+        <text class="maT" x="252" y="98">customers</text>
+        <rect x="240" y="106" width="150" height="50" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="maB" x="252" y="126">customer_id 🔑</text>
+        <text class="maB" x="252" y="146">plan · city</text>
+        <path class="maArr" d="M220,190 L220,225"/>
+        <text class="maM" x="238" y="212">matched on the key</text>
+        <rect x="70" y="232" width="300" height="26" rx="6" fill="#3B77B8"/>
+        <text class="maT" x="82" y="250">orders + customer columns (wider)</text>
+        <rect x="70" y="258" width="300" height="30" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="maB" x="82" y="278">order_id · date · plan · city</text>
+        <rect x="450" y="20" width="400" height="34" rx="8" fill="#122B4A"/>
+        <text class="maH" x="468" y="42">Append = union · adds ROWS</text>
+        <rect x="560" y="72" width="180" height="24" rx="6" fill="#1D4E79"/>
+        <text class="maT" x="572" y="89">orders_web</text>
+        <rect x="560" y="96" width="180" height="26" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="maB" x="572" y="114">same columns</text>
+        <rect x="560" y="132" width="180" height="24" rx="6" fill="#1D4E79"/>
+        <text class="maT" x="572" y="149">orders_retail</text>
+        <rect x="560" y="156" width="180" height="26" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="maB" x="572" y="174">same columns</text>
+        <path class="maArr" d="M650,190 L650,225"/>
+        <text class="maM" x="668" y="212">stacked, no key needed</text>
+        <rect x="560" y="232" width="180" height="26" rx="6" fill="#3B77B8"/>
+        <text class="maT" x="572" y="250">all orders (taller)</text>
+        <rect x="560" y="258" width="180" height="30" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="maB" x="572" y="278">rows from both</text>
+        <rect x="30" y="304" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="maN" x="54" y="316">Ask "am I adding columns or rows?" Columns = merge (needs a key). Rows = append (needs same shape).</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - merge vs append, the most-confused pair in data prep</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Pivot and unpivot - reshaping for the model<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Spreadsheets love <strong>wide</strong> data: one column per month, easy to read. BI models want <strong>tall</strong> data: one row per month, easy to filter and chart. Pivot goes tall to wide; unpivot goes wide to tall. Run both directions below - the first query builds a wide, spreadsheet-style row; the second is the tall shape the rest of this course lives in.</p>
+        <div class="sqlbox" data-caption="Wide (pivoted): one column per month, spreadsheet style. Fine for eyes, hostile to charts and filters.">
+          <pre class="sql-src">SELECT SUM(CASE WHEN strftime('%m', order_date) = '01' THEN 1 ELSE 0 END) AS jan_orders,
+       SUM(CASE WHEN strftime('%m', order_date) = '02' THEN 1 ELSE 0 END) AS feb_orders,
+       SUM(CASE WHEN strftime('%m', order_date) = '03' THEN 1 ELSE 0 END) AS mar_orders
+FROM orders;</pre>
+        </div>
+        <div class="sqlbox" data-caption="Tall (unpivoted): one row per month. Add a month, the shape survives - this is what your model wants.">
+          <pre class="sql-src">SELECT strftime('%Y-%m', order_date) AS month,
+       COUNT(*) AS orders
+FROM orders
+GROUP BY 1
+ORDER BY 1;</pre>
+        </div>
+        <p>Notice the tall version needs no edit when July arrives; the wide one needs a new column. That fragility is why unpivot is the single most common fix applied to spreadsheet exports before modeling.</p>
+      </div>
+    </details>
+
+    <div class="callout tip">
+      <strong>In Power BI / In Tableau</strong>
+      In Power Query, every transform you click becomes an <strong>Applied Step</strong> - a recorded, ordered recipe that replays automatically on every refresh. Delete a step and the transform un-happens; your raw source is never touched. Tableau does the same with <strong>Tableau Prep flows</strong>, and its <strong>Data Interpreter</strong> auto-detects junk headers and pivotable blocks in spreadsheet imports. The shared principle: prep is a <em>repeatable recipe on top of the source</em>, never a hand-edit of the data itself.
+    </div>
+  </section>
+
+  <!-- ============ PART 3: KEYS ============ -->
+  <section class="section" id="keys">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers PL-300 "identify and create appropriate keys for relationships"</span>
+      <h2>Keys - the glue the model needs <span class="tag concept">4 min live</span></h2>
+    </div>
+    <p class="lede">Next session you will relate tables into a star schema, and every relationship needs a key on both sides: unique on the one side, repeating on the many side. The rule that saves you: <strong>never trust a key you have not tested</strong>. A "unique" ID that quietly duplicates will fan out your joins and double your revenue - the ugliest bug in BI because every individual row still looks right.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Verify uniqueness before you relate<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The uniqueness test: group by the candidate key and keep only groups with more than one row. <strong>An empty result is the good result</strong> - it means no duplicates. Run it, then edit it to test <code>order_id</code> in <code>orders</code>, and then try <code>customer_id</code> in <code>orders</code> (that one SHOULD return rows - it is the many side).</p>
+        <div class="sqlbox" data-caption="Empty result = customer_id is unique in customers = safe to use as the one side of a relationship.">
+          <pre class="sql-src">SELECT customer_id, COUNT(*) AS rows_per_id
+FROM customers
+GROUP BY customer_id
+HAVING COUNT(*) > 1;</pre>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Profile Daybreak end to end <span class="tag demo">★ 12 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">Run the routine across the whole warehouse. Three passes: how big is everything, what are the real category values, and which nulls mean something. By the end you will know this database better than most teams know their production warehouse.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Row counts per table.</strong> Always the first question: how much data am I holding? A UNION ALL of counts gives the whole warehouse in one result.</p>
+        <div class="sqlbox" data-caption="The size census. Note order_items outnumbers orders - multiple lines per order, a grain fact you will need in b3.">
+          <pre class="sql-src">SELECT 'customers' AS table_name, COUNT(*) AS row_count FROM customers
+UNION ALL SELECT 'products', COUNT(*) FROM products
+UNION ALL SELECT 'orders', COUNT(*) FROM orders
+UNION ALL SELECT 'order_items', COUNT(*) FROM order_items
+UNION ALL SELECT 'subscriptions', COUNT(*) FROM subscriptions
+UNION ALL SELECT 'events', COUNT(*) FROM events;</pre>
+        </div>
+      </div>
+      <div class="step">
+        <p><strong>Distinct statuses and channels in orders.</strong> Categorical columns hide surprises - see the real values before you filter or group by them. Consistent spelling here is dirt type four not happening.</p>
+        <div class="sqlbox" data-caption="The real category values, with how often each occurs. Remember what you see under status - it returns in b9.">
+          <pre class="sql-src">SELECT 'status' AS field, status AS value, COUNT(*) AS orders
+FROM orders GROUP BY status
+UNION ALL
+SELECT 'channel', channel, COUNT(*)
+FROM orders GROUP BY channel
+ORDER BY field, orders DESC;</pre>
+        </div>
+      </div>
+      <div class="step">
+        <p><strong>Nulls that mean something.</strong> Two null checks, two different verdicts: <code>roast</code> is NULL where roast does not apply (correct absence), and <code>cancel_date</code> is NULL where the subscription is <em>still active</em> (a null that IS the business logic).</p>
+        <div class="sqlbox" data-caption="roast nulls sit exactly on Equipment and Add-on; cancel_date NULL means the customer is still subscribed.">
+          <pre class="sql-src">SELECT category,
+       COUNT(*) AS products,
+       SUM(CASE WHEN roast IS NULL THEN 1 ELSE 0 END) AS null_roast
+FROM products
+GROUP BY category;
+
+SELECT SUM(CASE WHEN cancel_date IS NULL THEN 1 ELSE 0 END)     AS active_subs,
+       SUM(CASE WHEN cancel_date IS NOT NULL THEN 1 ELSE 0 END) AS cancelled_subs
+FROM subscriptions;</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The cancel_date pattern is everywhere.</strong> Employee end dates, ticket close times, loan payoff dates - "still open" is routinely encoded as NULL. Filter <code>WHERE cancel_date IS NULL</code> and you have the active book of business. Fill those nulls with a placeholder date and you have just cancelled every live customer in your reporting.</p>
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: three dirt hunts <span class="tag demo">★ 10 min · build your own</span></h2>
+    </div>
+    <p class="lede">Three suspicious smells, three investigations. Each box is runnable as-is, but read the result and decide: is this dirt to fix, or a fact to keep? That judgment call is the actual skill.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Hunt 1 · Products nobody has ever ordered<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A LEFT JOIN keeps every product and leaves the order side NULL where no match exists - so <code>WHERE oi.order_id IS NULL</code> means "never ordered". Orphan rows like these are either dead catalog entries (dirt) or brand-new launches (fact).</p>
+        <div class="sqlbox" data-caption="The classic orphan hunt. The same pattern finds customers with no orders and orders with no items.">
+          <pre class="sql-src">SELECT p.product_id, p.name, p.category
+FROM products p
+LEFT JOIN order_items oi ON oi.product_id = p.product_id
+WHERE oi.order_id IS NULL;</pre>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Hunt 2 · unit_price vs catalog price<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><code>order_items.unit_price</code> sometimes differs from <code>products.price</code>. Dirt? No - <strong>a feature</strong>. The order line stores the price <em>at the time of the order</em>; the catalog stores the price <em>now</em>. Discounts and price changes live in that gap. Delete the "duplicate" column and you delete history.</p>
+        <div class="sqlbox" data-caption="Price drift = promotions and price changes preserved. Revenue must always come from unit_price, never from the catalog.">
+          <pre class="sql-src">SELECT p.name,
+       p.price AS catalog_price,
+       oi.unit_price AS price_at_order,
+       COUNT(*) AS order_lines
+FROM order_items oi
+JOIN products p ON p.product_id = oi.product_id
+WHERE oi.unit_price != p.price
+GROUP BY p.name, p.price, oi.unit_price
+ORDER BY p.name;</pre>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Hunt 3 · Orders per status per month<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Cross two categoricals - status by month - and patterns pop that neither shows alone. Look closely at March 2026. Interesting, no? File it away: session b9 turns that observation into a full investigation of the revenue dip.</p>
+        <div class="sqlbox" data-caption="A two-dimensional profile. March's status mix is a breadcrumb for the b9 mystery.">
+          <pre class="sql-src">SELECT strftime('%Y-%m', order_date) AS month,
+       status,
+       COUNT(*) AS orders
+FROM orders
+GROUP BY 1, 2
+ORDER BY 1, 2;</pre>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>Run the 10-minute profile routine on one real table at work: row count, distinct count per interesting column, null counts, min/max on numerics. Write down one thing that surprised you.</li>
+      <li>Write down that table's keys - and actually run the GROUP BY ... HAVING COUNT(*) > 1 test before declaring anything unique.</li>
+      <li>Find one <strong>merge</strong> case in your own data (two tables that share a key and need combining side to side) and one <strong>append</strong> case (two same-shaped tables that need stacking). Naming them cements the distinction.</li>
+      <li>Spot one NULL in your data and classify it: correct absence, business logic (like cancel_date), or genuinely missing. Decide keep, flag, or fix.</li>
+      <li>Bring to b3: your profiled table. We will decide whether it is a fact or a dimension.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">The "Prepare the data" domain is 25-30% of the PL-300 exam - the largest slice alongside modeling. This page covers its concepts tool-agnostically; the Power Query and Tableau Prep click-paths stay with the vendors.</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Profile and clean the data - statistics, column properties, nulls, quality issues</span><span class="note">Parts 1 + Demo 1 · the routine computes what Power Query's quality bar shows</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Transform and load - types, derived columns, group, pivot/unpivot, merge vs append, keys</span><span class="note">Parts 2-3 · concepts live; Power Query click-paths stay with MS Learn</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Tableau Data Analyst · assess data quality / combine sources (joins, unions, blends), Data Interpreter</span><span class="note">Parts 1-2 · quality + combine concepts; blends and Prep UI stay with Tableau</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">MS Learn · Clean, transform, and load data in Power BI</span><span class="note">Whole session · conceptual core covered; do the Desktop lab for the exam</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · You have January orders and February orders as two identically-shaped tables and want one table. Merge or append?</p>
+      <button class="qopt" type="button">A · Merge - match them on order_id to combine</button>
+      <button class="qopt" type="button">B · Append - same shape, stack the rows into one taller table</button>
+      <button class="qopt" type="button">C · Pivot - reshape one to fit the other</button>
+      <p class="qwhy">Same columns + more rows = append (a union). Merge is for adding COLUMNS by matching a key across two different-shaped tables - there is nothing to match here.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · roast is NULL on every Equipment product. What should the prep step do?</p>
+      <button class="qopt" type="button">A · Fill with "Unknown" so no nulls remain</button>
+      <button class="qopt" type="button">B · Delete those rows - incomplete records pollute the model</button>
+      <button class="qopt" type="button">C · Keep the NULL - a grinder has no roast; this is correct absence, not missing data</button>
+      <p class="qwhy">The attribute does not apply, so NULL is the truthful value. Filling it invents a fake roast category; deleting rows throws away real products. Resolve means understand, not erase.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · Why test key uniqueness BEFORE relating two tables in the model?</p>
+      <button class="qopt" type="button">A · A duplicated "one side" key makes joins fan out and silently inflates every measure</button>
+      <button class="qopt" type="button">B · Databases refuse to join on non-unique columns</button>
+      <button class="qopt" type="button">C · Unique keys make queries run faster, which is the main concern</button>
+      <p class="qwhy">Joins on duplicated keys happily succeed - and multiply rows. Revenue doubles, every row still looks valid, and nobody notices until the CFO does. The GROUP BY ... HAVING test costs ten seconds.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 2 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The profile routine</b><span>Per column: row count, COUNT(DISTINCT), null count, MIN/MAX. Ten minutes, any table, before anything else.</span></div>
+      <div class="cheat-item"><b>Four dirt types</b><span>Wrong types · missing values · duplicates · inconsistent categories. Profile finds all four.</span></div>
+      <div class="cheat-item"><b>Six transforms</b><span>Change type · split/derive · filter rows · group/aggregate · pivot/unpivot · merge/append. 90% of prep.</span></div>
+      <div class="cheat-item"><b>Merge vs append</b><span>Merge = join = adds COLUMNS (needs a key). Append = union = adds ROWS (needs same shape).</span></div>
+      <div class="cheat-item"><b>Wide vs tall</b><span>Spreadsheets like wide; models want tall. Unpivot spreadsheet exports before modeling.</span></div>
+      <div class="cheat-item"><b>NULL is a fact</b><span>Correct absence (roast on a grinder) and business logic (cancel_date = still active) are not dirt. Never fill blindly.</span></div>
+      <div class="cheat-item"><b>Key test</b><span>GROUP BY key HAVING COUNT(*) > 1. Empty result = unique = safe to relate. Run it every time.</span></div>
+      <div class="cheat-item"><b>Prep is a recipe</b><span>Applied Steps / Prep flows replay on refresh. Transform on top of the source; never hand-edit data.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 2 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b1-from-sql-to-bi.html">← Session 1</a> &nbsp;·&nbsp; <a href="b3-model-star-schema.html">Next: Model like a pro →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/sql-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

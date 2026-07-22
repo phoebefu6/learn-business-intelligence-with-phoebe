@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 3 · Model like a pro: the star schema - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 3 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 3 of 10</div>
+    <h1>Model like a pro: the <span class="accent">star schema</span></h1>
+    <p class="sub">In b2 you cleaned Daybreak's data. Tonight you arrange it - one fact table in the middle, dimensions around it, like a star. This is the shape every BI tool secretly wants, the shape the PL-300 exam tests hardest, and the vocabulary of every BI interview you will ever sit. We build the star with real SQL views, live in your browser.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip audience">Runs in your browser · no install</span>
+      <span class="chip time">45 min live + self-study</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Recap</span>
+      <span class="a2" style="flex:4">3-18 · Facts, dims, relationships</span>
+      <span class="a3" style="flex:5">18-42 · Build-along: build the star</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Why modeling is the session that matters</h2>
+    </div>
+    <p class="lede">Stage 3 of the five-stage workflow: <strong>Model</strong>. Connect and prepare got the data in and clean; now we decide its shape. Get the shape right and every measure in b4 is a one-liner and every chart in b5-b6 is a drag-and-drop. Get it wrong and you fight double counting forever. The industry has converged on one answer - the star schema - and tonight Daybreak gets one.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      Daybreak modeled as a star: one fact table (fact_sales) and four dimensions (customer, product, date, channel), built as real SQL views you can query. Plus the words that come up in every BI interview - fact, dimension, grain, cardinality, cross-filter direction, role-playing dimension - each attached to something you built, not memorized.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: FACTS AND DIMENSIONS ============ -->
+  <section class="section" id="facts-dims">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers PL-300 "create fact and dimension tables", "design a data model"</span>
+      <h2>Facts and dimensions <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Every business question decomposes the same way: a <strong>number you measure</strong> sliced by <strong>things you describe</strong>. The numbers live in a <strong>fact table</strong> - events that happened: an order line, with its quantity and price. The descriptions live in <strong>dimension tables</strong> - the who, what, where, and when you slice by: customer, product, date, channel. Put the fact in the middle, dimensions around it, connect with keys - that is the star.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Daybreak star schema: fact_sales in the center, four dimensions around it">
+        <style>
+          .stT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .stS { font: 400 11.5px Inter, sans-serif; fill: #EAF1F9; }
+          .stC { font: 700 15px Inter, sans-serif; fill: #C99700; }
+          .stN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .stL { stroke: #8FB4DC; stroke-width: 2.5; fill: none; }
+        </style>
+        <rect x="60" y="40" width="190" height="90" rx="10" fill="#1D4E79"/>
+        <text class="stT" x="78" y="68">dim_customer</text>
+        <text class="stS" x="78" y="90">name · city · country</text>
+        <text class="stS" x="78" y="108">plan · signup_date</text>
+        <rect x="630" y="40" width="190" height="90" rx="10" fill="#1D4E79"/>
+        <text class="stT" x="648" y="68">dim_product</text>
+        <text class="stS" x="648" y="90">name · category</text>
+        <text class="stS" x="648" y="108">roast · price</text>
+        <rect x="60" y="310" width="190" height="90" rx="10" fill="#1D4E79"/>
+        <text class="stT" x="78" y="338">dim_date</text>
+        <text class="stS" x="78" y="360">year · month</text>
+        <text class="stS" x="78" y="378">weekday · is_weekend</text>
+        <rect x="630" y="310" width="190" height="90" rx="10" fill="#1D4E79"/>
+        <text class="stT" x="648" y="338">dim_channel</text>
+        <text class="stS" x="648" y="360">channel name</text>
+        <text class="stS" x="648" y="378">web · app · retail</text>
+        <rect x="330" y="150" width="220" height="140" rx="10" fill="#122B4A"/>
+        <text class="stT" x="350" y="178">fact_sales</text>
+        <text class="stS" x="350" y="200">one row = one order line</text>
+        <text class="stS" x="350" y="222">order_id · product_id</text>
+        <text class="stS" x="350" y="240">customer_id · order_date</text>
+        <text class="stS" x="350" y="258">channel · quantity</text>
+        <text class="stS" x="350" y="276">unit_price · line_revenue</text>
+        <path class="stL" d="M250,105 L330,170"/>
+        <text class="stC" x="258" y="98">1</text>
+        <text class="stC" x="306" y="162">*</text>
+        <path class="stL" d="M630,105 L550,170"/>
+        <text class="stC" x="612" y="98">1</text>
+        <text class="stC" x="562" y="162">*</text>
+        <path class="stL" d="M250,335 L330,272"/>
+        <text class="stC" x="258" y="352">1</text>
+        <text class="stC" x="306" y="288">*</text>
+        <path class="stL" d="M630,335 L550,272"/>
+        <text class="stC" x="612" y="352">1</text>
+        <text class="stC" x="562" y="288">*</text>
+        <rect x="60" y="418" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="stN" x="84" y="430">Each dimension row (1) matches many fact rows (*). Measures live in the middle; slicers live around it.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - THE star: fact_sales built from order_items + orders, four dimensions around it</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Why not one big flat table<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The tempting alternative: join everything into one wide table and chart from that. It works for a week, then hurts four ways:</p>
+        <ul>
+          <li><strong>Repeats:</strong> a customer's city is copied onto every order line they ever bought. Fix a typo in one place, it survives in a thousand others.</li>
+          <li><strong>No reuse:</strong> next month you build a subscriptions report. The flat table was built for orders - you start from zero. Dimensions built once get reused by every fact you add later.</li>
+          <li><strong>Measure errors:</strong> flat tables mix grains. Put monthly_qty from subscriptions next to order lines and SUM happily double counts. Stars force one grain per fact.</li>
+          <li><strong>Memory:</strong> BI engines compress repeated dimension values brilliantly when they live in their own narrow tables - a star is smaller and faster than the flat version of itself.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The 40-column export.</strong> Most "our dashboard is slow and the numbers are wrong" tickets trace back to one giant flat extract someone built in year one. The fix is never a faster refresh - it is remodeling into a star. Cheaper to do it on day one, which is today.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Grain - the one-sentence contract<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The <strong>grain</strong> is the answer to: what does one row of the fact table represent? For fact_sales the sentence is: <em>"one row = one order line"</em>. Write that sentence before you write any SQL, and put it in the table's documentation forever.</p>
+        <ul>
+          <li><strong>Misdeclared grain = double counting.</strong> If someone believes the grain is "one row = one order" and sums a column that repeats per line, every multi-item order counts twice or more. The single most common wrong-number bug in BI.</li>
+          <li><strong>One grain per fact.</strong> Orders at line grain and subscriptions at month grain do not belong in the same fact table. They become two facts sharing the same dimensions - still one star family, two centers.</li>
+          <li><strong>The grain picks your measures.</strong> At line grain, revenue is SUM(quantity * unit_price) and it is safe. Coarser grains lose detail you can never recover.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: RELATIONSHIPS ============ -->
+  <section class="section" id="relationships">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers PL-300 "relationship cardinality and cross-filter direction", "common date table"</span>
+      <h2>Relationships: cardinality and direction <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Lines between tables carry two settings every BI tool asks you for. <strong>Cardinality:</strong> one-to-many is the healthy default - one dimension row (1) matches many fact rows (*). <strong>Cross-filter direction:</strong> filters usually flow one way, dimension → fact; you click a city, the fact rows filter. Both-directions filtering exists, and it is a last resort - it invites ambiguity and slow models. When an interviewer asks about relationships, "1-to-many, single direction, dim filters fact" is the right reflex.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cardinality mini-diagrams: one-to-many, many-to-many, and a role-playing date dimension">
+        <style>
+          .cdT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .cdT2 { font: 700 12px Inter, sans-serif; fill: #FFFFFF; }
+          .cdH { font: 700 12px Inter, sans-serif; fill: #122B4A; }
+          .cdB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .cdC { font: 700 13px Inter, sans-serif; fill: #1D4E79; }
+          .cdN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .cdA { stroke: #3B77B8; stroke-width: 2.5; fill: none; marker-end: url(#cdAh); }
+        </style>
+        <defs>
+          <marker id="cdAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#3B77B8"/>
+          </marker>
+        </defs>
+        <rect x="30" y="30" width="260" height="34" rx="8" fill="#122B4A"/>
+        <text class="cdT" x="48" y="52">1 : * - the healthy default</text>
+        <rect x="30" y="64" width="260" height="140" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <rect x="52" y="84" width="100" height="30" rx="6" fill="#1D4E79"/>
+        <text class="cdT2" x="64" y="104">dim_product</text>
+        <rect x="176" y="84" width="92" height="30" rx="6" fill="#122B4A"/>
+        <text class="cdT2" x="188" y="104">fact_sales</text>
+        <path class="cdA" d="M152,99 L172,99"/>
+        <text class="cdC" x="136" y="94">1</text>
+        <text class="cdC" x="164" y="94">*</text>
+        <text class="cdB" x="48" y="140">One product, many lines.</text>
+        <text class="cdB" x="48" y="160">Filter flows dim → fact,</text>
+        <text class="cdB" x="48" y="180">single direction. Ship it.</text>
+        <rect x="310" y="30" width="260" height="34" rx="8" fill="#1D4E79"/>
+        <text class="cdT" x="328" y="52">* : * - handle with care</text>
+        <rect x="310" y="64" width="260" height="140" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <rect x="332" y="84" width="100" height="30" rx="6" fill="#3B77B8"/>
+        <text class="cdT2" x="344" y="104">customers</text>
+        <rect x="456" y="84" width="92" height="30" rx="6" fill="#3B77B8"/>
+        <text class="cdT2" x="468" y="104">products</text>
+        <path class="cdA" d="M432,99 L452,99"/>
+        <text class="cdC" x="422" y="94">*</text>
+        <text class="cdC" x="444" y="94">*</text>
+        <text class="cdB" x="328" y="140">Ambiguous filters, weird</text>
+        <text class="cdB" x="328" y="160">totals. Resolve through a</text>
+        <text class="cdB" x="328" y="180">fact or bridge table.</text>
+        <rect x="590" y="30" width="260" height="34" rx="8" fill="#3B77B8"/>
+        <text class="cdT" x="608" y="52">Role-playing date</text>
+        <rect x="590" y="64" width="260" height="140" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <rect x="612" y="84" width="92" height="30" rx="6" fill="#1D4E79"/>
+        <text class="cdT2" x="624" y="104">dim_date</text>
+        <path class="cdA" d="M704,92 L742,84"/>
+        <path class="cdA" d="M704,106 L742,116"/>
+        <text class="cdB" x="748" y="86">as order date</text>
+        <text class="cdB" x="748" y="122">as signup date</text>
+        <text class="cdB" x="608" y="140">One date table, two roles.</text>
+        <text class="cdB" x="608" y="160">Build the calendar once,</text>
+        <text class="cdB" x="608" y="180">relate it per role.</text>
+        <rect x="30" y="238" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="cdN" x="54" y="250">Default: 1-to-many, single direction, dim filters fact. Both-directions cross-filter is a last resort.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the three relationship patterns the PL-300 loves to test</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The date table - why BI tools want a dedicated one<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Dates hide inside every table, so why build a separate dim_date? Because a <strong>common date table</strong> gives you three things raw date columns never will:</p>
+        <ul>
+          <li><strong>Continuous days:</strong> one row per calendar day, even days with zero orders. Without it, a month with no sales silently vanishes from your trend line instead of showing as zero.</li>
+          <li><strong>Ready-made attributes:</strong> year, month, quarter, weekday, is_weekend - computed once, reused by every chart, always spelled the same way.</li>
+          <li><strong>Time intelligence:</strong> year-to-date, same-month-last-year, rolling 3 months - the b4 measures - all require a proper date table underneath. No date table, no time intelligence.</li>
+        </ul>
+        <p>SQLite has no calendar generator built in, but here is the seed of one - the distinct months Daybreak has traded. A real dim_date extends this to one row per day:</p>
+        <div class="sqlbox" data-caption="The skeleton of dim_date: every month present in orders. Note 2026-01 through 2026-06 - and remember March.">
+          <pre class="sql-src">SELECT DISTINCT strftime('%Y-%m', order_date) AS month
+FROM orders
+ORDER BY 1;</pre>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Role-playing dimensions<span class="mini">2 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Daybreak has order dates (orders.order_date) and signup dates (customers.signup_date). Do you build two date tables? No - you build <strong>one</strong> dim_date and relate it twice, once per role. The same physical table "plays the role" of order date in one relationship and signup date in another. In Power BI the second relationship is created inactive and activated per measure; in Tableau you simply relate the field you need. One calendar, many roles - that is the whole trick, and it is a named PL-300 topic.</p>
+        <div class="callout tip">
+          <strong>In Power BI / In Tableau</strong>
+          Power BI: build relationships in <strong>Model view</strong>, set cardinality and cross-filter direction in the relationship dialog, and use <strong>Mark as date table</strong> on dim_date so time intelligence works. Tableau: prefer logical-layer <strong>relationships</strong> (Tableau figures out join types per viz) over physical joins; physical joins are the old, stiffer way. Same star, two dialects.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: BUILD THE STAR ============ -->
+  <section class="section" id="build-star">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · the star, made real</span>
+      <h2>Build the star as views <span class="tag concept">4 min live</span></h2>
+    </div>
+    <p class="lede">In Power BI or Tableau you would click this together in a model view. Here we make it real with SQL: a <strong>view</strong> is a saved query that behaves like a table - exactly what a modeled fact is underneath. fact_sales combines order_items (the measures) with orders (the keys and context), at one-row-per-order-line grain. Remember: every run button starts from a fresh database, so the CREATE VIEW and the SELECT live in the same box.</p>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>fact_sales, born<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Run it, then read the output columns against the star diagram above - they match one for one.</p>
+        <div class="sqlbox" data-caption="The fact table as a view: order_items brings quantity and price, orders brings the keys. Grain: one row = one order line.">
+          <pre class="sql-src">CREATE VIEW fact_sales AS
+SELECT oi.order_id,
+       oi.product_id,
+       o.customer_id,
+       o.order_date,
+       o.status,
+       o.channel,
+       oi.quantity,
+       oi.unit_price,
+       oi.quantity * oi.unit_price AS line_revenue
+FROM order_items oi
+JOIN orders o ON o.order_id = oi.order_id;
+
+SELECT * FROM fact_sales LIMIT 8;</pre>
+        </div>
+        <div class="callout win">
+          <strong>★ The one idea to keep</strong>
+          A "data model" is not magic - it is saved joins plus a declared grain. The view above IS a modeled fact table. BI tools add a visual editor and a cache on top, but what you just built is structurally what ships inside every Power BI semantic model.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Query the star vs the raw tables <span class="tag demo">★ 12 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">Same question - revenue by product category - answered twice. First the raw way: three tables, two joins, join logic on you every single time. Then the star way: the fact view plus one dimension. Same number, half the joins. That difference, multiplied by every chart on every dashboard, is why BI models are stars.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>The raw way.</strong> Run the three-table version below. Count the joins and imagine typing them correctly in every report, forever.</p></div>
+      <div class="step"><p><strong>The star way.</strong> Run the second box: create fact_sales, then answer the same question with one join to products. Compare the revenue numbers - identical.</p></div>
+      <div class="step"><p><strong>Say it out loud.</strong> "The star pre-pays the join cost once, so every question afterwards is cheap." That sentence is the whole business case for modeling.</p></div>
+    </div>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Raw tables: three tables, two joins<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <div class="sqlbox" data-caption="Revenue by category, the pre-model way. Every report author must re-derive these joins - and one wrong join key means wrong numbers.">
+          <pre class="sql-src">SELECT p.category,
+       ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue
+FROM order_items oi
+JOIN orders o   ON o.order_id   = oi.order_id
+JOIN products p ON p.product_id = oi.product_id
+GROUP BY 1
+ORDER BY 2 DESC;</pre>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The star: fact + one dimension<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <div class="sqlbox" data-caption="Same answer through the star. line_revenue is pre-computed, the orders join is pre-paid inside the view.">
+          <pre class="sql-src">CREATE VIEW fact_sales AS
+SELECT oi.order_id, oi.product_id, o.customer_id, o.order_date,
+       o.status, o.channel, oi.quantity, oi.unit_price,
+       oi.quantity * oi.unit_price AS line_revenue
+FROM order_items oi
+JOIN orders o ON o.order_id = oi.order_id;
+
+SELECT p.category,
+       ROUND(SUM(f.line_revenue), 2) AS revenue
+FROM fact_sales f
+JOIN products p ON p.product_id = f.product_id
+GROUP BY 1
+ORDER BY 2 DESC;</pre>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn <span class="tag demo">★ 10 min · build your own</span></h2>
+    </div>
+    <p class="lede">Two exercises: one where you extend the star with a dimension we have not touched yet, and one where you catch the playground red-handed doing exactly what you just learned.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q1 · Revenue by plan, through the star<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>customers is a dimension too. Join it to fact_sales and slice revenue by plan - the skeleton is ready, run it, then try swapping plan for city or country.</p>
+        <div class="sqlbox" data-caption="Fact + dim_customer. Notice the shape never changes: fact, join a dimension, group by its attribute.">
+          <pre class="sql-src">CREATE VIEW fact_sales AS
+SELECT oi.order_id, oi.product_id, o.customer_id, o.order_date,
+       o.status, o.channel, oi.quantity, oi.unit_price,
+       oi.quantity * oi.unit_price AS line_revenue
+FROM order_items oi
+JOIN orders o ON o.order_id = oi.order_id;
+
+SELECT c.plan,
+       ROUND(SUM(f.line_revenue), 2) AS revenue
+FROM fact_sales f
+JOIN customers c ON c.customer_id = f.customer_id
+GROUP BY 1
+ORDER BY 2 DESC;</pre>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q2 · Catch the playground using your star<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The mini-BI has been quietly running this same star logic since session b1. Build revenue by category below, press <strong>Show SQL</strong>, and read the joins - order_items to orders to products. That is your star, just written inline. A production semantic model does exactly this on your behalf, thousands of times a day.</p>
+        <div class="bibox" data-dim="category" data-measure="revenue" data-chart="bar"
+             data-caption="Show SQL - the generated joins ARE the star. You now know what the tool knew all along."></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>Sketch a star for a domain you know well - support tickets, marketing campaigns, HR requests. Pencil and paper beats any tool: fact in the middle, dimensions around it.</li>
+      <li>Declare its grain in exactly one sentence ("one row = one ticket status change"). If the sentence will not come out clean, the fact is not designed yet.</li>
+      <li>Find two role-playing uses of a date dimension in your sketch (created date vs resolved date, launch date vs end date). Almost every domain has at least two.</li>
+      <li>Re-run the fact_sales box and add a line: total revenue from the view vs total from the raw join. Prove to yourself they match.</li>
+      <li>Bring to b4: one metric at your company that two teams calculate differently. Measures are next, and that story will be useful.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">Modeling is the heaviest-weighted domain on the PL-300 (25-30% of the exam) and the conceptual heart of the Tableau and Google curricula. This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Design and implement a data model</span><span class="note">Parts 1-3 · cardinality, cross-filter direction, common date table, role-playing dimensions</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Create fact and dimension tables, identify keys</span><span class="note">Parts 1 + 3 · fact_sales built live, keys traced through every join</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">MS Learn · Configure a semantic model in Power BI</span><span class="note">Concepts here; Desktop click-paths and DAX specifics stay with Microsoft</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kimball · dimensional modeling canon</span><span class="note">The spirit - facts, dims, grain, roles - not the full book; slowly changing dimensions return in b10</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What belongs in a fact table?</p>
+      <button class="qopt" type="button">A · Descriptive attributes like city, category, and plan</button>
+      <button class="qopt" type="button">B · Measurable events at a declared grain - one row per order line, with quantity and price</button>
+      <button class="qopt" type="button">C · One row per calendar day with year, month, and weekday columns</button>
+      <p class="qwhy">Facts hold the events you measure, at one declared grain. Descriptive attributes are dimensions (A), and the calendar is dim_date (C).</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · The healthy default relationship between a dimension and a fact is...</p>
+      <button class="qopt" type="button">A · One-to-many, cross-filtering in a single direction from dimension to fact</button>
+      <button class="qopt" type="button">B · Many-to-many, filtering in both directions so everything stays in sync</button>
+      <button class="qopt" type="button">C · One-to-one, so each fact row gets its own dimension row</button>
+      <p class="qwhy">One dimension row matches many fact rows, and filters flow dim → fact. Both-directions and many-to-many exist but are last resorts - ambiguity and slow models follow them around.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">3 · A "role-playing dimension" means...</p>
+      <button class="qopt" type="button">A · A dimension that changes its values over time</button>
+      <button class="qopt" type="button">B · Two copies of the date table, one per date column</button>
+      <button class="qopt" type="button">C · One physical table related to the fact more than once - dim_date as order date AND as signup date</button>
+      <p class="qwhy">One table, multiple relationship roles. You build the calendar once and relate it per role - two copies (B) is exactly what role-playing saves you from.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 3 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Fact table</b><span>Measurable events at one declared grain. Daybreak: fact_sales = order_items + orders keys.</span></div>
+      <div class="cheat-item"><b>Dimension</b><span>The who/what/where/when you slice by: customer, product, date, channel. Built once, reused by every fact.</span></div>
+      <div class="cheat-item"><b>Grain</b><span>One sentence: "one row = one order line." Misdeclared grain = double counting, the classic BI bug.</span></div>
+      <div class="cheat-item"><b>Star vs flat</b><span>Flat tables repeat, mix grains, and miscount. Stars pre-pay the join cost once; every question after is cheap.</span></div>
+      <div class="cheat-item"><b>Cardinality</b><span>1-to-many is the healthy default: dim (1) → fact (*). Many-to-many needs a bridge.</span></div>
+      <div class="cheat-item"><b>Cross-filter</b><span>Single direction, dim filters fact. Both directions = last resort, invites ambiguity.</span></div>
+      <div class="cheat-item"><b>Date table</b><span>Dedicated, continuous, one row per day, marked as date table. Time intelligence (b4) depends on it.</span></div>
+      <div class="cheat-item"><b>Role-playing dim</b><span>One dim_date, related twice: order date and signup date. One calendar, many roles.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 3 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b2-shape-the-data.html">← Session 2</a> &nbsp;·&nbsp; <a href="b4-measures-that-mean.html">Next: Measures that mean something →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/sql-live.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

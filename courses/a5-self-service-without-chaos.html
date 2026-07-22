@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 5 · Self-service BI without chaos - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Leader session 5 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Leader track · Session 5 of 6</div>
+    <h1>Self-service BI without <span class="accent">chaos</span></h1>
+    <p class="sub">Every leader wants both: teams that answer their own questions, and one version of the truth. Most orgs get one or the other. This session gives you the operating model that delivers both - who builds what, with which guardrails - simple enough to draw on a whiteboard, real enough to survive contact with your actual org chart.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Leader track</span>
+      <span class="chip audience">Leaders: execs · managers · non-technical</span>
+      <span class="chip time">No code · 45 minutes</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-16 · Operating models</span>
+      <span class="a3" style="flex:5">16-42 · Guardrails + demos</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The tension this session resolves</h2>
+    </div>
+    <p class="lede">Session a4 taught you to commission one dashboard well. But you will not commission every dashboard - at some point marketing, ops, and finance will want to build their own. Say yes with no plan and you get forty versions of revenue. Say no and you become the bottleneck everyone routes around anyway. The answer is an <strong>operating model</strong>: an explicit deal about who builds what, and which guardrails keep the numbers trustworthy.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      An operating model you can draw on a whiteboard: the three ways to organize BI and why hub-and-spoke usually wins, the trust-tier ladder (ad-hoc, promoted, certified), what row-level security really is (a leadership decision, not an IT detail), and the culture moves that make any of it stick.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: OPERATING MODELS ============ -->
+  <section class="section" id="operating-models">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers Tableau Blueprint role paths, Google BI org framing</span>
+      <h2>The three operating models <span class="tag concept">8 min live</span></h2>
+    </div>
+    <p class="lede">There are only three ways to run BI in a company, and every org is somewhere on this line. <strong>Central BI team:</strong> every dashboard comes from one team - quality is high and consistent, but the queue is long and the business routes around it with spreadsheets. <strong>Full self-serve:</strong> anyone builds anything - gloriously fast, until the CFO and the CMO bring different revenue numbers to the same board meeting. <strong>Hub-and-spoke:</strong> a small central team owns the governed core, and trained builders inside each domain build on top of it. That third one is the mature answer, and the rest of this session is how to run it.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three BI operating models compared: central team, full self-serve, hub-and-spoke">
+        <style>
+          .omT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .omB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .omH { font: 700 12px Inter, sans-serif; fill: #122B4A; }
+          .omN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .omL { stroke: #8FB4DC; stroke-width: 1.5; }
+        </style>
+        <rect x="30" y="24" width="260" height="34" rx="8" fill="#122B4A"/>
+        <text class="omT" x="48" y="46">Central BI team</text>
+        <rect x="30" y="58" width="260" height="182" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <line class="omL" x1="160" y1="96" x2="96" y2="130"/>
+        <line class="omL" x1="160" y1="96" x2="140" y2="130"/>
+        <line class="omL" x1="160" y1="96" x2="184" y2="130"/>
+        <line class="omL" x1="160" y1="96" x2="228" y2="130"/>
+        <circle cx="160" cy="94" r="13" fill="#122B4A"/>
+        <rect x="88" y="128" width="16" height="12" rx="2" fill="#8FB4DC"/>
+        <rect x="132" y="128" width="16" height="12" rx="2" fill="#8FB4DC"/>
+        <rect x="176" y="128" width="16" height="12" rx="2" fill="#8FB4DC"/>
+        <rect x="220" y="128" width="16" height="12" rx="2" fill="#8FB4DC"/>
+        <text class="omH" x="48" y="166">One team builds it all</text>
+        <text class="omB" x="48" y="188">Quality: high, consistent</text>
+        <text class="omB" x="48" y="206">Queue: long, weeks not days</text>
+        <text class="omB" x="48" y="224">Business routes around it</text>
+        <rect x="310" y="24" width="260" height="34" rx="8" fill="#1D4E79"/>
+        <text class="omT" x="328" y="46">Full self-serve</text>
+        <rect x="310" y="58" width="260" height="182" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <rect x="348" y="82" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <rect x="398" y="98" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <rect x="452" y="80" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <rect x="506" y="100" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <rect x="372" y="120" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <rect x="430" y="126" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <rect x="486" y="124" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <text class="omH" x="328" y="166">Anyone builds anything</text>
+        <text class="omB" x="328" y="188">Speed: instant, no queue</text>
+        <text class="omB" x="328" y="206">Forty versions of revenue</text>
+        <text class="omB" x="328" y="224">Trust erodes quietly</text>
+        <rect x="590" y="24" width="260" height="34" rx="8" fill="#3B77B8"/>
+        <text class="omT" x="608" y="46">Hub-and-spoke</text>
+        <rect x="590" y="58" width="260" height="182" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <line class="omL" x1="720" y1="100" x2="656" y2="128"/>
+        <line class="omL" x1="720" y1="100" x2="700" y2="132"/>
+        <line class="omL" x1="720" y1="100" x2="744" y2="132"/>
+        <line class="omL" x1="720" y1="100" x2="788" y2="128"/>
+        <circle cx="720" cy="98" r="13" fill="#122B4A"/>
+        <rect x="648" y="126" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <rect x="692" y="130" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <rect x="736" y="130" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <rect x="780" y="126" width="16" height="12" rx="2" fill="#3B77B8"/>
+        <text class="omH" x="608" y="166">Governed core + builders</text>
+        <text class="omB" x="608" y="188">Hub owns definitions</text>
+        <text class="omB" x="608" y="206">Spokes ship fast on top</text>
+        <text class="omB" x="608" y="224">The mature default</text>
+        <rect x="30" y="264" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="omN" x="54" y="276">Most orgs drift into full self-serve, feel the chaos, then land on hub-and-spoke. You can skip the pain.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - three ways to organize BI, and the trade each one makes</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Hub-and-spoke in practice<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The deal, spelled out so both sides know what they signed:</p>
+        <ul>
+          <li><strong>The hub (central team) owns the semantic model and certified content:</strong> the definitions of revenue, active customer, and churn live in one place, plus the handful of dashboards the whole company steers by. Small team, high leverage - they build the road, not every car.</li>
+          <li><strong>The spokes (domain builders) build on top:</strong> a trained analyst inside marketing, ops, or finance builds their team's dashboards using the hub's certified measures. They get speed and domain context; they do not get to redefine revenue.</li>
+          <li><strong>The boundary is the semantic layer:</strong> from a3 - definitions encoded once, so every spoke chart agrees with every hub chart. Break the boundary and you are back to full self-serve chaos with extra steps.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>The whiteboard version</strong>
+          One circle (hub: definitions + certified core), four squares (spokes: domain builders), lines between them. If you cannot name who sits in the circle and who sits in the squares at your company, that is this week's homework.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Tableau Blueprint's role map - who you need to resource<span class="mini">4 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Tableau's official Blueprint methodology defines <strong>12 role-based learning paths in 3 groups</strong>. You do not need Tableau to use this map - it is the best public checklist of the roles a real BI program needs, and leaders are the ones who resource them:</p>
+        <table class="clean">
+          <thead><tr><th>Group</th><th>Roles</th><th>Your job as a leader</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Enable a Data Culture</strong></td><td>Executive Sponsor · Community Leader · Data Steward</td><td>Fill these first - one is probably you. No sponsor, no program.</td></tr>
+            <tr><td><strong>Provide Insights</strong></td><td>Consumer · Author · Designer · Analyst · Data Scientist · Developer</td><td>Map your people onto the ladder. Most staff are Consumers; each spoke needs at least one Author or Analyst.</td></tr>
+            <tr><td><strong>Deploy and Manage</strong></td><td>Site Admin · Server Admin · Server Architect</td><td>Usually IT. Confirm someone actually owns this before dashboards go company-wide.</td></tr>
+          </tbody>
+        </table>
+        <p>Notice what the grouping implies: a full third of the map is <em>culture</em>, not tooling. Tableau ships software for a living and still says the sponsor and steward roles come first.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: GUARDRAILS ============ -->
+  <section class="section" id="guardrails">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers PL-300 "Manage and secure Power BI" - the leader view</span>
+      <h2>Guardrails that make self-serve safe <span class="tag concept">10 min live</span></h2>
+    </div>
+    <p class="lede">Hub-and-spoke only works if viewers can tell governed content from a Friday-afternoon experiment. Four guardrails do that job, and each one maps to a feature your BI platform already has: <strong>trust tiers</strong> (certified vs promoted vs ad-hoc content), <strong>workspaces</strong> as team boundaries, <strong>row-level security</strong> for who sees which rows, and <strong>sensitivity labels</strong> for what may leave the building. These are exactly the topics in the PL-300 exam's "Manage and secure Power BI" domain - your builders learn the buttons in b8; you decide the policy here.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The trust-tier ladder: ad-hoc, promoted, certified, and what each tier promises">
+        <style>
+          .ttT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .ttB { font: 400 11.5px Inter, sans-serif; fill: #EAF1F9; }
+          .ttD { font: 700 14px Inter, sans-serif; fill: #122B4A; }
+          .ttE { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .ttN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .ttArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#ttAh); }
+        </style>
+        <defs>
+          <marker id="ttAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="40" y="180" width="240" height="80" rx="10" fill="#8FB4DC"/>
+        <text class="ttD" x="58" y="206">Ad-hoc</text>
+        <text class="ttE" x="58" y="228">Anyone can publish</text>
+        <text class="ttE" x="58" y="246">Promises nothing yet</text>
+        <rect x="320" y="125" width="240" height="135" rx="10" fill="#3B77B8"/>
+        <text class="ttT" x="338" y="151">Promoted</text>
+        <text class="ttB" x="338" y="175">Team lead endorses it</text>
+        <text class="ttB" x="338" y="193">"Worth a look" signal</text>
+        <text class="ttB" x="338" y="211">Not independently audited</text>
+        <rect x="600" y="60" width="240" height="200" rx="10" fill="#122B4A"/>
+        <text class="ttT" x="618" y="86">Certified</text>
+        <text class="ttB" x="618" y="110">Definitions checked vs core</text>
+        <text class="ttB" x="618" y="128">Refresh monitored</text>
+        <text class="ttB" x="618" y="146">Named owner on the hook</text>
+        <text class="ttB" x="618" y="164">The org-wide truth tier</text>
+        <path class="ttArr" d="M282,205 L315,180"/>
+        <path class="ttArr" d="M562,150 L595,120"/>
+        <rect x="40" y="282" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="ttN" x="64" y="294">Viewers must see the tier at a glance - a badge on the dashboard. Trust is a label, not a vibe.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the trust-tier ladder every self-serve org needs</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The certification ritual - who signs off, and on what<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Certification is a ritual, not a checkbox. Before anything wears the certified badge, a named reviewer (usually the hub's data steward) checks three things:</p>
+        <ul>
+          <li><strong>Definition:</strong> every measure on the dashboard resolves to the semantic model's definition - its "revenue" is <em>the</em> revenue from a3, not a local remix.</li>
+          <li><strong>Refresh:</strong> the data updates on a stated schedule, someone is alerted when refresh fails, and the last-refreshed time is visible to viewers.</li>
+          <li><strong>Owner:</strong> a named human answers for it - questions, fixes, and the eventual decision to retire it. No owner, no badge.</li>
+        </ul>
+        <p><strong>Promoted</strong> is the lighter tier: a team lead vouches for it inside their team, no central audit. Ad-hoc is everything else - allowed to exist, labeled as such. Three tiers, three levels of promise; the ladder only works if the badge is visible.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Security questions leaders must answer - RLS and labels<span class="mini">4 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Row-level security (RLS)</strong> means one dashboard, where each viewer sees only their slice of the rows: the Singapore city manager opens the sales dashboard and sees Singapore; the exec opens the identical dashboard and sees everything. Nobody maintains five copies. The technology is a builder task (b8) - but the matrix of <em>who sees what</em> is a leadership decision, and someone has to write it down. For Daybreak it looks like this:</p>
+        <table class="clean">
+          <thead><tr><th>Viewer role</th><th>Sees rows for</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>City manager</td><td>Their own city only</td><td>Runs one market; other cities are noise and a leak risk</td></tr>
+            <tr><td>Channel manager</td><td>Their channel, all cities</td><td>Owns web or wholesale end to end</td></tr>
+            <tr><td>Finance analyst</td><td>All rows, no customer names</td><td>Needs totals, not personal data</td></tr>
+            <tr><td>Executive</td><td>Everything</td><td>Accountable for the whole</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Sensitivity labels</strong> answer the other question: what may leave the building? Marking content Confidential or Internal travels with the data when someone exports it to Excel or PDF. Decide the label policy once; the platform enforces it everywhere.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: CULTURE ============ -->
+  <section class="section" id="culture">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers Google BI cert org-impact themes, Tableau Blueprint culture group</span>
+      <h2>Data culture - the multiplier <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Here is the uncomfortable part: you can buy the tool, design the perfect operating model, and still fail. Tools do not create adoption - <strong>rituals, champions, and training do</strong>. Remember the 9am test from the builder track: if a question gets asked every Monday at 9am, it deserves a dashboard. The org-level version: if your Monday meeting still opens with a spreadsheet screenshot, your BI program has not landed, whatever the license count says.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The champion network<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The highest-leverage culture move costs almost nothing: name one <strong>champion per team</strong> - the person who already answers everyone's data questions anyway - and make it official.</p>
+        <ul>
+          <li><strong>Give them first access and first training:</strong> champions see new certified content before anyone else and get the builder-track skills (point them at b1).</li>
+          <li><strong>Give them a channel:</strong> a monthly champions call where the hub previews changes and champions surface what confuses their teams. This is where definition drift gets caught early.</li>
+          <li><strong>Give them credit:</strong> put the champion role in performance reviews. Unpaid, unrecognized champion networks dissolve within two quarters.</li>
+          <li><strong>Rituals beat mandates:</strong> open your own Monday meeting from the certified dashboard, every week, visibly. Teams copy what leaders do, not what they announce.</li>
+        </ul>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The 200-orphan cleanup.</strong> A retail company rolled out self-serve BI with enthusiasm and no trust tiers. Eighteen months later an audit found roughly 200 dashboards nobody could explain: no owner, unknown refresh state, three competing definitions of margin. Viewers had learned to trust none of them - adoption was falling while dashboard count grew. The fix was not a new tool. They introduced certification, badged 15 dashboards as the governed core, archived anything unowned after a 30-day claim window, and adoption recovered within two quarters. The lesson: an uncertified pile does not converge on truth by itself - somebody has to hold the ladder.</p>
+    </div>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Design Daybreak's operating model <span class="tag demo">★ 12 min · whiteboard exercise</span></h2>
+    </div>
+    <p class="lede">Daybreak has grown to 200 people: marketing, ops, finance, and a two-person data team. Design its BI operating model on one whiteboard - the same four moves you would make at your own company.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Pick the model.</strong> 200 people, four departments wanting dashboards, two data people. Central team? They become the bottleneck in a month. Full self-serve? Forty revenues. Hub-and-spoke: the two data people are the hub; one trained builder per department is the spoke.</p></div>
+      <div class="step"><p><strong>Name the certified core.</strong> Which metrics get the badge on day one? Keep it brutal: revenue, orders, active subscribers, average order value, churn. Five metrics, certified, owned. Everything else can be promoted or ad-hoc until it earns its way up.</p></div>
+      <div class="step"><p><strong>Draw the RLS matrix.</strong> Two rows to start: the channel manager sees their channel across all cities; the exec sees everything. Write it as a table with names in it - the moment it has names, it is a policy instead of an intention.</p></div>
+      <div class="step"><p><strong>Assign Blueprint roles.</strong> Who is Executive Sponsor (you), who is Data Steward (hub), who are the Authors (spokes), and who runs the platform (IT)? If a Blueprint role has no name next to it, you have found your first hiring or training gap.</p></div>
+    </div>
+
+    <div class="callout tip">
+      <strong>The test of a good operating model</strong>
+      A new marketing hire should be able to answer three questions in their first week: where do I find the numbers I can trust (certified core), who builds new views for my team (their spoke builder), and what am I not allowed to see (the RLS matrix). If any answer is "ask around", the model is not done.
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Stress-test with the playground <span class="tag demo">★ 8 min · think like a spoke</span></h2>
+    </div>
+    <p class="lede">Below is Daybreak revenue by channel in the same mini-BI your builders use. Imagine you have just handed this data to self-serve channel managers - then stress-test your guardrails against what they will actually do with it.</p>
+
+    <div class="bibox" data-dim="channel" data-measure="revenue" data-chart="bar"
+         data-caption="Revenue by channel. Play with the measure, then ask: if every channel manager built their own version, where would the drift start?"></div>
+
+    <div class="steps">
+      <div class="step"><p><strong>Spot the drift risk.</strong> A channel manager rebuilds this chart but quietly nets out refunds, because "that reflects my real performance". Their revenue no longer matches finance's. Which guardrail catches it? Certification - their version can exist ad-hoc, but it cannot wear the badge, and the Monday meeting only ever shows badged numbers.</p></div>
+      <div class="step"><p><strong>Spot the leak risk.</strong> The wholesale manager screenshots the full chart - including the web channel's numbers - into a partner deck. Which guardrails? RLS should have limited what they saw in the first place; a Confidential sensitivity label makes the export policy explicit.</p></div>
+      <div class="step"><p><strong>Now press Show SQL.</strong> The generated query is the semantic layer doing its job: every spoke asking for "revenue by channel" gets this same SQL. That is why the hub guards the definitions - one translation, no drift at the source.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>Classify your org's current operating model honestly: central, full self-serve, or hub-and-spoke? One sentence of evidence - who built the last three dashboards you personally used?</li>
+      <li>List the metrics that deserve certification at your company. If the list is longer than ten, it is a wish list, not a core - cut it.</li>
+      <li>Find one orphan dashboard: no clear owner, unknown refresh state. Decide its fate - certify it, fix it, or retire it - and tell someone the decision.</li>
+      <li>Sketch your RLS matrix for one dashboard: three viewer roles, what each should see. Notice it takes ten minutes and settles arguments that meetings never do.</li>
+      <li>Bring to a6: the name of the BI tool your company runs today - next session is the tool landscape and what AI is really doing in BI.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">The leader track distills the governance and org-design material from the official curricula, minus the button-clicking. This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Manage and secure Power BI - workspaces, endorsement, RLS, sensitivity labels</span><span class="note">Part 2 · the leader view; your builders get the hands-on depth in b8</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Tableau Blueprint · 12 role-based learning paths in 3 groups</span><span class="note">Part 1 · the role map leaders resource, tool-agnostic reading</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Google BI cert · organizational impact and data-driven culture threads</span><span class="note">Part 3 · culture as the multiplier; Google's course spreads this across modules</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What does hub-and-spoke give you that the other two models do not?</p>
+      <button class="qopt" type="button">A · The central team builds every dashboard, so quality is guaranteed</button>
+      <button class="qopt" type="button">B · Domain teams build fast on top of a governed core, so speed and one truth coexist</button>
+      <button class="qopt" type="button">C · The lowest license cost, because fewer people need build access</button>
+      <p class="qwhy">Central teams give truth without speed; full self-serve gives speed without truth. Hub-and-spoke splits the work: the hub owns definitions and certified content, the spokes ship fast on top of them.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · A dashboard carries the "certified" badge. What exactly is being promised?</p>
+      <button class="qopt" type="button">A · It was built by the central BI team, so it must be right</button>
+      <button class="qopt" type="button">B · It is the most-viewed dashboard in its workspace</button>
+      <button class="qopt" type="button">C · Its definitions match the semantic model, its refresh is monitored, and a named owner answers for it</button>
+      <p class="qwhy">Certification is a checked promise: definition, refresh, owner. Who built it and how popular it is are beside the point - plenty of well-meant, popular dashboards fail the audit.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · What does row-level security (RLS) actually do?</p>
+      <button class="qopt" type="button">A · One dashboard, where each viewer sees only the rows their role allows - the city manager sees their own city</button>
+      <button class="qopt" type="button">B · Encrypts the database so hackers cannot read the rows</button>
+      <button class="qopt" type="button">C · Requires a separate copy of the dashboard for each region</button>
+      <p class="qwhy">RLS filters rows per viewer on a single shared dashboard - which is exactly why it replaces the five-copies-per-region mess. And deciding who sees what is a leadership call; the implementation is b8's problem.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader session 5 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Three models</b><span>Central (truth, slow) · full self-serve (fast, forty revenues) · hub-and-spoke (both). Know where your org sits.</span></div>
+      <div class="cheat-item"><b>Hub-and-spoke deal</b><span>Hub owns the semantic model + certified core; trained domain builders ship on top. The boundary is the definitions.</span></div>
+      <div class="cheat-item"><b>Trust tiers</b><span>Ad-hoc (no promise) → promoted (team lead vouches) → certified (audited). The badge must be visible to viewers.</span></div>
+      <div class="cheat-item"><b>Certification ritual</b><span>Three checks before the badge: definition matches the model, refresh monitored, named owner. No owner, no badge.</span></div>
+      <div class="cheat-item"><b>Workspaces</b><span>Team boundaries for content: who can publish where. The org chart of your BI platform.</span></div>
+      <div class="cheat-item"><b>RLS</b><span>One dashboard, per-viewer rows. The who-sees-what matrix is a leadership decision - write it down with names.</span></div>
+      <div class="cheat-item"><b>Sensitivity labels</b><span>Confidential/Internal marks that travel with exports. Decide the policy once, the platform enforces it.</span></div>
+      <div class="cheat-item"><b>Culture multiplier</b><span>Champions per team + leader rituals beat mandates. If Monday still opens with a spreadsheet, BI has not landed.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 5 of 6 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a4-commissioning-dashboards.html">← Session 4</a> &nbsp;·&nbsp; <a href="a6-tools-and-ai.html">Next: The tool landscape + AI in BI →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

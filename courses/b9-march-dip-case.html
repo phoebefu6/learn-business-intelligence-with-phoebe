@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 9 · Case study: the March dip - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 9 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 9 of 10</div>
+    <h1>Case study: the <span class="accent">March dip</span></h1>
+    <p class="sub">The board saw the exec dashboard you shipped in b6. Revenue dipped in March. They want to know why, by Friday. This is the capstone: one real investigation, start to finish, on the live Daybreak warehouse in your browser - fewer concept cards, more digging. Everything you built in b1-b8 gets used tonight.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip time">Capstone</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · The brief</span>
+      <span class="a2" style="flex:3">3-15 · Plan + confirm</span>
+      <span class="a3" style="flex:6">15-40 · Drill + explain</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The brief</h2>
+    </div>
+    <p class="lede">You have been circling this since b1: something is off in Daybreak's March. Tonight you stop circling. The brief from the board is one line - <em>"Revenue dipped in March. Why?"</em> - and your job is to turn that one line into a defensible answer with a recommendation attached. The method matters more than this particular dip: confirm the number, decompose it, drill to causes, explain it in one slide. That loop is the most transferable thing in this whole track.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A full BI investigation run end to end: confirm → decompose → drill → explain → recommend. You will find the real causes of the March dip (there is more than one), name the churned customer, and package it all as a one-slide story the board can act on.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE PLAN ============ -->
+  <section class="section" id="plan">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the discipline that separates investigation from thrashing</span>
+      <h2>The investigation plan <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">The worst thing you can do with "why did revenue fall?" is open a query editor and start typing. Write the <strong>question tree</strong> first: the branches you will check, in order, before you touch data. It keeps you honest (you check the boring branches, not just your pet theory), it makes the work reviewable, and when the board asks "did you consider X?" the answer is already on paper.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The question tree: March revenue fell branches into four checks - is it real, fewer or smaller orders, which segment, any churn">
+        <style>
+          .qtT { font: 700 13.5px Inter, sans-serif; fill: #FFFFFF; }
+          .qtS { font: 400 11px Inter, sans-serif; fill: #EAF1F9; }
+          .qtF { font: 400 11.5px Inter, sans-serif; fill: #5A6B80; }
+          .qtN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .qtGold { stroke: #C99700; stroke-width: 2.5; fill: none; marker-end: url(#qtAg); }
+          .qtSoft { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#qtAs); }
+        </style>
+        <defs>
+          <marker id="qtAg" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#C99700"/>
+          </marker>
+          <marker id="qtAs" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="335" y="24" width="210" height="54" rx="10" fill="#122B4A"/>
+        <text class="qtT" x="355" y="46">March revenue fell</text>
+        <text class="qtS" x="355" y="66">the board wants why</text>
+        <path class="qtGold" d="M400,78 L128,134"/>
+        <path class="qtGold" d="M425,78 L340,134"/>
+        <path class="qtSoft" d="M455,78 L545,134"/>
+        <path class="qtGold" d="M480,78 L760,134"/>
+        <rect x="30" y="140" width="185" height="76" rx="10" fill="#1D4E79"/>
+        <text class="qtT" x="46" y="166">Is the dip real?</text>
+        <text class="qtS" x="46" y="186">check the definition</text>
+        <text class="qtS" x="46" y="202">and order statuses</text>
+        <rect x="245" y="140" width="185" height="76" rx="10" fill="#1D4E79"/>
+        <text class="qtT" x="261" y="166">Fewer orders, or</text>
+        <text class="qtT" x="261" y="184">smaller baskets?</text>
+        <text class="qtS" x="261" y="202">revenue = orders x AOV</text>
+        <rect x="460" y="140" width="185" height="76" rx="10" fill="#3B77B8"/>
+        <text class="qtT" x="476" y="166">Which segment?</text>
+        <text class="qtS" x="476" y="186">plan, city, channel -</text>
+        <text class="qtS" x="476" y="202">any one to blame?</text>
+        <rect x="675" y="140" width="185" height="76" rx="10" fill="#1D4E79"/>
+        <text class="qtT" x="691" y="166">Any churn events?</text>
+        <text class="qtS" x="691" y="186">subscriptions table,</text>
+        <text class="qtS" x="691" y="202">cancel_date in March</text>
+        <text class="qtF" x="34" y="240">Finds 1 refunded order</text>
+        <text class="qtF" x="249" y="240">Finds both forces at work</text>
+        <text class="qtF" x="464" y="240">No single villain segment</text>
+        <text class="qtF" x="679" y="240">Finds 1 canceled sub</text>
+        <rect x="30" y="272" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="qtN" x="54" y="284">Gold arrows = branches the data will confirm in Parts 2-3. Write the tree first; then every query has a job.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the question tree you write before touching any data</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Why "is it real?" always goes first<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Half of all metric-drop panics dissolve at branch one. Before hunting causes, rule out the boring explanations:</p>
+        <ul>
+          <li><strong>Definition drift:</strong> does "revenue" here include refunded orders? Canceled ones? If the dashboard measure and your query disagree, you are investigating a ghost.</li>
+          <li><strong>Data problems:</strong> late-loading data, a broken pipeline, a partial month. In our tiny warehouse this cannot happen; in yours it is the first suspect.</li>
+          <li><strong>One weird row:</strong> a single refund, a bulk order, a test transaction. Small warehouses feel this hard - and Daybreak is about to prove it.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The Friday-panic pattern.</strong> An exec sees a dip, forwards the screenshot, and three analysts start digging in three directions. The team that wrote the question tree answers in an hour and checks all four branches. The team that did not spends two days proving their first hunch wrong. Same data, same skill - different discipline.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Where each branch gets its data<span class="mini">2 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Map the tree to the Daybreak schema before you query: <strong>branch 1</strong> reads <code>orders.status</code> (refunds hide inside totals); <strong>branch 2</strong> needs orders count and basket size (<code>order_items</code> joined to <code>orders</code>); <strong>branch 3</strong> is the same revenue measure sliced by <code>plan</code>, <code>city</code>, <code>channel</code>; <strong>branch 4</strong> reads <code>subscriptions.cancel_date</code>. Notice that no branch needs new data - a well-modeled warehouse (b3) answers "why" questions with the same tables that answered "what".</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: CONFIRM AND DECOMPOSE ============ -->
+  <section class="section" id="confirm">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · branches 1 and 2 of the tree</span>
+      <h2>Confirm and decompose <span class="tag demo">★ 12 min · everyone investigates</span></h2>
+    </div>
+    <p class="lede">Work the tree top-down. First confirm the dip exists in the numbers (not just in the chart someone screenshotted), then split revenue into its two factors: <strong>how many orders</strong> x <strong>how big each basket</strong>. A dip in either one is a completely different story with a completely different owner.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>See the dip.</strong> Month by month revenue as a line. The mini-BI marks the minimum in gold - there is March, lit up before you even squint.</p>
+        <div class="bibox" data-dim="month" data-measure="revenue" data-chart="line"
+             data-caption="Step 1 - the dip, confirmed visually. The gold dot is the minimum month. Now put numbers on it."></div>
+      </div>
+      <div class="step">
+        <p><strong>Put a number on it.</strong> The same measure as a table. Read down the revenue column: it climbs Jan to Feb, takes one hard negative step into March - by far the deepest cut in the table - then bounces back in April. That one number is what you are explaining.</p>
+        <div class="sqlbox" data-caption="Step 2 - month-over-month revenue. Find the one negative step.">
+          <pre class="sql-src">SELECT strftime('%Y-%m', o.order_date) AS month,
+       ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id
+GROUP BY 1
+ORDER BY 1;</pre>
+        </div>
+      </div>
+      <div class="step">
+        <p><strong>Decompose: fewer orders, or smaller ones?</strong> Run both lines. Orders dip in March - <em>and so does average order value</em>. Two forces, not one. If you had stopped at "fewer orders" you would have shipped half an answer.</p>
+        <div class="bibox" data-dim="month" data-measure="orders" data-chart="line"
+             data-caption="Step 3a - order count by month. March dips. But is that the whole story?"></div>
+        <div class="bibox" data-dim="month" data-measure="aov" data-chart="line"
+             data-caption="Step 3b - average order value by month. Baskets shrank in March too. Two forces confirmed."></div>
+      </div>
+      <div class="step">
+        <p><strong>Check the statuses.</strong> Branch 1 said: rule out definition problems. March's orders by status turn up a <strong>refunded order</strong> sitting inside the month - money the trend counted that Daybreak never kept. One weird row, real impact.</p>
+        <div class="sqlbox" data-caption="Step 4 - March orders by status. The refunded row is distorting the March number.">
+          <pre class="sql-src">SELECT status, COUNT(*) AS orders
+FROM orders
+WHERE strftime('%Y-%m', order_date) = '2026-03'
+GROUP BY 1;</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <strong>In Power BI / In Tableau</strong>
+      This decomposition is why real semantic models ship <strong>Orders</strong>, <strong>Revenue</strong>, and <strong>AOV</strong> as three separate governed measures (b4): the drill from "revenue fell" to "orders x basket" is one click instead of a new query. Power BI's decomposition tree visual and Tableau's Explain Data automate exactly this branch of the tree.
+    </div>
+  </section>
+
+  <!-- ============ PART 3: DRILL TO THE CAUSES ============ -->
+  <section class="section" id="drill">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · branches 3 and 4 - and the recovery check</span>
+      <h2>Drill to the causes <span class="tag demo">★ 13 min · keep digging</span></h2>
+    </div>
+    <p class="lede">The dip is real, and it is two-sided: fewer orders and smaller baskets. Now finish the tree - the churn branch, the buyer count, and one more check nobody briefs you on but the board will absolutely ask: <strong>has it recovered?</strong></p>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>The churn check.</strong> Query every subscription that has ever been canceled. Two rows come back - and only one cancel date lands in March: <strong>Liam Ford, Basic plan, canceled 2026-03-10</strong>. A recurring monthly order that simply stopped arriving. There is your missing-orders force, with a name on it.</p>
+        <div class="sqlbox" data-caption="Step 5 - canceled subscriptions, with names and plans. Find the March one.">
+          <pre class="sql-src">SELECT c.name, c.plan, s.cancel_date
+FROM subscriptions s
+JOIN customers c ON c.customer_id = s.customer_id
+WHERE s.cancel_date IS NOT NULL;</pre>
+        </div>
+      </div>
+      <div class="step">
+        <p><strong>Cross-check with buyers.</strong> Distinct buying customers per month dips in March too - consistent with a subscriber going quiet. When two independent views agree, your confidence should rise; when they disagree, that disagreement is the next question.</p>
+        <div class="bibox" data-dim="month" data-measure="customers" data-chart="line"
+             data-caption="Step 6 - distinct buying customers by month. The March dip shows up here too."></div>
+      </div>
+      <div class="step">
+        <p><strong>The recovery check.</strong> March against April, head to head. April is back up. That single fact changes the recommendation from "emergency" to "understand and prevent" - always check whether the fire is already out.</p>
+        <div class="sqlbox" data-caption="Step 7 - March vs April revenue. The recovery, in one small table.">
+          <pre class="sql-src">SELECT strftime('%Y-%m', o.order_date) AS month,
+       ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id
+WHERE strftime('%Y-%m', o.order_date) IN ('2026-03', '2026-04')
+GROUP BY 1;</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout win">
+      <strong>★ The verdict</strong>
+      The March dip = <strong>one refunded order</strong> + <strong>one churned subscriber</strong> (Liam Ford, Basic) + <strong>smaller baskets</strong> across remaining orders - three small forces stacking, no single villain. That matters because each cause has a different owner and a different fix: refunds are a finance-definition issue, churn is a retention play, basket size is a merchandising question. An answer that names one cause when there are three sends three teams chasing the wrong thing.
+    </div>
+  </section>
+
+  <!-- ============ PART 4: EXPLAIN AND RECOMMEND ============ -->
+  <section class="section" id="explain">
+    <div class="section-kicker">
+      <span class="klabel">Part 4 · the b7 storytelling patterns, applied for real</span>
+      <h2>Explain and recommend <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">The board does not want your seven queries; it wants the answer and what to do about it. Package the investigation the b7 way: <strong>takeaway as the title</strong>, one annotated trend, the three causes as tiles, and recommendations with owners. One slide. If they want the evidence, the appendix has your queries.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The finished story slide: takeaway title, annotated revenue trend with the March refund marked, three cause tiles, recommendation strip">
+        <style>
+          .ssT { font: 700 15px Inter, sans-serif; fill: #182230; }
+          .ssC { font: 600 12.5px Inter, sans-serif; fill: #FFFFFF; }
+          .ssB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .ssM { font: 400 10.5px Inter, sans-serif; fill: #5A6B80; }
+          .ssG { font: 600 11px Inter, sans-serif; fill: #C99700; }
+          .ssN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+        </style>
+        <rect x="30" y="24" width="820" height="306" rx="12" fill="#FFFFFF" stroke="#8FB4DC" stroke-width="1.5"/>
+        <text class="ssT" x="54" y="58">March dip: refund + churn + smaller baskets - April already recovering</text>
+        <line x1="54" y1="200" x2="434" y2="200" stroke="#8FB4DC" stroke-width="1"/>
+        <line x1="54" y1="90" x2="54" y2="200" stroke="#8FB4DC" stroke-width="1"/>
+        <polyline points="80,158 148,128 216,182 284,140 352,124 420,116" fill="none" stroke="#1D4E79" stroke-width="2.5"/>
+        <circle cx="216" cy="182" r="6" fill="#C99700"/>
+        <text class="ssG" x="150" y="216">refund + churn land here</text>
+        <text class="ssM" x="74" y="232">Jan</text>
+        <text class="ssM" x="142" y="232">Feb</text>
+        <text class="ssM" x="208" y="232">Mar</text>
+        <text class="ssM" x="278" y="232">Apr</text>
+        <text class="ssM" x="346" y="232">May</text>
+        <text class="ssM" x="414" y="232">Jun</text>
+        <rect x="470" y="86" width="360" height="40" rx="8" fill="#122B4A"/>
+        <text class="ssC" x="486" y="111">Cause 1 · One refunded March order</text>
+        <rect x="470" y="136" width="360" height="40" rx="8" fill="#1D4E79"/>
+        <text class="ssC" x="486" y="161">Cause 2 · One subscriber churned (Basic)</text>
+        <rect x="470" y="186" width="360" height="40" rx="8" fill="#3B77B8"/>
+        <text class="ssC" x="486" y="211">Cause 3 · Smaller baskets (AOV down)</text>
+        <rect x="54" y="252" width="776" height="58" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="ssB" x="72" y="276">Recommend: 1) win-back offer for the churned subscriber 2) split gross demand from</text>
+        <text class="ssB" x="72" y="294">net revenue after refunds in the semantic model 3) add a basket-size watch metric</text>
+        <rect x="30" y="348" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="ssN" x="54" y="360">One slide, takeaway first, causes tiled, actions owned - the b7 pattern carrying a real investigation.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the finished story slide the board actually sees</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The three recommendations, unpacked<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <ul>
+          <li><strong>Win-back offer for the churned subscriber.</strong> One named customer, one recurring order worth recovering. Cheap to try, easy to measure - and it shows the board the analysis reached a person, not just a chart.</li>
+          <li><strong>Separate "gross demand" from "net revenue after refunds" in the semantic model.</strong> This is the b4 (and leader a3) lesson landing: the dashboard blended refunds into revenue, so a definition question masqueraded as a demand question. Two governed measures, defined once, and this whole class of panic disappears.</li>
+          <li><strong>A basket-size watch metric.</strong> AOV was the quiet second force, and nothing on the exec dashboard was watching it. Add it with a sensible threshold so the next basket shrink announces itself.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>Recommendations are what get you invited back.</strong> Plenty of analysts can find causes. The ones who get pulled into the next big question are the ones who arrive with "here are the three fixes, here is who owns each" - because that turns analysis into a decision, which is the only thing a board can actually do with it.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ YOUR TURN ============ -->
+  <section class="section" id="your-turn">
+    <div class="section-kicker">
+      <span class="klabel">Your turn</span>
+      <h2>Run it yourself <span class="tag demo">★ 8 min · your investigation</span></h2>
+    </div>
+    <p class="lede">Same warehouse, your hands on the wheel. Three exercises, rising difficulty - the third one is the real test of whether tonight stuck.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>1 · Rerun the tree for orders instead of revenue<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Investigate "March <em>order count</em> fell" with the same question tree. Which branches survive? (Hint: the refund branch changes meaning - a refunded order still counts as an order placed. The tree is reusable; the branch findings are not.)</p>
+        <div class="bibox" data-dim="month" data-measure="orders" data-chart="line"
+             data-caption="Start here, then work your branches. Does the same tree give the same verdict?"></div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>2 · What would the dashboard have caught earlier?<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Suppose b6's exec dashboard had shipped with a <strong>net revenue excluding refunds</strong> measure next to gross - the b4 definitions lesson. Walk it through: which of tonight's seven steps become unnecessary? Which cause would have been visible the moment the board looked, no analyst required? Good measure design is investigation done in advance.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>3 · Write the board's three-bullet summary yourself<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Before you peek below: write the three bullets you would send the board. Then compare. Ours:</p>
+        <ul>
+          <li>March revenue fell due to three stacked causes - one refunded order, one churned Basic subscriber, and smaller average baskets - not a demand collapse; April has already recovered.</li>
+          <li>Immediate action: win-back offer for the churned subscriber; merchandising to review basket mix.</li>
+          <li>Structural fix: report gross demand and net revenue after refunds as separate governed measures, and add a basket-size watch metric, so the next dip explains itself.</li>
+        </ul>
+        <p>If your bullets led with the query steps instead of the verdict, reread b7's takeaway-first rule - the board reads the first line and maybe the second.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 30-40 min total</span></h2>
+    </div>
+    <ul>
+      <li>Find one real metric drop at work - any dashboard, any month - and run tonight's pattern on it: confirm → decompose → drill → explain → recommend.</li>
+      <li>Write the question tree <strong>before</strong> you run a single query. Keep it to four or five branches and check every one, especially the boring ones.</li>
+      <li>Package the result as a one-slide story: takeaway title, annotated trend, cause tiles, recommendations with owners.</li>
+      <li>Present that slide to one colleague and time yourself: if you cannot deliver it in two minutes, the slide is carrying too much.</li>
+      <li>Bring to b10: one thing about your company's BI stack you have always wondered about - the finale zooms out to the whole modern stack.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">The capstone applies material rather than introducing it - this is the "perform analytics" layer of every major BI curriculum, exercised on a real investigation:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Perform analytics - identify patterns, trends, and outliers</span><span class="note">Parts 2-3 · applied: decomposition, outlier (refund) detection, trend confirmation</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Tableau Data Analyst · Explore and Analyze Data</span><span class="note">Parts 2-3 · applied via the mini-BI; Tableau's Explain Data automates the drill branch</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Google BI cert · Dashboards and Reports</span><span class="note">Part 4 · stakeholder presentation applied; Google's course adds stakeholder-mapping depth</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Knaflic · Storytelling with Data ch 8-9 - case studies + pulling it together</span><span class="note">Part 4 · the case-study spirit: full analyses told as one clean story</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · A stakeholder reports "revenue fell last month, find out why". Your first move?</p>
+      <button class="qopt" type="button">A · Slice revenue by every dimension until something looks off</button>
+      <button class="qopt" type="button">B · Confirm the number is real - check the definition, statuses, and data freshness first</button>
+      <button class="qopt" type="button">C · Interview the sales team about what changed</button>
+      <p class="qwhy">Confirm before you hunt. Definition drift, refunds inside totals, and data problems explain a huge share of "drops" - and every hour spent explaining a ghost is wasted. Branch one of the tree, always.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · Why decompose a revenue dip into order count x basket size before drilling further?</p>
+      <button class="qopt" type="button">A · Because two charts look more thorough than one</button>
+      <button class="qopt" type="button">B · Because basket size is always the real cause</button>
+      <button class="qopt" type="button">C · Because it separates "less demand" from "less value per order" - different causes, different owners, different fixes</button>
+      <p class="qwhy">Revenue = orders x AOV. A demand problem and a basket problem route to different teams. March had both forces - stopping at "fewer orders" would have shipped half an answer.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · What actually caused Daybreak's March dip?</p>
+      <button class="qopt" type="button">A · Three stacked causes: a refunded order, a churned subscriber, and smaller baskets</button>
+      <button class="qopt" type="button">B · One big cause: the churned subscriber</button>
+      <button class="qopt" type="button">C · Nothing - the dip was purely a data-quality artifact</button>
+      <p class="qwhy">No single villain. The refund distorted the number, the churned subscriber (Liam Ford, Basic) removed recurring orders, and remaining baskets shrank. Multi-cause dips are the norm - which is exactly why the tree checks every branch.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 9 cheat sheet <span>· the investigation playbook</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The loop</b><span>Confirm → decompose → drill → explain → recommend. Reusable on any metric drop, anywhere.</span></div>
+      <div class="cheat-item"><b>Tree before queries</b><span>Write the question tree first. Four or five branches, checked in order - including the boring ones.</span></div>
+      <div class="cheat-item"><b>Confirm first</b><span>Is it real? Check the definition, order statuses, and freshness before hunting causes.</span></div>
+      <div class="cheat-item"><b>Decompose revenue</b><span>Revenue = orders x basket size (AOV). Splits demand problems from value-per-order problems.</span></div>
+      <div class="cheat-item"><b>Statuses hide inside totals</b><span>One refunded order distorted a whole month. Split gross demand from net revenue after refunds.</span></div>
+      <div class="cheat-item"><b>Check churn + recovery</b><span>cancel_date names the churned customer; the March vs April check tells you if the fire is out.</span></div>
+      <div class="cheat-item"><b>Expect multiple causes</b><span>Refund + churn + baskets, no single villain. Each cause gets an owner and a fix.</span></div>
+      <div class="cheat-item"><b>One-slide story</b><span>Takeaway title, annotated trend, cause tiles, recommendations with owners. Queries go in the appendix.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 9 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b8-ship-it.html">← Session 8</a> &nbsp;·&nbsp; <a href="b10-bi-at-scale.html">Next: BI at scale + the modern stack →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/sql-live.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

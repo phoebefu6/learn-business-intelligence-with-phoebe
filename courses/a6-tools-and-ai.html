@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 6 · The tool landscape + AI in BI - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Leader session 6 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Leader track · Session 6 of 6</div>
+    <h1>The tool landscape + <span class="accent">AI in BI</span></h1>
+    <p class="sub">The finale answers the two questions every leader eventually gets asked in a budget meeting: "which BI tool should we buy?" and "can't AI just do all this now?" You will leave with a defensible tool recommendation for your actual company, and a realistic read on which AI-in-BI claims are shipping product versus slideware.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Leader track</span>
+      <span class="chip audience">Leaders: execs · managers · non-technical</span>
+      <span class="chip time">No code · 45 minutes</span>
+      <span class="chip time">Finale</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-16 · The landscape</span>
+      <span class="a3" style="flex:5">16-42 · AI in BI + demos</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Why this is the last session</h2>
+    </div>
+    <p class="lede">Notice the order of this track: dashboards, metrics, commissioning, operating models - and only now, tools. That was deliberate. A tool choice made before the operating model is a lottery ticket; made after, it is a checklist. Everything from a1-a5 becomes your evaluation criteria today. And the AI question belongs in the same session, because the honest answer to "can AI do our BI?" turns out to be: only as well as the semantic layer you built underneath it.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A one-table map of the five tool families and how to shortlist in a single meeting, the four Copilot skills that are now literally on Microsoft's PL-300 exam (and what that signals), the one rule that separates trustworthy AI answers from confident nonsense, and a 90-day roadmap that strings the whole leader track together.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE LANDSCAPE ============ -->
+  <section class="section" id="landscape">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · own synthesis of the vendor landscape, Looker + Looker Studio docs</span>
+      <h2>The landscape in one table <span class="tag concept">10 min live</span></h2>
+    </div>
+    <p class="lede">Five families cover the market that matters to you. <strong>Power BI:</strong> the Microsoft-stack default, now part of Fabric, lowest seat cost of the big three and the strongest governance story. <strong>Tableau:</strong> the visualization-craft pedigree, owned by Salesforce. <strong>Looker:</strong> Google Cloud's play, built on LookML - a semantic modeling language that generates SQL so business users never write it (the industrial version of our mini-BI's Show SQL trick). <strong>Looker Studio:</strong> Google's free browser tool, light and fast to start. <strong>Metabase and Apache Superset:</strong> open source - free licenses, self-hosted, thinner governance.</p>
+
+    <table class="clean">
+      <thead><tr><th>Tool</th><th>Stack fit</th><th>Semantic layer</th><th>Governance</th><th>Cost shape</th><th>Who it suits</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Power BI</strong></td><td>Microsoft 365 / Azure / Fabric</td><td>Semantic models (the renamed "datasets")</td><td>Strongest story: endorsement, RLS, labels</td><td>Low per seat, scales up with Fabric</td><td>Microsoft shops, compliance-heavy orgs</td></tr>
+        <tr><td><strong>Tableau</strong></td><td>Anything; Salesforce-owned</td><td>Present, lighter than rivals</td><td>Mature via Blueprint practices</td><td>Premium per seat</td><td>Viz-craft cultures, analyst-heavy teams</td></tr>
+        <tr><td><strong>Looker</strong></td><td>Google Cloud / BigQuery</td><td>LookML - the most rigorous: code-reviewed definitions</td><td>Strong, enforced in code</td><td>High, plus modeling time</td><td>Data-product teams, embedded analytics</td></tr>
+        <tr><td><strong>Looker Studio</strong></td><td>Google Workspace</td><td>Minimal</td><td>Thin</td><td>Free</td><td>Startups, marketing teams, first dashboards</td></tr>
+        <tr><td><strong>Metabase / Superset</strong></td><td>Self-hosted, any warehouse</td><td>Basic models</td><td>Thin - you build the rituals yourself</td><td>Free licenses, real hosting + ops cost</td><td>Engineering-led teams, budget-tight orgs</td></tr>
+      </tbody>
+    </table>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two-by-two map of BI tools: governance depth versus cost and effort">
+        <style>
+          .mpT { font: 700 12.5px Inter, sans-serif; fill: #FFFFFF; }
+          .mpA { font: 600 12.5px Inter, sans-serif; fill: #5A6B80; }
+          .mpQ { font: 400 11.5px Inter, sans-serif; fill: #5A6B80; }
+          .mpN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .mpAx { stroke: #5A6B80; stroke-width: 2; fill: none; marker-end: url(#mpAh); }
+          .mpGrid { stroke: #8FB4DC; stroke-width: 1; stroke-dasharray: 4 4; }
+        </style>
+        <defs>
+          <marker id="mpAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#5A6B80"/>
+          </marker>
+        </defs>
+        <rect x="80" y="30" width="740" height="230" rx="8" fill="#EAF1F9"/>
+        <line class="mpGrid" x1="450" y1="30" x2="450" y2="260"/>
+        <line class="mpGrid" x1="80" y1="145" x2="820" y2="145"/>
+        <path class="mpAx" d="M80,260 L80,26"/>
+        <path class="mpAx" d="M80,260 L824,260"/>
+        <text class="mpA" x="88" y="22">Governance depth ↑</text>
+        <text class="mpA" x="690" y="282">Cost + effort →</text>
+        <text class="mpQ" x="96" y="52">Governed, affordable</text>
+        <text class="mpQ" x="640" y="52">Governed, expensive</text>
+        <text class="mpQ" x="96" y="248">Cheap start, thin trust</text>
+        <text class="mpQ" x="640" y="248">Avoid: costly + thin</text>
+        <rect x="240" y="66" width="130" height="34" rx="8" fill="#122B4A"/>
+        <text class="mpT" x="258" y="88">Power BI</text>
+        <rect x="490" y="80" width="130" height="34" rx="8" fill="#1D4E79"/>
+        <text class="mpT" x="508" y="102">Tableau</text>
+        <rect x="640" y="56" width="130" height="34" rx="8" fill="#1D4E79"/>
+        <text class="mpT" x="658" y="78">Looker</text>
+        <rect x="100" y="196" width="150" height="34" rx="8" fill="#3B77B8"/>
+        <text class="mpT" x="118" y="218">Looker Studio</text>
+        <rect x="300" y="176" width="190" height="34" rx="8" fill="#3B77B8"/>
+        <text class="mpT" x="318" y="198">Metabase / Superset</text>
+        <rect x="80" y="300" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="mpN" x="104" y="312">There is no best corner. Match the quadrant to your stack, viewer count, and IT capacity.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the tool landscape on two axes that actually drive the decision</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>How to shortlist in one meeting<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Four questions, asked in order, collapse the table to one or two candidates before the coffee goes cold:</p>
+        <ul>
+          <li><strong>What stack are we already on?</strong> Microsoft 365 everywhere → Power BI starts with a lead it rarely loses. Google Workspace and BigQuery → Looker Studio now, Looker later. No dominant stack → Tableau and the open-source pair stay in the race.</li>
+          <li><strong>How much semantic-layer rigor do we need?</strong> If a3's one-number-one-truth problem is your daily pain, weight Looker's LookML and Power BI's semantic models heavily. If you have five dashboards total, rigor can wait.</li>
+          <li><strong>How many viewers versus builders?</strong> Hundreds of viewers make per-seat pricing the whole conversation - model the viewer tier, not the builder tier.</li>
+          <li><strong>What can IT actually run?</strong> Metabase and Superset are only free if you have engineers happy to host, patch, and upgrade them. No platform team, no open source - the license saving becomes an ops bill.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Why "best tool" is the wrong question<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Three reasons the ranking-review framing misleads leaders:</p>
+        <ul>
+          <li><strong>Switching costs dwarf license costs.</strong> Migrating 300 dashboards and retraining 40 builders costs more than any price gap between vendors. The tool you can adopt cleanly beats the tool that wins benchmarks.</li>
+          <li><strong>The talent market is a feature.</strong> Power BI and Tableau skills are abundant and certifiable (PL-300, Tableau's exams); niche tools mean every hire needs retraining. Your hiring pipeline is part of the architecture.</li>
+          <li><strong>The semantic layer outlives the viz tool.</strong> Companies swap charting front-ends every five to eight years; the definitions of revenue and churn persist across the swap. Invest in the definitions - they are the asset. The pixels are fashion.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: AI IN BI ============ -->
+  <section class="section" id="ai-in-bi">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers PL-300 Copilot sub-skills, MS Learn "Get started with Copilot in Power BI"</span>
+      <h2>AI in BI - what is real in 2026 <span class="tag concept">10 min live</span></h2>
+    </div>
+    <p class="lede">Here is the strongest signal that AI-in-BI crossed from demo to product: <strong>Copilot is now on the PL-300 exam</strong>. Microsoft tests four sub-skills - create a narrative visual with Copilot, use Copilot to create a new report page, use Copilot to suggest content for a new report page, and use Copilot to summarize the underlying semantic model. Vendors do not put vaporware on certification exams. Natural-language Q&amp;A over a governed semantic model genuinely works; narrative visuals genuinely summarize a page in prose. The catch is the phrase in the middle: <em>over a governed semantic model</em>.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pyramid: AI question answering sits on top of a governed semantic model foundation">
+        <style>
+          .pyT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .pyS { font: 400 11.5px Inter, sans-serif; fill: #EAF1F9; }
+          .pyX { font: 400 12px Inter, sans-serif; fill: #5A6B80; }
+          .pyN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .pyL { stroke: #8FB4DC; stroke-width: 1.5; }
+        </style>
+        <polygon points="355,110 525,110 470,40 410,40" fill="#3B77B8"/>
+        <text class="pyT" x="405" y="82">AI Q&amp;A</text>
+        <polygon points="290,190 590,190 525,110 355,110" fill="#1D4E79"/>
+        <text class="pyT" x="352" y="146">Governed semantic model</text>
+        <text class="pyS" x="368" y="168">one revenue · RLS · fresh data</text>
+        <polygon points="225,270 655,270 590,190 290,190" fill="#122B4A"/>
+        <text class="pyT" x="330" y="226">Clean, refreshed warehouse data</text>
+        <text class="pyS" x="352" y="248">the layers your builders own (b2-b8)</text>
+        <line class="pyL" x1="530" y1="70" x2="640" y2="70"/>
+        <text class="pyX" x="648" y="58">Copilot answers in English,</text>
+        <text class="pyX" x="648" y="76">but it can only be as right</text>
+        <text class="pyX" x="648" y="94">as the layer below it</text>
+        <line class="pyL" x1="120" y1="150" x2="282" y2="150"/>
+        <text class="pyX" x="40" y="138">Built once in a3</text>
+        <text class="pyX" x="40" y="156">and a5 - this is</text>
+        <text class="pyX" x="40" y="174">the AI foundation</text>
+        <rect x="225" y="284" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="pyN" x="249" y="296">Ungoverned data + AI = confident wrong answers at scale.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - AI sits on top of the pyramid; it cannot repair the layers beneath it</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>What to pilot now<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Two AI pilots have a real payoff-to-risk ratio in 2026, and both lean on work you have already commissioned:</p>
+        <ul>
+          <li><strong>Natural-language Q&amp;A on your ONE certified model.</strong> Scope the pilot to the certified core from a5 - the model where definitions, RLS, and refresh are already audited. When an exec types "revenue by channel last quarter" and gets the governed number, trust compounds. Microsoft even ships a dedicated MS Learn module, "Get started with Copilot in Power BI" - a fine one-hour assignment for your champions.</li>
+          <li><strong>Narrative summaries for exec packs.</strong> The narrative visual turns a dashboard page into three paragraphs of prose - a genuine time-saver for the Monday pack. Rule: a human owner still signs the narrative before it circulates. AI drafts; the owner answers for it.</li>
+        </ul>
+        <p>Success metric for both: not "wow" in the demo, but whether the answers <em>match the certified dashboard</em> for a full month.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What to distrust<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Three patterns should trip your alarm in any vendor pitch or internal experiment:</p>
+        <ul>
+          <li><strong>AI over raw spreadsheets.</strong> Pointing a chatbot at an ungoverned export and asking for revenue gives you a fluent answer with no definition behind it. It will disagree with finance, and nobody will notice until the board deck.</li>
+          <li><strong>Screenshots of charts pasted into chatbots.</strong> The model reads pixels, guesses the numbers, and hallucinates precision. If the data never touched a governed model, the answer inherits nothing you can audit.</li>
+          <li><strong>"No semantic layer needed" pitches.</strong> Any tool claiming AI removes the need for modeled definitions is asking you to automate the forty-versions-of-revenue problem. The semantic layer is what the AI reads - remove it and the AI reads vibes.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>The one-line policy</strong>
+          AI may answer questions only from certified semantic models - the same trust tier rule from a5, applied to a new kind of viewer. One sentence, and it fits in your data policy today.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: BUILD, BUY, WAIT ============ -->
+  <section class="section" id="roadmap">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · the decision + your roadmap out of this track</span>
+      <h2>Build vs buy vs wait - and the 90-day plan <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Sometimes the right tool decision is to not decide yet. <strong>Looker Studio or Metabase is genuinely enough</strong> while you have one data person, a handful of dashboards, and viewers in the dozens - free tools plus the a5 rituals beat an expensive platform with no operating model. You <strong>graduate</strong> when the trust tiers need enforcement the tool cannot provide, RLS becomes a compliance requirement, or viewer counts make governance manual work. And when you do buy, remember the real total cost: <strong>licenses + modeling time + enablement</strong>. The license line is often the smallest of the three.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Your 90-day BI roadmap<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The whole leader track, compressed into three moves:</p>
+        <ul>
+          <li><strong>Days 1-30 · Certify five metrics.</strong> Run a3's one-number-one-truth exercise on revenue, orders, active customers, AOV, churn. Named owner, checked definition, monitored refresh - the certified core exists.</li>
+          <li><strong>Days 31-60 · Pick the operating model.</strong> Draw a5's hub-and-spoke on the whiteboard, name the hub, name one champion per department, and put the trust-tier badges in front of viewers.</li>
+          <li><strong>Days 61-90 · Pilot AI Q&amp;A on the certified core.</strong> Scope it to the governed model only, measure answer-match for a month, and report the result to the exec team - whatever it is. A failed pilot honestly reported builds more credibility than a demo that never ships.</li>
+        </ul>
+        <p>Notice the order: definitions, then org, then AI. Every failed BI-plus-AI program you will ever read about ran this list backwards.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Choose for three companies <span class="tag demo">★ 12 min · argue from the table</span></h2>
+    </div>
+    <p class="lede">Three companies, three recommendations. For each, justify the pick using only the Part 1 table - stack fit, semantic layer, governance, cost shape. If your reasoning does not cite a column, it is a preference, not a recommendation.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>40-person startup on Google Workspace, one data-curious marketer.</strong> Pick: Looker Studio. Free, browser-based, native to the stack they already pay for. Governance needs are one certified sheet of definitions and a weekly ritual - a5 practices, no platform required. Graduate when viewer count or RLS needs say so.</p></div>
+      <div class="step"><p><strong>2000-person Microsoft shop with compliance requirements.</strong> Pick: Power BI. The stack-fit column decides it (Microsoft 365 everywhere), and the governance column seals it: endorsement tiers, RLS, sensitivity labels - the entire a5 guardrail kit as native features, at the lowest per-seat cost of the big three. Fabric questions (DirectLake vs Import) become relevant at their data scale.</p></div>
+      <div class="step"><p><strong>Data-product company selling embedded analytics to customers.</strong> Pick: Looker or Superset. Dashboards ARE the product here, so definitions must be code-reviewed like product code - LookML's whole reason to exist. Superset is the engineering-led alternative when license cost matters more than modeling rigor and the team can self-host.</p></div>
+    </div>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The same table, run in reverse.</strong> A mid-size retailer chose a premium tool because the demo dazzled the exec team - no stack fit (they were all-Google), no builder on staff, no operating model. Eighteen months of shelfware later, they restarted on Looker Studio with five certified metrics and a champion network, and adoption finally moved. The tool was never the blocker; the missing columns were.</p>
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>The AI reality check <span class="tag demo">★ 8 min · see the dependency</span></h2>
+    </div>
+    <p class="lede">One last visit to the mini-BI, with new eyes. Our playground generates SQL from your clicks; Copilot generates it from your English. Different input, identical dependency: both are only as right as the semantic layer that translates the request.</p>
+
+    <div class="bibox" data-dim="month" data-measure="revenue" data-chart="line"
+         data-caption="Revenue by month. Now press Show SQL: THAT query is what an AI assistant must get right when an exec types the same question in English."></div>
+
+    <div class="steps">
+      <div class="step"><p><strong>Press Show SQL.</strong> Read the generated query. When an exec asks Copilot "monthly revenue this year", the AI must produce this - same joins, same definition of revenue, same date logic. The English changed; the target did not.</p></div>
+      <div class="step"><p><strong>Now imagine the drift.</strong> If two teams held different definitions of revenue (a3's nightmare), the AI would fluently answer with one of them - and no one could tell which without reading the SQL. Governance is not slowing your AI down; it is the only thing making its answers checkable.</p></div>
+      <div class="step"><p><strong>Say the sentence out loud.</strong> "The AI writes the query; the semantic model decides if it is true." If you retain one sentence from six sessions, make it that one.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework · finale</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>Score your current BI tool against the four shortlist questions: stack fit, semantic-layer need, viewer count, IT capacity. Write one sentence: keep, graduate, or replace - and why.</li>
+      <li>Find your org's one certified-worthy semantic model - the candidate for an AI Q&amp;A pilot. If none qualifies, that IS the finding: run the 90-day roadmap first, days 1-30.</li>
+      <li>Put the one-line AI policy in front of whoever owns data policy: AI answers questions only from certified semantic models.</li>
+      <li>That completes the leader track - six sessions from "what is BI" to a tool decision and an AI policy. If the mini-BI's Show SQL button ever made you curious about what your builders actually do, <a href="b1-from-sql-to-bi.html">builder session 1</a> starts exactly there.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">The finale covers the newest exam material of the whole track - Copilot entered the PL-300 skills list in the April 2026 study-guide update - plus the vendor landscape read leaders actually need:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Copilot sub-skills: narrative visual, create a report page, suggest content, summarize the semantic model</span><span class="note">Part 2 · the leader view of all four; hands-on practice belongs to your builders</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">MS Learn · Get started with Copilot in Power BI</span><span class="note">Part 2 · framed and assigned to champions; the click-through module stays with Microsoft</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Looker docs · LookML semantic modeling + Looker Studio</span><span class="note">Part 1 · positioning and the generates-SQL idea; modeling syntax is out of leader scope</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Open-source BI landscape · Metabase, Apache Superset</span><span class="note">Parts 1 and 3 · own synthesis: cost shape, self-hosting reality, when free is enough</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · What is the prerequisite for AI Q&amp;A your execs can actually trust?</p>
+      <button class="qopt" type="button">A · The newest model - upgrade to the latest AI version first</button>
+      <button class="qopt" type="button">B · More data - connect every spreadsheet so the AI sees everything</button>
+      <button class="qopt" type="button">C · A governed semantic model - certified definitions the AI answers from</button>
+      <p class="qwhy">The AI writes the query; the semantic model decides if it is true. Connecting more ungoverned data makes the answers more fluent and less checkable - governance first, then automation.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · A 30-person team on Google Workspace wants its first dashboards this month, budget zero. Best starting point?</p>
+      <button class="qopt" type="button">A · Looker Studio - free, browser-based, native to the stack they already use</button>
+      <button class="qopt" type="button">B · Power BI Premium - buy the strongest governance up front</button>
+      <button class="qopt" type="button">C · Full Looker - start with the most rigorous semantic layer</button>
+      <p class="qwhy">Stack fit plus cost shape decides it: Looker Studio costs nothing and lives where they already work. Governance rituals can come from a5's playbook until scale forces a graduation.</p>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · Your exec team asks "which BI tool is the best?" What is the right reframe?</p>
+      <button class="qopt" type="button">A · Answer with the current analyst-report leader - rankings settle it</button>
+      <button class="qopt" type="button">B · "Best for our stack, governance needs, viewer count, and IT capacity" - fit beats rankings</button>
+      <button class="qopt" type="button">C · Pick whichever tool the newest hire already knows</button>
+      <p class="qwhy">"Best" without context is the wrong question: switching costs dwarf license gaps, the talent market matters, and the semantic layer outlives the viz tool. The four shortlist questions turn a beauty contest into a decision.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader session 6 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Power BI</b><span>Microsoft-stack default, Fabric-integrated, lowest seat cost of the big three, strongest governance kit.</span></div>
+      <div class="cheat-item"><b>Tableau</b><span>Viz-craft pedigree, Salesforce-owned, premium seats. Blueprint is its (excellent) org playbook.</span></div>
+      <div class="cheat-item"><b>Looker + Studio</b><span>LookML generates SQL from governed definitions - rigor in code. Looker Studio: Google's free, light starter.</span></div>
+      <div class="cheat-item"><b>Open source</b><span>Metabase / Superset: free licenses, real hosting + ops cost, thin governance - you supply the rituals.</span></div>
+      <div class="cheat-item"><b>Shortlist questions</b><span>Existing stack · semantic-layer need · viewer count · IT capacity. One meeting, one or two candidates.</span></div>
+      <div class="cheat-item"><b>Copilot on PL-300</b><span>Four examined skills: narrative visual, create a page, suggest content, summarize the semantic model.</span></div>
+      <div class="cheat-item"><b>The AI rule</b><span>AI answers only from certified semantic models. Ungoverned data + AI = confident wrong answers at scale.</span></div>
+      <div class="cheat-item"><b>90-day roadmap</b><span>Certify 5 metrics → pick the operating model → pilot AI Q&amp;A on the certified core. In that order.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 6 of 6 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a5-self-service-without-chaos.html">← Session 5</a> &nbsp;·&nbsp; <a href="b1-from-sql-to-bi.html">Ready to build? Builder session 1 →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

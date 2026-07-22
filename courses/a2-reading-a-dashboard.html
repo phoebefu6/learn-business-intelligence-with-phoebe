@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 2 · Reading a dashboard like a leader - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Leader session 2 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Leader track · Session 2 of 6</div>
+    <h1>Reading a dashboard like a <span class="accent">leader</span></h1>
+    <p class="sub">Session 1 gave you the reading protocol for one chart. Tonight we scale it to a whole screen. Dashboards have a grammar - a standard layout that tells you where to look first - and a failure mode: numbers that are technically correct but silently filtered, stale, or missing their denominator. You will leave with a five-question interrogation you can run on any dashboard in ninety seconds, and you will practice it on Daybreak's live exec view.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Leader track</span>
+      <span class="chip audience">Leaders: execs · managers · non-technical</span>
+      <span class="chip audience">No code · 45 minutes</span>
+      <span class="chip time">Session 2 of 6</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-20 · Anatomy &amp; interrogation</span>
+      <span class="a3" style="flex:5">20-42 · Build-along: interrogate live</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Why this session exists</h2>
+    </div>
+    <p class="lede">Most executives read dashboards the way most people read contracts: skim, nod, sign. And just like contracts, the expensive surprises live in the parts you skimmed. The good news is that dashboards are far more standardized than contracts - once you know the anatomy, every well-built dashboard reads the same way, and every badly built one exposes itself within five questions. No code tonight, just trained eyes.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The standard anatomy of an executive dashboard (so you know where to look first), the five-question interrogation protocol (so you know what to ask before trusting any number), and live practice on Daybreak's own exec view - including catching a story that changes when you switch measures. Ninety seconds per dashboard, for the rest of your career.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: ANATOMY ============ -->
+  <section class="section" id="anatomy">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers Few, Information Dashboard Design ch4-5</span>
+      <h2>The anatomy of a dashboard <span class="tag concept">8 min live</span></h2>
+    </div>
+    <p class="lede">Stephen Few's core insight: a dashboard is a <strong>single screen designed for a glance</strong>, and good ones share a grammar. KPI cards across the top answer "how are we doing right now" - a level plus its change. Trends sit in the middle answering "which way are we heading". Breakdowns live below answering "driven by what". And filters hug the edge, quietly reshaping everything else. Learn the grammar once and you can sight-read any dashboard your teams produce.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Labeled wireframe of a standard executive dashboard layout">
+        <style>
+          .a2wT { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
+          .a2wL { font: 600 11px Inter, sans-serif; fill: #5A6B80; }
+          .a2wV { font: 700 15px Inter, sans-serif; fill: #182230; }
+          .a2wD { font: 600 10.5px Inter, sans-serif; fill: #1D4E79; }
+          .a2wX { font: 400 12.5px Inter, sans-serif; fill: #5A6B80; }
+          .a2wN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .a2wLine { stroke: #8FB4DC; stroke-width: 1.5; fill: none; }
+        </style>
+        <rect x="30" y="30" width="590" height="300" rx="8" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <rect x="30" y="30" width="590" height="30" rx="8" fill="#122B4A"/>
+        <text class="a2wT" x="46" y="50">Daybreak · Executive overview</text>
+        <rect x="48" y="76" width="140" height="58" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="a2wL" x="60" y="94">REVENUE</text>
+        <text class="a2wV" x="60" y="114">$412K</text>
+        <text class="a2wD" x="60" y="128">▲ +4% vs target</text>
+        <rect x="200" y="76" width="140" height="58" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="a2wL" x="212" y="94">ORDERS</text>
+        <text class="a2wV" x="212" y="114">3,204</text>
+        <text class="a2wD" x="212" y="128">▲ +2% vs target</text>
+        <rect x="352" y="76" width="140" height="58" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="a2wL" x="364" y="94">AVG ORDER</text>
+        <text class="a2wV" x="364" y="114">$128</text>
+        <text class="a2wD" x="364" y="128">▼ -2% vs target</text>
+        <rect x="48" y="150" width="280" height="84" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="a2wL" x="60" y="168">REVENUE TREND</text>
+        <polyline points="60,218 100,210 140,204 180,196 220,212 260,192 312,184" fill="none" stroke="#3B77B8" stroke-width="2.5"/>
+        <rect x="344" y="150" width="148" height="84" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="a2wL" x="356" y="168">BY CITY</text>
+        <rect x="356" y="212" width="90" height="12" fill="#C99700"/>
+        <rect x="356" y="196" width="70" height="12" fill="#3B77B8"/>
+        <rect x="356" y="180" width="50" height="12" fill="#3B77B8"/>
+        <rect x="48" y="248" width="444" height="66" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="a2wL" x="60" y="268">BREAKDOWN TABLE · plan × channel</text>
+        <rect x="60" y="278" width="420" height="8" fill="#8FB4DC"/>
+        <rect x="60" y="292" width="420" height="8" fill="#8FB4DC"/>
+        <rect x="508" y="76" width="96" height="238" rx="6" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="a2wL" x="520" y="94">FILTERS</text>
+        <rect x="520" y="104" width="72" height="16" rx="4" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <rect x="520" y="128" width="72" height="16" rx="4" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <rect x="520" y="152" width="72" height="16" rx="4" fill="#FFFFFF" stroke="#8FB4DC"/>
+        <path class="a2wLine" d="M640,100 L620,100"/>
+        <text class="a2wX" x="648" y="96">Top: KPI cards - level,</text>
+        <text class="a2wX" x="648" y="112">delta, target at a glance</text>
+        <path class="a2wLine" d="M640,190 L624,190"/>
+        <text class="a2wX" x="648" y="186">Middle: trends - which</text>
+        <text class="a2wX" x="648" y="202">way we are heading</text>
+        <path class="a2wLine" d="M640,280 L624,280"/>
+        <text class="a2wX" x="648" y="276">Below: breakdowns -</text>
+        <text class="a2wX" x="648" y="292">driven by what</text>
+        <rect x="30" y="352" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="a2wN" x="54" y="364">Check the filter rail FIRST - it silently reshapes every number on the screen.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the standard grammar of an exec dashboard: KPIs top, trends middle, breakdowns below, filters at the edge</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>KPI cards: level, delta, target<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The big numbers across the top are where every dashboard conversation starts, and a complete KPI card carries <strong>three ingredients</strong>:</p>
+        <ul>
+          <li><strong>Level</strong> - the number itself. $412K. On its own, almost meaningless.</li>
+          <li><strong>Delta</strong> - the change against a comparison period. +4% vs last month tells you direction and speed.</li>
+          <li><strong>Target</strong> - the number leadership committed to. Against target is the only comparison that carries consequences.</li>
+        </ul>
+        <p>A card showing only the level is Few's "inadequate context" mistake wearing a suit: is $412K good? Against what? When you review a dashboard proposal, count the cards that show all three ingredients. Missing deltas and targets are not a style gap - they are the difference between reporting and managing.</p>
+        <div class="callout tip">
+          <strong>The glance test</strong>
+          Few's chapter 4 asks three fundamental questions of every dashboard: how often is it used, by whom, and on what screen? An exec view glanced at before a Monday meeting earns big cards and few of them. A screen an ops team stares at all day earns density. If one dashboard claims to serve both, it serves neither.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Preattentive attributes - why your eye jumps<span class="mini">4 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Few's chapter 5 borrows a result from vision science: some visual differences register <strong>before conscious attention</strong> - in well under a second, effortlessly. The big three for dashboards:</p>
+        <ul>
+          <li><strong>Position</strong> - where something sits on a common scale. The most accurate encoding we have, which is why bar and line charts beat everything else for comparison.</li>
+          <li><strong>Length</strong> - how long a bar is. Nearly as accurate, and the reason truncated axes (bars starting at 80 instead of 0) are a lie your eye cannot help believing.</li>
+          <li><strong>Color</strong> - one distinct hue in a field of sameness. Your eye jumps to it whether you want to or not.</li>
+        </ul>
+        <p>This is why one gold bar among blue ones works: the designer spent the single loudest visual signal on the single thing that matters. And it is why a dashboard where everything is colorful directs your eye nowhere - spending the signal everywhere is the same as spending it nowhere. When your eye jumps somewhere on a dashboard, someone chose that. Ask yourself whether they chose well.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: INTERROGATION ============ -->
+  <section class="section" id="interrogation">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers Knaflic, Storytelling with Data ch1 - the importance of context</span>
+      <h2>The interrogation protocol <span class="tag concept">9 min live</span></h2>
+    </div>
+    <p class="lede">Knaflic's first rule of data storytelling is that <strong>context decides meaning</strong> - the same number is great news or a crisis depending on what surrounds it. Dashboards strip context to stay glanceable, which means the reader has to restore it. That is the interrogation protocol: five questions, in order, before you trust any number enough to act on it. It works on dashboards, board packs, vendor pitches, and news charts alike.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five-question interrogation ladder from definition to baseline">
+        <style>
+          .a2qT { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
+          .a2qS { font: 400 11px Inter, sans-serif; fill: #EAF1F9; }
+          .a2qG { font: 700 13px Inter, sans-serif; fill: #3A2B00; }
+          .a2qH { font: 400 11px Inter, sans-serif; fill: #3A2B00; }
+          .a2qN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+        </style>
+        <rect x="30" y="252" width="270" height="48" rx="8" fill="#122B4A"/>
+        <text class="a2qT" x="46" y="272">1 · What exactly is measured?</text>
+        <text class="a2qS" x="46" y="290">definition - gross or net? says who?</text>
+        <rect x="165" y="196" width="270" height="48" rx="8" fill="#1D4E79"/>
+        <text class="a2qT" x="181" y="216">2 · As of when?</text>
+        <text class="a2qS" x="181" y="234">freshness - last refresh time</text>
+        <rect x="300" y="140" width="270" height="48" rx="8" fill="#1D4E79"/>
+        <text class="a2qT" x="316" y="160">3 · Out of what?</text>
+        <text class="a2qS" x="316" y="178">denominator - rate or raw count?</text>
+        <rect x="435" y="84" width="270" height="48" rx="8" fill="#3B77B8"/>
+        <text class="a2qT" x="451" y="104">4 · What filters are on?</text>
+        <text class="a2qS" x="451" y="122">scope - the silent number-changer</text>
+        <rect x="570" y="28" width="270" height="48" rx="8" fill="#C99700"/>
+        <text class="a2qG" x="586" y="48">5 · Compared to what?</text>
+        <text class="a2qH" x="586" y="66">baseline - target, last year, plan</text>
+        <rect x="30" y="316" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="a2qN" x="54" y="328">Five questions, ninety seconds, in order - by the top step you know if the number deserves trust.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the five-question interrogation ladder: climb it before acting on any number</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Snapshot vs trend - the most common misread<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The single most common executive misread: judging a <strong>snapshot</strong> when the decision needs a <strong>trajectory</strong>. A KPI card can glow green - best month ever - while the trend line right below it shows growth decelerating for five straight months. The snapshot says celebrate; the trajectory says worry. Both are on the same screen, and the eye anchors on the big number.</p>
+        <ul>
+          <li><strong>Snapshots answer:</strong> where are we right now? Good for status, targets, accountability.</li>
+          <li><strong>Trends answer:</strong> where are we heading? Good for decisions, which are always about the future.</li>
+          <li><strong>The reflex:</strong> every time a snapshot impresses you, immediately look for its trend. A good month can hide a bad trajectory - and a bad month can hide a recovery already underway.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Averages hide, distributions tell<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>"Average order value is $128" sounds like your typical customer spends $128. But the same average comes from everyone spending around $128 - or from a small crowd of $400 whales and a long tail of $40 one-timers. Those two businesses need opposite strategies, and the average cannot tell them apart.</p>
+        <ul>
+          <li><strong>Ask for the spread:</strong> a median next to the mean is the cheapest fix - a big gap means whales are dragging the average.</li>
+          <li><strong>Ask for segments:</strong> "average by plan" or "average by cohort" often dissolves the mystery in one chart.</li>
+          <li><strong>The tell:</strong> any strategy pitched off a single average deserves one question - "what does the distribution look like?" Watch how quickly the room gets quieter.</li>
+        </ul>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The filtered dashboard that approved a budget.</strong> A retail COO approved a seven-figure expansion for a "star" region off a dashboard showing it far outgrowing all others. Weeks later an analyst noticed the view had been left filtered to <em>online orders only</em> - a filter someone applied in a meeting months earlier that quietly persisted for every viewer after. Include stores, and the star region was mid-pack. Nothing was miscalculated; the data was flawless. Question 4 - "what filters are on?" - would have caught it in five seconds, before the money moved. That is why filters sit on the interrogation ladder at all: they are the only part of a dashboard that changes what every other part says without leaving a visible trace in the numbers themselves.</p>
+    </div>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Interrogate the Daybreak exec view <span class="tag demo">★ 12 min · everyone interrogates</span></h2>
+    </div>
+    <p class="lede">Here is Daybreak's revenue trend - the chart their leadership sees every Monday. Run the full protocol on it, live. This is the same warehouse your builder colleagues use, so what you find is what they find - you are just finding it without writing a line of SQL.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Read the level first.</strong> Switch the chart to <strong>KPI</strong> for a moment: one big governed number. That is the snapshot. Impressive or not, you cannot judge it yet - snapshot without trajectory is half a story.</p></div>
+      <div class="step"><p><strong>Now the trend - spot the dip.</strong> Back to the line chart. Growth, growth, and then March 2026 sags. A snapshot in February would have looked wonderful. This is the snapshot-vs-trend trap live on real data.</p></div>
+      <div class="step"><p><strong>Climb the ladder.</strong> What exactly is revenue here - press <strong>Show SQL</strong> and see the definition. As of when - this playground computes live on click. Out of what - it is a raw total, no denominator. Filters - none applied. Compared to what - no target line, so bring your own baseline. Ninety seconds, and you now know this chart better than most people know their own dashboards.</p></div>
+      <div class="step"><p><strong>The leader move: switch the measure to Orders.</strong> Does March look as bad? Look closely - orders dip, but <em>revenue dips harder</em>. Same customers, still buying, spending less per order. That points at basket size, not demand. You just narrowed an investigation without writing a query - the builder track chases this exact thread to its answer in b9.</p></div>
+    </div>
+
+    <div class="bibox" data-dim="month" data-measure="revenue" data-chart="line"
+         data-caption="Daybreak monthly revenue - work the four steps here: KPI, spot March, climb the ladder, then switch the measure to Orders."></div>
+
+    <div class="callout win">
+      <strong>★ The one move to keep</strong>
+      When a number surprises you, do not argue with it - change one thing (the measure, the dimension, the filter) and see if the story survives. Stories that survive a measure-switch are findings. Stories that do not are artifacts.
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: is Pro really better? <span class="tag demo">★ 10 min · you decide</span></h2>
+    </div>
+    <p class="lede">New chart: average order value by subscription plan. At first glance, one plan looks like the clear winner - the kind of chart that launches a "migrate everyone to Pro" initiative in the wrong meeting. Before you would let that initiative launch, interrogate.</p>
+
+    <div class="bibox" data-dim="plan" data-measure="aov" data-chart="bar"
+         data-caption="Average order value by plan - a ranking that begs for a decision. Interrogate it first."></div>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q1 · Is Pro really "better"?<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Work the ladder before you answer. The measure is an <strong>average</strong> - so ask what the distribution hides (a few whale orders can crown a plan). It is also a <strong>rate, not a size</strong> - a plan can win on average order value and still be tiny. Test that: switch the measure to <strong>Revenue</strong>, then <strong>Customers</strong>. Does the "winner" keep winning? A plan that wins AOV but loses on customer count is a premium niche, not a growth engine - and those need very different investments.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q2 · What would you ask before acting?<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Suppose someone proposes pushing every Basic customer toward Pro on the strength of this chart. Draft your questions, then compare with the ladder's answers:</p>
+        <ul>
+          <li><strong>Definition:</strong> does AOV here include one-off orders, or subscription renewals too?</li>
+          <li><strong>Denominator:</strong> average per order or per customer? A Pro member ordering rarely but big differs from one ordering weekly.</li>
+          <li><strong>Baseline and causality:</strong> do Pro customers spend more <em>because</em> of the plan - or did big spenders simply choose Pro? A dashboard cannot answer that (session 1's rule); an experiment or analysis can. Approving the migration without asking is the filtered-dashboard story waiting to happen again.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>Run the five-question protocol on two real dashboards you receive - one you trust, one you barely look at. Write the answers down; note which questions the dashboards themselves cannot answer.</li>
+      <li>Check the filter rails: are any filters applied by default? Ask who set them and whether every viewer knows.</li>
+      <li>Find one KPI card in your world showing only a level - no delta, no target - and ask its owner for both. You have just improved a dashboard without touching a tool.</li>
+      <li>Bring to a3: <strong>one number you now distrust</strong> and which of the five questions broke it. Session a3 is about why the same metric returns different numbers from different teams - and how "one number, one truth" actually gets built.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">This session carries the perception and layout science of Few and the context discipline of Knaflic - the reading half. The writing half (commissioning and design) arrives in a4. This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Few · Information Dashboard Design ch4-5</span><span class="note">Part 1 · fundamental considerations (use, users, screen) + preattentive attributes</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Knaflic · Storytelling with Data ch1</span><span class="note">Part 2 · the importance of context; full storytelling craft lives in b7</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Google BI cert · Decisions, Decisions: Dashboards and Reports</span><span class="note">Consumption side covered here; the creation side belongs to the builder track</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · A region looks like a runaway winner on the dashboard, but something feels off. Which interrogation question is most likely to expose the problem?</p>
+      <button class="qopt" type="button">A · "As of when?" - the data is probably stale</button>
+      <button class="qopt" type="button">B · "Compared to what?" - there is no target line</button>
+      <button class="qopt" type="button">C · "What filters are on?" - a persisted filter can silently reshape every number</button>
+      <p class="qwhy">Filters change what every chart says while leaving no visible trace in the numbers - the budget-approval story in Part 2 turned on exactly this. Always check the rail first.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · The monthly KPI card shows the best revenue month in company history. Before celebrating, a trained reader immediately...</p>
+      <button class="qopt" type="button">A · Checks the trend - a great snapshot can sit on a decelerating trajectory</button>
+      <button class="qopt" type="button">B · Shares the card in the leadership channel</button>
+      <button class="qopt" type="button">C · Asks for the same number with more decimal places</button>
+      <p class="qwhy">Snapshots answer "where are we"; decisions need "where are we heading". Every impressive snapshot earns an instant look at its trend - a good month can hide a bad trajectory.</p>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · A KPI card shows "$412K" and nothing else. What is missing before it can support a decision?</p>
+      <button class="qopt" type="button">A · More precision - the exact figure to the cent</button>
+      <button class="qopt" type="button">B · A delta and a target - direction and commitment give the level its meaning</button>
+      <button class="qopt" type="button">C · A brighter color so people notice it</button>
+      <p class="qwhy">Level, delta, target - the three ingredients of a complete KPI card. A lone level is Few's "inadequate context" mistake: is $412K good? Against what? Says who?</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader session 2 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Dashboard grammar</b><span>KPIs top, trends middle, breakdowns below, filters at the edge. Same layout everywhere - learn it once.</span></div>
+      <div class="cheat-item"><b>KPI card = 3 things</b><span>Level + delta + target. A lone level cannot support a decision - demand the other two.</span></div>
+      <div class="cheat-item"><b>The 5 questions</b><span>Measured what? As of when? Out of what? Filters on? Compared to what? Ninety seconds, in order.</span></div>
+      <div class="cheat-item"><b>Filters first</b><span>The filter rail silently reshapes every number on screen. Check it before reading anything else.</span></div>
+      <div class="cheat-item"><b>Snapshot vs trend</b><span>A good month can hide a bad trajectory. Every impressive snapshot earns an instant trend check.</span></div>
+      <div class="cheat-item"><b>Averages hide</b><span>Ask for median and segments. Strategies pitched off a single average deserve one question: "distribution?"</span></div>
+      <div class="cheat-item"><b>Preattentive trio</b><span>Position, length, color - your eye jumps where the designer sent it. Ask if they sent it well.</span></div>
+      <div class="cheat-item"><b>Survive-the-switch</b><span>Change one thing (measure, dimension, filter). Stories that survive are findings; the rest are artifacts.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 2 of 6 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a1-what-bi-is.html">← Session 1</a> &nbsp;·&nbsp; <a href="a3-one-number-one-truth.html">Next: One number, one truth →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

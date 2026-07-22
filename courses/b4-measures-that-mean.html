@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 4 · Measures that mean something - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 4 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 4 of 10</div>
+    <h1>Measures that mean <span class="accent">something</span></h1>
+    <p class="sub">Your star schema from b3 is only as trustworthy as the numbers computed on top of it. Tonight you learn the split that organizes every calculation in every BI tool - stored columns vs live measures - and filter context, the one idea that makes DAX learnable instead of mystical. Then you define Daybreak's governed measures and meet the metrics that quietly lie: distinct counts that refuse to sum, and ratios that break when you average them.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip audience">Runs in your browser · no install</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-20 · Columns, measures, filter context</span>
+      <span class="a3" style="flex:5">20-42 · Build-along: governed measures</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Why this session exists</h2>
+    </div>
+    <p class="lede">Everyone who opens Power BI hits the same wall: "should this be a calculated column or a measure?" and later, "why does my number change when I click a slicer?" Both walls are the same wall. Once you see that a <strong>measure re-runs inside whatever filters surround it</strong>, DAX stops being incantations and becomes one repeated move. We build that intuition on Daybreak, in the browser, with the SQL visible - because the generated GROUP BY is filter context wearing its work clothes.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The measure-vs-column split and a rule of thumb that settles it in one second, a working intuition for filter context and CALCULATE (the heart of the PL-300 DAX domain), and three governed Daybreak measures - Revenue, AOV, Active Customers - defined, documented, and tested against the live database.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: MEASURES VS COLUMNS ============ -->
+  <section class="section" id="measures-vs-columns">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers PL-300 "Create model calculations by using DAX" - the measure/column split</span>
+      <h2>Measures vs calculated columns <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Every calculation in a BI model runs at one of two moments. A <strong>calculated column</strong> runs once per row when the data refreshes, and the result is stored in the table - <code>line_revenue = quantity * price</code> is the classic. A <strong>measure</strong> runs at query time, inside the filters of whoever is looking - <code>Total Revenue = SUM of line_revenue</code>. Rule of thumb, worth the whole session: <strong>if it aggregates, it is a measure.</strong> Columns are for row-level labels and keys; measures are for every number a human reads on a dashboard.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two lanes: calculated columns run at refresh time and are stored; measures run at query time inside filter context">
+        <style>
+          .mlT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .mlS { font: 400 11.5px Inter, sans-serif; fill: #EAF1F9; }
+          .mlH { font: 700 13px Inter, sans-serif; fill: #122B4A; }
+          .mlB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .mlN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .mlArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#mlAh); }
+        </style>
+        <defs>
+          <marker id="mlAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="40" width="195" height="110" rx="10" fill="#122B4A"/>
+        <text class="mlT" x="48" y="68">Calculated column</text>
+        <text class="mlS" x="48" y="90">line_revenue =</text>
+        <text class="mlS" x="48" y="108">quantity * price</text>
+        <text class="mlS" x="48" y="130">refresh-time lane</text>
+        <rect x="270" y="52" width="170" height="86" rx="10" fill="#1D4E79"/>
+        <text class="mlT" x="288" y="82">Runs once</text>
+        <text class="mlS" x="288" y="102">per row, at refresh</text>
+        <rect x="485" y="52" width="170" height="86" rx="10" fill="#3B77B8"/>
+        <text class="mlT" x="503" y="82">Stored</text>
+        <text class="mlS" x="503" y="102">sits in the table</text>
+        <rect x="700" y="52" width="150" height="86" rx="10" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="mlH" x="716" y="82">Frozen until</text>
+        <text class="mlB" x="716" y="102">the next refresh</text>
+        <path class="mlArr" d="M225,95 L265,95"/>
+        <path class="mlArr" d="M440,95 L480,95"/>
+        <path class="mlArr" d="M655,95 L695,95"/>
+        <rect x="30" y="180" width="195" height="110" rx="10" fill="#1D4E79"/>
+        <text class="mlT" x="48" y="208">Measure</text>
+        <text class="mlS" x="48" y="230">Total Revenue =</text>
+        <text class="mlS" x="48" y="248">SUM(line_revenue)</text>
+        <text class="mlS" x="48" y="270">query-time lane</text>
+        <rect x="270" y="192" width="170" height="86" rx="10" fill="#1D4E79"/>
+        <text class="mlT" x="288" y="222">Runs live</text>
+        <text class="mlS" x="288" y="242">at query time</text>
+        <rect x="485" y="192" width="170" height="86" rx="10" fill="#3B77B8"/>
+        <text class="mlT" x="503" y="222">Obeys filters</text>
+        <text class="mlS" x="503" y="242">rows, slicers, pages</text>
+        <rect x="700" y="192" width="150" height="86" rx="10" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="mlH" x="716" y="222">Fresh answer</text>
+        <text class="mlB" x="716" y="242">per filter context</text>
+        <path class="mlArr" d="M225,235 L265,235"/>
+        <path class="mlArr" d="M440,235 L480,235"/>
+        <path class="mlArr" d="M655,235 L695,235"/>
+        <rect x="30" y="308" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="mlN" x="54" y="320">Rule of thumb: if it aggregates, it is a measure. Columns are for row-level labels and keys.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the two lanes every BI calculation runs in: stored at refresh vs live at query time</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The cost of getting it wrong<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Imagine storing "revenue" as a calculated column on the customers table: each row gets that customer's lifetime total, computed at refresh. It looks fine - until someone adds a month slicer. The column <strong>cannot react</strong>: it was computed before the slicer existed, so every filter shows the same frozen lifetime numbers. The dashboard is confidently wrong.</p>
+        <ul>
+          <li><strong>Frozen numbers:</strong> columns ignore slicers, page filters, and cross-highlighting - they were computed at refresh, full stop.</li>
+          <li><strong>Bloated model:</strong> every stored column costs memory on every row. Measures cost nothing until queried.</li>
+          <li><strong>Fork risk:</strong> a "revenue" column here and a "revenue" measure there will eventually disagree, and the meeting where they disagree is not a fun meeting.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The audit that started with one slicer.</strong> A retail team shipped a dashboard where margin was a calculated column summed by region. Legal-entity filters were added later; the frozen column ignored them, and two quarters of board decks carried region margins that no filter had ever actually touched. The fix was one line - rebuild margin as a measure - but rebuilding trust took longer.</p>
+        </div>
+      </div>
+    </details>
+
+    <div class="callout tip">
+      <strong>In Power BI / In Tableau</strong>
+      Power BI splits the two lanes explicitly: <strong>calculated columns</strong> (stored, refresh-time) vs <strong>measures</strong> (DAX, query-time) - PL-300 tests the choice directly, alongside calculated tables, quick measures, and calculation groups. Tableau folds both into <strong>calculated fields</strong>, with <strong>LOD expressions</strong> like FIXED playing the "control the filters" role and quick table calcs (running total, % of total, YoY) covering the common patterns. Power BI also now has <strong>visual calculations</strong> - a newer, lighter DAX that lives on one visual and operates on what that visual already shows; it is on PL-300 as its own skill, and it is the right tool for quick on-chart math that does not deserve a governed model measure.
+    </div>
+  </section>
+
+  <!-- ============ PART 2: FILTER CONTEXT ============ -->
+  <section class="section" id="filter-context">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers MS Learn "Modify DAX filter context"</span>
+      <h2>Filter context - the one idea that unlocks DAX <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Here is the secret that makes a matrix visual work: <strong>every cell is the same measure, evaluated under that cell's own filters</strong>. The Coffee row filters to Coffee, the March column filters to March, the plan slicer filters everything - and [Revenue] re-runs inside each combination. That set of active filters is the <em>filter context</em>. And <strong>CALCULATE</strong> is simply the function that says: run this measure, but with <em>changed</em> filters - add one, replace one, or ignore one, regardless of what the visual is doing.</p>
+
+    <p>Watch it happen. Each bar below is <em>one measure</em> - revenue - evaluated under a different category filter. Now press <strong>Show SQL</strong>: the <code>GROUP BY</code> you see is the filter context made visible. One declaration, four evaluations.</p>
+    <div class="bibox" data-dim="category" data-measure="revenue" data-chart="bar"
+         data-caption="Every bar is the same measure under a different filter. Show SQL - the GROUP BY is filter context in work clothes."></div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A matrix where one measure is evaluated per cell, each cell receiving filters from its row, its column, and a slicer">
+        <style>
+          .fcT { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
+          .fcS { font: 400 11px Inter, sans-serif; fill: #EAF1F9; }
+          .fcM { font: 700 13px Inter, sans-serif; fill: #182230; }
+          .fcX { font: 400 11px Inter, sans-serif; fill: #5A6B80; }
+          .fcN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .fcArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#fcAh); }
+        </style>
+        <defs>
+          <marker id="fcAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="140" width="120" height="80" rx="10" fill="#122B4A"/>
+        <text class="fcT" x="46" y="170">Slicer</text>
+        <text class="fcS" x="46" y="192">plan = Pro</text>
+        <text class="fcS" x="46" y="208">filters all cells</text>
+        <path class="fcArr" d="M150,180 L195,180"/>
+        <rect x="340" y="55" width="150" height="45" rx="8" fill="#1D4E79"/>
+        <text class="fcT" x="358" y="83">Jan filter</text>
+        <rect x="510" y="55" width="150" height="45" rx="8" fill="#1D4E79"/>
+        <text class="fcT" x="528" y="83">Feb filter</text>
+        <rect x="680" y="55" width="150" height="45" rx="8" fill="#1D4E79"/>
+        <text class="fcT" x="698" y="83">Mar filter</text>
+        <rect x="200" y="125" width="120" height="60" rx="8" fill="#1D4E79"/>
+        <text class="fcT" x="216" y="152">Coffee</text>
+        <text class="fcS" x="216" y="170">row filter</text>
+        <rect x="200" y="200" width="120" height="60" rx="8" fill="#1D4E79"/>
+        <text class="fcT" x="216" y="227">Equipment</text>
+        <text class="fcS" x="216" y="245">row filter</text>
+        <rect x="340" y="125" width="150" height="60" rx="8" fill="#EAF1F9" stroke="#C99700" stroke-width="2.5"/>
+        <text class="fcM" x="370" y="152">[Revenue]</text>
+        <text class="fcX" x="358" y="172">Coffee + Jan + Pro</text>
+        <rect x="510" y="125" width="150" height="60" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="fcM" x="540" y="152">[Revenue]</text>
+        <text class="fcX" x="528" y="172">Coffee + Feb + Pro</text>
+        <rect x="680" y="125" width="150" height="60" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="fcM" x="710" y="152">[Revenue]</text>
+        <text class="fcX" x="698" y="172">Coffee + Mar + Pro</text>
+        <rect x="340" y="200" width="150" height="60" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="fcM" x="370" y="227">[Revenue]</text>
+        <text class="fcX" x="358" y="247">Equip + Jan + Pro</text>
+        <rect x="510" y="200" width="150" height="60" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="fcM" x="540" y="227">[Revenue]</text>
+        <text class="fcX" x="528" y="247">Equip + Feb + Pro</text>
+        <rect x="680" y="200" width="150" height="60" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="fcM" x="710" y="227">[Revenue]</text>
+        <text class="fcX" x="698" y="247">Equip + Mar + Pro</text>
+        <path class="fcArr" d="M415,100 L415,120"/>
+        <path class="fcArr" d="M585,100 L585,120"/>
+        <path class="fcArr" d="M755,100 L755,120"/>
+        <rect x="30" y="300" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="fcN" x="54" y="312">One measure, six evaluations. Each cell runs [Revenue] under its own filter set - that set is the filter context.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - one measure, six filter contexts: row, column, and slicer filters combine per cell</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>CALCULATE in plain words<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>CALCULATE is not magic; it is a filter editor. Read it as: <strong>"run this measure, but with these filters forced"</strong> - whatever the visual, rows, or slicers are doing. Want Coffee revenue shown on every row of a matrix so you can compare each category against it? Force the category filter:</p>
+        <div class="prompt-box good"><span class="label">Pseudo-DAX</span>Coffee Revenue = CALCULATE( [Revenue], products[category] = "Coffee" )
+
+Read it aloud: "revenue, but pretend the only category filter is Coffee."
+The visual can slice by month, city, plan - CALCULATE overrides just the category.</div>
+        <p>That is the whole trick. Time intelligence (Part 3), "% of total", and "vs all customers" comparisons are all CALCULATE wearing different filter edits. Exact function syntax and the deeper row-context rules stay with MS Learn's five DAX modules - what you own after tonight is the mental model those modules assume.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: TIME INTELLIGENCE + MEASURES THAT LIE ============ -->
+  <section class="section" id="measures-that-lie">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers PL-300 time intelligence + semi-additive measures</span>
+      <h2>Time intelligence, and the measures that lie <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Once filter context clicks, <strong>time intelligence</strong> is just CALCULATE editing the date filter: MTD stretches it to "month so far", YTD to "year so far", YoY swaps it for "same period last year". All of it leans on the date table you built in b3 - no proper date table, no time intelligence. But some measures need more care than a date filter: <strong>semi-additive measures</strong> sum happily across some dimensions and lie across others.</p>
+
+    <p>Exhibit A: distinct customers. A customer who orders in February <em>and</em> March is one customer, not two - so you may not add monthly customer counts together. Watch the monthly line, then let SQL catch the lie:</p>
+    <div class="bibox" data-dim="month" data-measure="customers" data-chart="line"
+         data-caption="Buying customers per month - a COUNT(DISTINCT) under each month's filter context. Tempting to sum. Do not."></div>
+    <div class="sqlbox" data-caption="The proof: summing six monthly distinct counts overstates the true half-year customer count, because loyal customers get counted once per month they appear in.">
+      <pre class="sql-src">SELECT 'sum of 6 monthly distinct counts' AS method,
+       SUM(monthly_customers) AS customers
+FROM (SELECT COUNT(DISTINCT customer_id) AS monthly_customers
+      FROM orders
+      GROUP BY strftime('%Y-%m', order_date))
+UNION ALL
+SELECT 'distinct customers, Jan-Jun as one period',
+       COUNT(DISTINCT customer_id)
+FROM orders;</pre>
+    </div>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Ratios divide last<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Same disease, second strain: <strong>ratio measures</strong>. Average order value is total revenue divided by total orders - <em>computed at the level you are looking at</em>. The wrong move is averaging the monthly AOVs: months with few orders get the same vote as months with many, and the "average" drifts away from the truth. Define AOV once as a division of two measures, and filter context does the leveling for you.</p>
+        <div class="bibox" data-dim="plan" data-measure="aov" data-chart="bar"
+             data-caption="AOV by plan. Show SQL: the tool divides SUM(revenue) by COUNT(DISTINCT order_id) inside each bar's filter - divide last, always."></div>
+        <p>Our playground's <em>Customers</em> and <em>Avg order value</em> measures are exactly these two trap species - a distinct count and a ratio - which is why they are in the dropdown at all. Every time you pick them, the generated SQL recomputes them inside the current filter, never by summing or averaging pre-cooked numbers.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>The full semi-additive family<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Distinct counts are the gateway case, but the family is bigger, and PL-300 names it explicitly:</p>
+        <ul>
+          <li><strong>Balances and inventory:</strong> bank balance sums across accounts but not across months - you want the closing balance, not January plus February. Daybreak's active subscription count behaves the same way.</li>
+          <li><strong>Rates and percentages:</strong> churn rate, margin %, conversion - all ratios; all divide last.</li>
+          <li><strong>Min/max style measures:</strong> "largest order this period" recomputes per period; summing is meaningless.</li>
+        </ul>
+        <p>The test to memorize: <em>"can I add this across every dimension and stay truthful?"</em> If any dimension says no, write the aggregation rule into the measure's definition card - which is exactly what Demo 1 is about.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Define Daybreak's governed measures <span class="tag demo">★ 12 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">A governed measure is a definition card: name, formula in business words, filters included and excluded, aggregation traps, owner. Tonight we write four of them for Daybreak and test each against the live database. This little document IS the semantic model - the same "one number, one truth" contract the leader track builds in a3, written by the people who compute it.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Revenue - decide what counts.</strong> Daybreak orders can be completed, cancelled, or refunded. Does Revenue include refunded orders? Decide, then run the query below and see how much the choice moves the number. Whatever you pick, <em>write it on the card</em> - the decision matters less than the documentation.</p></div>
+      <div class="step"><p><strong>Orders and Active Customers.</strong> Orders = count of orders in filter context. Active Customers = distinct customers with at least one order - mark it semi-additive on the card: "never sum across time". Test it: Dimension Month · Measure Customers in the playground.</p></div>
+      <div class="step"><p><strong>AOV - a ratio of two measures.</strong> AOV = [Revenue] / [Orders], divided inside the current filter. Card note: "never average monthly AOVs". Test: Dimension Plan · Measure Avg order value.</p></div>
+      <div class="step"><p><strong>Read your four cards back.</strong> Name, formula, inclusions, traps, owner. Congratulations - you just wrote a semantic model. In Power BI these cards become DAX measures with descriptions; in Tableau, calculated fields with comments; in a3's language, the metric dictionary.</p></div>
+    </div>
+
+    <div class="sqlbox" data-caption="Step 1's decision, quantified: all orders vs completed-only revenue. The gap is the money your definition card has to rule on.">
+      <pre class="sql-src">SELECT ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue_all_orders,
+       ROUND(SUM(CASE WHEN o.status = 'completed'
+                      THEN oi.quantity * oi.unit_price
+                      ELSE 0 END), 2)               AS revenue_completed_only
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id;</pre>
+    </div>
+
+    <div class="bibox" data-dim="month" data-measure="revenue" data-chart="line"
+         data-caption="Test bench for steps 2-3: switch measures to Customers and Avg order value, press Show SQL each time, and check the generated query matches your card."></div>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The definitions doc outlives the dashboard.</strong> Tools get replaced every few years; a one-page measure dictionary survives every migration, because it is the business logic itself. Teams that write cards first port to a new BI tool in weeks. Teams that let each dashboard define its own "revenue" port never - they rebuild, and re-argue every definition in meetings.</p>
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: stress-test the measures <span class="tag demo">★ 10 min · build your own</span></h2>
+    </div>
+    <p class="lede">Three exercises, rising difficulty: read a chart with a data wrinkle, prove a pitfall with SQL, and write your first CALCULATE. Get the third one right and you have written the pattern behind half of production DAX.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>E1 · Units by roast - and the missing roast<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Roast only applies to coffee - equipment and add-ons carry NULL, which the playground shows as <strong>(none)</strong>. That row is not an error; it is a modeling decision surfacing in a chart. Your measure card should say how NULLs in a dimension are handled and labeled.</p>
+        <div class="bibox" data-dim="roast" data-measure="units" data-chart="bar"
+             data-caption="Units by roast. The (none) bar is every non-coffee product - decide whether your chart should filter it out or label it honestly."></div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>E2 · Prove the AOV pitfall yourself<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Run it: the average of six monthly AOVs vs AOV computed once over the half year. If the numbers differ, months with fewer orders are voting above their weight in the left-hand version. Which one belongs on the exec dashboard?</p>
+        <div class="sqlbox" data-caption="Average-of-averages vs divide-last. The right column is the governed AOV; the gap is the size of the lie.">
+          <pre class="sql-src">SELECT ROUND(AVG(monthly_aov), 2) AS avg_of_monthly_aovs,
+       (SELECT ROUND(SUM(oi.quantity * oi.unit_price) * 1.0
+                     / COUNT(DISTINCT o.order_id), 2)
+        FROM orders o
+        JOIN order_items oi ON oi.order_id = o.order_id) AS true_overall_aov
+FROM (
+  SELECT SUM(oi.quantity * oi.unit_price) * 1.0
+         / COUNT(DISTINCT o.order_id) AS monthly_aov
+  FROM orders o
+  JOIN order_items oi ON oi.order_id = o.order_id
+  GROUP BY strftime('%Y-%m', o.order_date)
+);</pre>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>E3 · Write the CALCULATE yourself<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Daybreak's founder wants "Basic-plan revenue" pinned next to total revenue on every page, whatever the slicers say about plan. Write the pseudo-DAX before peeking. Hint: plan lives on the customers table.</p>
+        <div class="prompt-box good"><span class="label">Pseudo-DAX</span>Basic Revenue = CALCULATE( [Revenue], customers[plan] = "Basic" )
+
+The plan filter is forced; month, city, and category filters still flow in
+from the visual. That mix - override one filter, respect the rest - is the
+CALCULATE move you will use weekly.</div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>Write definition cards for your team's three core measures: name, formula in business words, what is included and excluded, owner. For each, note the semi-additive traps - can it be summed across time? across customers? If not, write the correct aggregation on the card.</li>
+      <li>Find one ratio metric in the wild being averaged wrongly - an average of averages in a spreadsheet, a dashboard averaging monthly percentages, a KPI that mixes levels. You will find one faster than you expect. Compute the divide-last version and note the gap.</li>
+      <li>In the playground, pick every measure with Month as the dimension and read the generated SQL until the filter-context story is boring to you.</li>
+      <li>Bring to b5: your ugliest real-world chart. Next session is chart choice, and we will fix it properly.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">Tonight was the conceptual core of the DAX and calculations domain, tool-agnostic and testable in the browser. Exact function syntax, click-paths, and the deeper evaluation-context rules stay with the vendors. This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Create model calculations by using DAX</span><span class="note">Parts 1-3 · measures vs columns, CALCULATE, time intelligence, semi-additive - concepts + pseudo-DAX; exact syntax stays with MS Learn</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">MS Learn · DAX modules incl "Modify DAX filter context" + time intelligence</span><span class="note">Parts 2-3 · the mental model those five modules assume; function-by-function drills stay with Microsoft</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Tableau · calculated fields, quick table calcs, LOD expressions (FIXED)</span><span class="note">Part 1 sidebar · the same two lanes in Tableau nouns</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">PL-300 · Create visual calculations by using DAX</span><span class="note">Part 1 sidebar · the newer on-visual option and when it beats a model measure</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · The real difference between a measure and a calculated column is...</p>
+      <button class="qopt" type="button">A · Measures are stored per row; columns are computed when you click</button>
+      <button class="qopt" type="button">B · Columns are stored per row at refresh; measures evaluate at query time inside the current filter context</button>
+      <button class="qopt" type="button">C · Columns are for numbers, measures are for text</button>
+      <p class="qwhy">Columns run once per row at refresh and get stored; measures re-run live inside whatever filters surround them. That is why columns freeze when slicers change - and why anything that aggregates should be a measure.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · CALCULATE([Revenue], products[category] = "Coffee") does what?</p>
+      <button class="qopt" type="button">A · Runs the Revenue measure with a changed filter - category forced to Coffee, other filters still apply</button>
+      <button class="qopt" type="button">B · Creates a stored column of coffee revenue on the products table</button>
+      <button class="qopt" type="button">C · Deletes all non-coffee rows from the model</button>
+      <p class="qwhy">CALCULATE is a filter editor: it re-runs the measure with the filters you specify overridden, while every other filter from the visual and slicers keeps flowing in. Nothing is stored, nothing is deleted.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">3 · Why can you not sum January's and February's distinct-customer counts to get "customers so far"?</p>
+      <button class="qopt" type="button">A · SQL forbids summing the results of COUNT</button>
+      <button class="qopt" type="button">B · You can - distinct counts add up like revenue does</button>
+      <button class="qopt" type="button">C · A customer active in both months would be counted twice - distinct counts are semi-additive and must be recomputed over the combined period</button>
+      <p class="qwhy">One loyal customer, two monthly appearances, but still one customer. Distinct counts (and balances, and ratios) refuse naive summing across time - recompute them in the wider filter context instead, like the UNION ALL proof showed.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 4 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Calculated column</b><span>Computed once per row at refresh, stored in the table. For row-level labels and keys.</span></div>
+      <div class="cheat-item"><b>Measure</b><span>Computed at query time inside the current filter context. For every number a human reads.</span></div>
+      <div class="cheat-item"><b>Rule of thumb</b><span>If it aggregates, it is a measure. One second, decision made.</span></div>
+      <div class="cheat-item"><b>Filter context</b><span>Each visual cell = the same measure under that cell's filters. The generated GROUP BY made visible.</span></div>
+      <div class="cheat-item"><b>CALCULATE</b><span>Run this measure with changed filters - override some, respect the rest. Half of production DAX.</span></div>
+      <div class="cheat-item"><b>Time intelligence</b><span>MTD / YTD / YoY = CALCULATE editing the date filter. Needs the b3 date table.</span></div>
+      <div class="cheat-item"><b>Semi-additive</b><span>Distinct customers, balances, rates: never sum across time - recompute in the wider filter.</span></div>
+      <div class="cheat-item"><b>Ratios divide last</b><span>AOV = total revenue / total orders in context. Never average the monthly AOVs.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 4 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b3-model-star-schema.html">← Session 3</a> &nbsp;·&nbsp; <a href="b5-chart-choice.html">Next: Chart choice + dashboard grammar →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/sql-live.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

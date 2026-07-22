@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 6 · Build the dashboard - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 6 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 6 of 10</div>
+    <h1>Build the <span class="accent">dashboard</span></h1>
+    <p class="sub">You can pick the right chart - now assemble many charts into one screen that a busy executive can read in five seconds. Tonight is layout, interactivity, mobile, and accessibility: the craft that separates a pile of visuals from a dashboard. You will assemble a working Daybreak exec view out of live panels, right here in the browser, and walk the same scan your CEO would.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip audience">Runs in your browser · no install</span>
+      <span class="chip time">45 min live</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-22 · Layout, interactivity, mobile</span>
+      <span class="a3" style="flex:5">22-42 · Build-along: exec view</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>From charts to a dashboard</h2>
+    </div>
+    <p class="lede">Sessions b1-b5 gave you data, a model, measures, and chart choice. Tonight those parts meet: a <strong>dashboard</strong> is charts arranged so the layout itself answers the first question before anyone clicks. We cover the zone grid that survives every tool, the interactions worth their cost, and the two audiences most dashboards forget - phones and people who do not see color the way you do. Then we assemble Daybreak's exec view from live panels.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A layout system (the zone grid and the 5-second scan), an interactivity map (what each click should do, and what to switch off), and a working Daybreak exec view assembled from live panels - plus a checklist that makes it mobile-ready and accessible.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: LAYOUT ============ -->
+  <section class="section" id="layout">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers Few IDD ch12-13, PL-300 "configure a report page"</span>
+      <h2>Layout - the 5-second scan <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Readers scan a screen in a <strong>Z-pattern</strong>: top-left first, across, then down. So top-left is prime real estate - put the number that matters most there, never a logo or a filter. The classic exec layout follows the scan: <strong>KPI row on top, the trend in the center, breakdowns below, filters on a rail</strong>. One screen, no scrolling, for executive views. Grid alignment and white space are not decoration - they are how the eye knows what belongs together.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dashboard zone grid: filter rail, KPI row, trend, breakdowns, with the Z-pattern scan">
+        <style>
+          .wgT { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
+          .wgS { font: 400 11px Inter, sans-serif; fill: #EAF1F9; }
+          .wgH { font: 700 12px Inter, sans-serif; fill: #122B4A; }
+          .wgX { font: 400 12.5px Inter, sans-serif; fill: #5A6B80; }
+          .wgN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .wgZ { stroke: #C99700; stroke-width: 2.5; stroke-dasharray: 6 5; fill: none; marker-end: url(#wgAh); }
+        </style>
+        <defs>
+          <marker id="wgAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#C99700"/>
+          </marker>
+        </defs>
+        <rect x="30" y="40" width="112" height="240" rx="10" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="wgH" x="46" y="66">Filter rail</text>
+        <text class="wgX" x="46" y="88">date</text>
+        <text class="wgX" x="46" y="108">city</text>
+        <text class="wgX" x="46" y="128">plan</text>
+        <rect x="160" y="40" width="160" height="58" rx="10" fill="#122B4A"/>
+        <text class="wgT" x="176" y="64">KPI · Revenue</text>
+        <text class="wgS" x="176" y="84">prime real estate</text>
+        <rect x="335" y="40" width="160" height="58" rx="10" fill="#122B4A"/>
+        <text class="wgT" x="351" y="64">KPI · Orders</text>
+        <text class="wgS" x="351" y="84">the vital few</text>
+        <rect x="510" y="40" width="160" height="58" rx="10" fill="#122B4A"/>
+        <text class="wgT" x="526" y="64">KPI · AOV</text>
+        <text class="wgS" x="526" y="84">3-5 cards max</text>
+        <rect x="685" y="40" width="160" height="58" rx="10" fill="#122B4A"/>
+        <text class="wgT" x="701" y="64">KPI · Customers</text>
+        <text class="wgS" x="701" y="84">no chart junk</text>
+        <rect x="160" y="112" width="685" height="94" rx="10" fill="#1D4E79"/>
+        <text class="wgT" x="176" y="140">Trend · revenue by month</text>
+        <text class="wgS" x="176" y="160">the center answers "how are we doing over time"</text>
+        <rect x="160" y="220" width="335" height="60" rx="10" fill="#3B77B8"/>
+        <text class="wgT" x="176" y="245">Breakdown · by city</text>
+        <text class="wgS" x="176" y="265">detail lives below</text>
+        <rect x="510" y="220" width="335" height="60" rx="10" fill="#3B77B8"/>
+        <text class="wgT" x="526" y="245">Breakdown · by category</text>
+        <text class="wgS" x="526" y="265">aligned to the grid</text>
+        <path class="wgZ" d="M175,32 L830,32 M830,36 L200,215"/>
+        <text class="wgX" x="380" y="24">the Z-pattern scan: top-left, across, then down</text>
+        <rect x="30" y="306" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="wgN" x="54" y="318">Sketch this grid on paper before opening any tool - layout fights are cheap there and expensive after.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the zone grid: KPI row, trend, breakdowns, filter rail, scanned in a Z</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The one-screen rule and when to break it<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Stephen Few's definition is strict for a reason: a dashboard is what fits on <strong>a single screen, monitored at a glance</strong>. The moment an exec scrolls, they stop scanning and start hunting - and most never scroll at all, so whatever lives below the fold effectively does not exist.</p>
+        <ul>
+          <li><strong>Exec views: one screen, always.</strong> If it does not fit, you have not prioritized. Cut panels, do not shrink them.</li>
+          <li><strong>Analyst views may go deeper - via navigation, not scrolling.</strong> Detail belongs on drillthrough pages and linked report pages, one honest screen at a time.</li>
+          <li><strong>White space is a feature.</strong> Squeezing in one more chart costs every existing chart a share of attention. Few calls the overcrowded alternative a data junkyard, and he is right.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The elevator test.</strong> Show the dashboard to someone for five seconds, then take it away and ask what they saw. If the answer is not your headline number and its direction, the layout failed - no amount of interactivity rescues a screen that fails the first five seconds.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Themes and consistency<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Every serious BI tool lets you define a <strong>theme</strong>: fonts, the color palette, background, spacing defaults - set once, applied everywhere. Power BI uses a JSON theme file; Tableau uses workbook-level formatting plus custom color palettes and shapes. It is the same idea as this site's single CSS file: define the look in one place so every page agrees, and a rebrand is a one-file change.</p>
+        <ul>
+          <li><strong>Consistency is comprehension:</strong> when revenue is always the same color and fonts never jump, the reader spends zero effort re-learning each page.</li>
+          <li><strong>Themes are governance for design:</strong> publish a company theme file so forty report authors produce one visual language instead of forty.</li>
+          <li><strong>Remove before you add:</strong> most default themes ship with gridlines, borders, and shadows you should strip. Few's rule from b5 still applies at page level - maximize data ink.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: INTERACTIVITY ============ -->
+  <section class="section" id="interactivity">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers PL-300 "enhance reports for usability", Tableau actions</span>
+      <h2>Interactivity - filters, cross-filter, drillthrough <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">A static image answers one question; a dashboard answers the follow-up. The toolkit: <strong>slicers and filters</strong> (scoped to a page or the whole report), <strong>cross-filtering</strong> (click a bar and every other visual reacts), <strong>drillthrough</strong> (right-click a data point to jump to a detail page about it), <strong>custom tooltips</strong> (a mini chart on hover), <strong>bookmarks</strong> (saved states you can navigate between), and <strong>synced slicers</strong> (one filter controlling several pages). Each is cheap to add and expensive to read - so budget them.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interaction map: clicking a bar cross-filters the trend, drillthrough opens a detail page">
+        <style>
+          .imT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .imS { font: 400 11px Inter, sans-serif; fill: #EAF1F9; }
+          .imL { font: 600 12px Inter, sans-serif; fill: #1D4E79; }
+          .imX { font: 400 12.5px Inter, sans-serif; fill: #5A6B80; }
+          .imN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .imArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#imAh); }
+        </style>
+        <defs>
+          <marker id="imAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="60" width="200" height="86" rx="10" fill="#122B4A"/>
+        <text class="imT" x="48" y="88">City bar chart</text>
+        <text class="imS" x="48" y="108">reader clicks one</text>
+        <text class="imS" x="48" y="126">city's bar</text>
+        <rect x="330" y="60" width="210" height="86" rx="10" fill="#1D4E79"/>
+        <text class="imT" x="348" y="88">Trend line</text>
+        <text class="imS" x="348" y="108">now shows only that</text>
+        <text class="imS" x="348" y="126">city's revenue</text>
+        <rect x="640" y="60" width="210" height="86" rx="10" fill="#3B77B8"/>
+        <text class="imT" x="658" y="88">Detail page</text>
+        <text class="imS" x="658" y="108">that city's orders,</text>
+        <text class="imS" x="658" y="126">carried by the filter</text>
+        <path class="imArr" d="M230,103 L325,103"/>
+        <path class="imArr" d="M540,103 L635,103"/>
+        <text class="imL" x="243" y="90">cross-filter</text>
+        <text class="imL" x="548" y="90">drillthrough</text>
+        <text class="imX" x="30" y="186">hover adds a third layer: a custom tooltip can show a mini trend for just the bar under the cursor</text>
+        <text class="imX" x="30" y="206">bookmarks save a whole state (filters + selection) so a button can jump straight to "the March view"</text>
+        <rect x="30" y="240" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="imN" x="54" y="252">Map every click before you build it. If you cannot say what a click does, the reader cannot either.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the interaction map: one click cross-filters, the next drills to detail</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The interaction budget<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Every interactive element costs twice: <strong>cognitive cost</strong> (the reader must discover it, learn it, and trust it) and <strong>performance cost</strong> (every cross-filter click fires queries against every affected visual). Default to fewer.</p>
+        <ul>
+          <li><strong>Cross-filtering ON is the default in most tools - question it.</strong> Clicking a city bar and watching the KPI row change can mislead: the exec thinks total revenue collapsed when they merely filtered it. Turn cross-filtering off wherever a partial number could be mistaken for the whole.</li>
+          <li><strong>Cross-highlight is the gentler cousin:</strong> it dims the non-selected portion instead of removing it, keeping the total visible for context. Often the better default for exec views.</li>
+          <li><strong>Drillthrough beats crowding:</strong> the detail an analyst wants does not belong on the exec page - it belongs one right-click away, with the filter context carried along.</li>
+          <li><strong>The cut test:</strong> list every interaction on the page, then cut half. If nobody misses one in a week, it was cost with no benefit.</li>
+        </ul>
+      </div>
+    </details>
+
+    <div class="callout tip">
+      <strong>In Power BI / In Tableau</strong>
+      Power BI: <strong>Edit interactions</strong> sets, per visual pair, whether a click cross-filters, cross-highlights, or does nothing; <strong>drillthrough pages</strong> receive the clicked context (reachable via right-click or buttons); <strong>bookmarks + the Selection pane</strong> group, layer, and show/hide visuals to build toggles and guided views; <strong>sync slicers</strong> carries one slicer across pages. Tableau: <strong>filter, highlight, and URL actions</strong> do the reacting; <strong>sheet swapping via parameters</strong> lets one container switch between charts; <strong>navigation buttons</strong> move between dashboards. Same grammar, different menus - PL-300 and the Tableau exam both test exactly these.
+    </div>
+  </section>
+
+  <!-- ============ PART 3: MOBILE + ACCESSIBILITY ============ -->
+  <section class="section" id="mobile-a11y">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers PL-300 mobile design + accessibility</span>
+      <h2>Mobile + accessibility - the forgotten audiences <span class="tag concept">5 min live</span></h2>
+    </div>
+    <p class="lede">Two audiences break your beautiful desktop grid. <strong>Phones:</strong> a mobile view is a separate layout, not a shrunk one - stack panels vertically, lead with the KPI cards, drop the wide trend or simplify it, and make every touch target fat enough for a thumb. <strong>Accessibility:</strong> roughly 1 in 12 men cannot tell red from green, screen readers need alt text, and keyboard users need a sane tab order. Both tools support all of this; almost nobody configures it. Be the one who does.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The accessibility five<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Five checks, run on every dashboard before it ships. None takes more than minutes; together they cover most of what PL-300 means by accessible reports.</p>
+        <table class="clean">
+          <thead><tr><th>Check</th><th>What to do</th><th>Who it saves</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1 · Contrast</strong></td><td>Text and marks pass contrast guidelines against their background - no pale gray on white.</td><td>Low vision, sunlit phones, projectors</td></tr>
+            <tr><td><strong>2 · Never color alone</strong></td><td>Pair every color encoding with position, a label, or a shape. Red/green alone is invisible to many readers.</td><td>Colorblind readers - about 8% of men</td></tr>
+            <tr><td><strong>3 · Alt text</strong></td><td>Every visual gets a one-sentence description of what it shows and the takeaway.</td><td>Screen-reader users</td></tr>
+            <tr><td><strong>4 · Tab order</strong></td><td>Set the keyboard order to follow the visual reading order, not the order you added visuals.</td><td>Keyboard-only users</td></tr>
+            <tr><td><strong>5 · Real text size</strong></td><td>Minimum readable font sizes; no 8pt axis labels. If you must shrink text to fit, cut content instead.</td><td>Everyone over 40, honestly</td></tr>
+          </tbody>
+        </table>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The red/green incident.</strong> A status dashboard shipped with red = at risk, green = on track, and nothing else. A colorblind director read every project as "on track" for a month. One label column would have prevented it - which is why check 2 is never optional.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Assemble the Daybreak exec view <span class="tag demo">★ 14 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">The zone grid, made real. We assemble the exec view from live panels, top to bottom, exactly the way you would on a real canvas: KPI row first, trend in the center, breakdowns below. Each panel is a mini-BI box - configure it, then move to the next zone.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Step 1 · The KPI row.</strong> Two cards, side by side, top of the page - the prime real estate. Left: Revenue. Right: Orders. On a real canvas you would add AOV and Customers; keep it to the vital few.</p></div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="flex:1;min-width:280px"><div class="bibox" data-dim="month" data-measure="revenue" data-chart="kpi"
+             data-caption="KPI 1 · total revenue - the number the exec came for, top-left."></div></div>
+        <div style="flex:1;min-width:280px"><div class="bibox" data-dim="month" data-measure="orders" data-chart="kpi"
+             data-caption="KPI 2 · total orders - volume next to money."></div></div>
+      </div>
+      <div class="step"><p><strong>Step 2 · The trend.</strong> Center of the page, full width: revenue by month as a line. This is the "how are we doing" panel - the one every eye lands on after the KPI row.</p></div>
+      <div class="bibox" data-dim="month" data-measure="revenue" data-chart="line"
+           data-caption="The trend zone - revenue by month. Look closely at March before moving on."></div>
+      <div class="step"><p><strong>Step 3 · The breakdowns.</strong> Below the trend, two panels: revenue by city (where the money comes from) and units by category (what we actually ship). Detail lives below the headline.</p></div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="flex:1;min-width:280px"><div class="bibox" data-dim="city" data-measure="revenue" data-chart="bar"
+             data-caption="Breakdown 1 · revenue by city."></div></div>
+        <div style="flex:1;min-width:280px"><div class="bibox" data-dim="category" data-measure="units" data-chart="bar"
+             data-caption="Breakdown 2 · units by category."></div></div>
+      </div>
+      <div class="step"><p><strong>Step 4 · Walk the 5-second scan.</strong> Scroll back to the top and pretend you are a fresh exec: KPI row, then the trend. What jumps out? <strong>The March dip.</strong> A good layout surfaced it without a single click - log it, because b9 is the investigation.</p></div>
+    </div>
+
+    <div class="callout win">
+      <strong>★ The one idea to keep</strong>
+      A dashboard is a layout that answers the first question before any interaction happens. The scan found the March dip because the zones put the trend where the eye goes second - that is layout doing analysis for free.
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: rearrange for a different reader <span class="tag demo">★ 8 min · build your own</span></h2>
+    </div>
+    <p class="lede">The exec view is one audience. Same warehouse, different reader, different dashboard - the zones stay, the panels change. Three exercises, no recipe.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The ops manager version<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>An ops manager does not open with revenue - they open with <strong>flow</strong>: how are orders arriving, and are any stuck? Build their headline panels: orders by channel, then switch the dimension to status and look for anything piling up. What would their KPI row be?</p>
+        <div class="bibox" data-dim="channel" data-measure="orders" data-chart="bar"
+             data-caption="Orders by channel - the ops headline. Now flip the dimension to Status: what belongs in their KPI row?"></div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The mobile cut<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Take the exec view from Demo 1 and design its phone layout on paper: one column, thumb-friendly. You get roughly <strong>three panels</strong> before the reader stops scrolling. Which three survive, in what order - and write down what you removed. (Standard answer: KPIs first, trend second, one breakdown if any. Yours may differ; your reasons matter more.)</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Sketch the drillthrough page<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>An analyst right-clicks the March point on the exec trend. Sketch the detail page they land on: what filters carry over (month = March), what panels it shows (revenue by city for March only? orders by status? new vs returning customers?), and what it deliberately leaves out. This sketch is your head start on b9, where March gets a full investigation.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 25-35 min total</span></h2>
+    </div>
+    <ul>
+      <li>Wireframe your own one-screen exec dashboard on paper using the zone grid: filter rail, KPI row, trend, breakdowns. Paper first, tool second - always.</li>
+      <li>List every interaction your wireframe implies (filters, cross-filters, drillthroughs, tooltips) - then cut half. Write one line on why each survivor earns its cost.</li>
+      <li>Run the accessibility five on one existing dashboard at work. Score it 0-5 and fix the cheapest failure this week.</li>
+      <li>Bring to b7: the March dip is now officially on the record. Next session we turn that observation into a story an executive acts on.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">Tonight covered the report-building and usability skill areas of both major exams, plus the design chapters of the field's standard text. Tool click-paths stay with the vendors; the concepts are all here:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Create reports - visuals, formatting, page configuration, slicing</span><span class="note">Parts 1-2 · concepts; Desktop click-paths stay with Microsoft</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Enhance reports for usability and storytelling - interactions, drillthrough, bookmarks, mobile, accessibility</span><span class="note">Parts 2-3 · the full usability toolkit, tool-agnostic</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Tableau Data Analyst · Create Content - dashboards, actions, device layouts</span><span class="note">Parts 1-3 · concept level; hands-on stays with Tableau</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Few, Information Dashboard Design 2e · ch12 Critical Design Practices, ch13 Putting It All Together</span><span class="note">Part 1 + Demo 1 · one screen, zones, white space, the assembled view</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · The single most valuable position on a dashboard - where does the headline number go?</p>
+      <button class="qopt" type="button">A · Bottom-right, where the scan ends and the conclusion lands</button>
+      <button class="qopt" type="button">B · Top-left, where the Z-pattern scan begins</button>
+      <button class="qopt" type="button">C · Dead center, surrounded by supporting charts</button>
+      <p class="qwhy">Readers scan in a Z starting top-left, so that corner gets the KPI that matters most - never a logo, a title graphic, or a filter.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · When should you turn cross-filtering OFF between two visuals?</p>
+      <button class="qopt" type="button">A · Never - more interactivity is always better</button>
+      <button class="qopt" type="button">B · Whenever the visuals share a dimension</button>
+      <button class="qopt" type="button">C · When a click would mislead (a filtered KPI read as the total) or slow the page</button>
+      <p class="qwhy">Every interaction has cognitive and performance cost. Cross-filtering a KPI card can make a partial number look like the whole - edit interactions and switch it off, or use cross-highlight instead.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · What actually changes when you design the mobile layout of a dashboard?</p>
+      <button class="qopt" type="button">A · Panels stack in one column, KPIs come first, and content gets cut for touch</button>
+      <button class="qopt" type="button">B · Nothing - the tool shrinks the desktop layout to fit</button>
+      <button class="qopt" type="button">C · Only the color theme, for outdoor readability</button>
+      <p class="qwhy">Mobile is a separate layout, not a scaled one: vertical stack, KPI cards first, fewer panels, fat touch targets. Shrinking a desktop grid to phone width produces an unreadable postage stamp.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 6 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The 5-second scan</b><span>Z-pattern: top-left first. Prime real estate gets the headline KPI, never a logo or filter.</span></div>
+      <div class="cheat-item"><b>The zone grid</b><span>KPI row on top → trend center → breakdowns below → filters on a rail. Sketch on paper first.</span></div>
+      <div class="cheat-item"><b>One-screen rule</b><span>Exec views never scroll. Analysts go deeper via drillthrough and navigation, not scrolling.</span></div>
+      <div class="cheat-item"><b>Interaction budget</b><span>Every click costs cognition + queries. List all interactions, cut half, defend the survivors.</span></div>
+      <div class="cheat-item"><b>Cross-filter vs highlight</b><span>Filter removes context; highlight dims it but keeps the total. Edit interactions per visual pair.</span></div>
+      <div class="cheat-item"><b>Drillthrough</b><span>Detail lives one right-click away with filter context carried - not crowded onto the exec page.</span></div>
+      <div class="cheat-item"><b>Mobile</b><span>A separate layout: one column, KPIs first, ~3 panels, fat touch targets. Never shrink desktop.</span></div>
+      <div class="cheat-item"><b>Accessibility five</b><span>Contrast · never color alone · alt text · tab order · real text size. Run before every ship.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 6 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b5-chart-choice.html">← Session 5</a> &nbsp;·&nbsp; <a href="b7-storytelling-analytics.html">Next: Storytelling + analytics extras →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

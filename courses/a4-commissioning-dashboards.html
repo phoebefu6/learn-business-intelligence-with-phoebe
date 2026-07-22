@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 4 · Commissioning dashboards that get used - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Leader session 4 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Leader track · Session 4 of 6</div>
+    <h1>Commissioning dashboards that get <span class="accent">used</span></h1>
+    <p class="sub">Most dashboards die quietly: built in two weeks, admired at launch, opened by nobody in month three. The failure is almost never the charting - it is the commissioning. This session gives you the leader's toolkit: a one-page brief that forces the right questions before the build, an acceptance checklist built from Stephen Few's famous design mistakes, and a rollout playbook that plants the dashboard inside a ritual so it actually gets opened.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Leader track</span>
+      <span class="chip audience">Leaders: execs · sponsors · managers</span>
+      <span class="chip time">No code · 45 minutes</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-16 · The brief</span>
+      <span class="a3" style="flex:4">16-29 · Acceptance checks</span>
+      <span class="a4" style="flex:5">29-45 · Rollout + your turn</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>You are the client, not the builder</h2>
+    </div>
+    <p class="lede">Leaders rarely build dashboards, but leaders commission almost all of them - and a vague commission produces a pretty, unused artifact every single time. "Give me a dashboard of everything" is how it starts; a wall of charts nobody opens is how it ends. Today you learn the client-side craft: specify sharply, accept rigorously, and launch into a habit. Last session (a3) made your numbers trustworthy; this one makes them <em>looked at</em>.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A five-field, one-page brief template that turns "I want a dashboard" into a buildable request, a five-minute acceptance checklist distilled from Stephen Few's thirteen design mistakes, and a rollout habit loop that gets your dashboard opened twice a week instead of twice ever.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE BRIEF ============ -->
+  <section class="section" id="the-brief">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers Few IDD ch3-4, MS Learn "Scope report design requirements"</span>
+      <h2>The brief before the build <span class="tag concept">13 min live</span></h2>
+    </div>
+    <p class="lede">Stephen Few's rule and Microsoft's newest Power BI design guidance say the same thing from different decades: <strong>know the audience, the question, and the action before anything gets built</strong>. Microsoft's redesigned "Design effective reports" learning path literally opens with a module called "Scope report design requirements" - requirements first, visuals later. Your version of that discipline is one page with five fields. If a request cannot fill them, it is not ready to build.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The five-field dashboard brief: who reads it, what question, what decision, how often, what screen">
+        <style>
+          .bfT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .bfL { font: 700 12px Inter, sans-serif; fill: #122B4A; }
+          .bfE { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .bfNum { font: 700 13px Inter, sans-serif; fill: #3A2B00; }
+          .bfN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+        </style>
+        <rect x="180" y="24" width="520" height="40" rx="10" fill="#122B4A"/>
+        <text class="bfT" x="200" y="50">Dashboard brief · one page, five fields</text>
+        <rect x="180" y="64" width="520" height="220" rx="10" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <circle cx="212" cy="92" r="11" fill="#C99700"/>
+        <text class="bfNum" x="208" y="97">1</text>
+        <text class="bfL" x="236" y="90">Who reads it</text>
+        <text class="bfE" x="420" y="90">COO and three VPs, Monday 9am</text>
+        <circle cx="212" cy="136" r="11" fill="#C99700"/>
+        <text class="bfNum" x="208" y="141">2</text>
+        <text class="bfL" x="236" y="134">What question it answers</text>
+        <text class="bfE" x="420" y="134">Is monthly revenue on plan, and where not?</text>
+        <circle cx="212" cy="180" r="11" fill="#C99700"/>
+        <text class="bfNum" x="208" y="185">3</text>
+        <text class="bfL" x="236" y="178">What decision follows</text>
+        <text class="bfE" x="420" y="178">Reallocate campaign spend, or hold</text>
+        <circle cx="212" cy="224" r="11" fill="#C99700"/>
+        <text class="bfNum" x="208" y="229">4</text>
+        <text class="bfL" x="236" y="222">How often it is read</text>
+        <text class="bfE" x="420" y="222">Weekly glance, 30 seconds</text>
+        <circle cx="212" cy="268" r="11" fill="#C99700"/>
+        <text class="bfNum" x="208" y="273">5</text>
+        <text class="bfL" x="236" y="266">On what screen</text>
+        <text class="bfE" x="420" y="266">Laptop, plus the boardroom TV</text>
+        <rect x="180" y="304" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="bfN" x="204" y="316">Notice what is missing: chart types. Fields 1-5 determine the charts - never the other way round.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the five-field brief; if a request cannot fill it, it is not ready to build</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Audience changes everything<span class="mini">6 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Few's chapter 4 lists the fundamental considerations that should shape any dashboard before design starts: <strong>frequency of use, the users themselves, screen size, and the type of data</strong>. Change the audience and every one of those answers flips - which is why the same "revenue dashboard" request means two entirely different products:</p>
+        <ul>
+          <li><strong>The exec glance:</strong> read weekly for 30 seconds, on a laptop or a boardroom TV, standing up. Wants 5 numbers with targets and deltas, zero interactivity, everything on one screen. Success = the anomaly is visible from two meters away.</li>
+          <li><strong>The analyst drill:</strong> open half the day, on two monitors, sitting down. Wants filters, drill-downs, exportable detail, and tolerance for density. Success = any follow-up question is answerable without writing SQL.</li>
+        </ul>
+        <p>Build the drill for the exec and they stop opening it. Build the glance for the analyst and they rebuild it in a spreadsheet. Field 1 of the brief exists so the builder knows which product they are making.</p>
+        <div class="callout tip">
+          <strong>One dashboard, one audience</strong>
+          When a request names two audiences, that is two dashboards sharing a semantic layer - not one dashboard with twice the charts. Splitting it at brief time costs a page; splitting it after launch costs a rebuild.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>The question behind the request<span class="mini">4 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>"I want a dashboard of everything" is the most common commission and the most reliable failure. Nobody reads everything; people read answers. Your job as the commissioning leader is to excavate the <strong>Monday-morning question</strong> - the specific thing the reader will ask the screen at 9am.</p>
+        <ul>
+          <li><strong>Ask "what will you do differently?"</strong> If no decision changes based on the number, the number is decoration. Field 3 of the brief is the filter that kills vanity metrics before they are built.</li>
+          <li><strong>Ask "what did you check last Monday?"</strong> People's actual recurring question is usually much narrower than their stated wish. "Everything about sales" collapses into "did any region miss plan?" under one minute of questioning.</li>
+          <li><strong>Ask "what would make you stop reading?"</strong> Few's chapter 3 frames requirements-gathering as learning what the dashboard must do for the user, not cataloguing available data. Data-driven scoping produces walls; question-driven scoping produces answers.</li>
+        </ul>
+        <p>A useful test: the brief's question should fit in one sentence and contain no "and". "Revenue and churn and pipeline and NPS" is four questions - and probably two dashboards.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: ACCEPTANCE CHECKLIST ============ -->
+  <section class="section" id="acceptance">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers Few IDD ch2 (thirteen mistakes), ch13 (real critiques)</span>
+      <h2>The thirteen mistakes as an acceptance checklist <span class="tag concept">13 min live</span></h2>
+    </div>
+    <p class="lede">Chapter 2 of Few's <em>Information Dashboard Design</em> catalogues thirteen common mistakes dashboard designers make; chapter 13 applies them in brutal real-world critiques. You are not the designer - so flip the list. Every designer mistake becomes a <strong>commissioner's check</strong>: five questions you can ask of any delivered dashboard, in five minutes, with no design training at all.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two-column checklist board contrasting looks-right decoration with reads-right acceptance checks">
+        <style>
+          .cbT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .cbB { font: 400 12px Inter, sans-serif; fill: #182230; }
+          .cbX { font: 700 12px Inter, sans-serif; fill: #5A6B80; }
+          .cbG { font: 700 12px Inter, sans-serif; fill: #C99700; }
+          .cbN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+        </style>
+        <rect x="40" y="30" width="380" height="38" rx="10" fill="#3B77B8"/>
+        <text class="cbT" x="58" y="55">"Looks right" - easy to fake</text>
+        <rect x="40" y="68" width="380" height="180" rx="10" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="cbX" x="60" y="96">✗</text><text class="cbB" x="82" y="96">On-brand colors and a polished logo</text>
+        <text class="cbX" x="60" y="126">✗</text><text class="cbB" x="82" y="126">Gauges, 3D effects, glossy tiles</text>
+        <text class="cbX" x="60" y="156">✗</text><text class="cbB" x="82" y="156">Impressive number of charts and pages</text>
+        <text class="cbX" x="60" y="186">✗</text><text class="cbB" x="82" y="186">Every available metric displayed somewhere</text>
+        <text class="cbX" x="60" y="216">✗</text><text class="cbB" x="82" y="216">Looks great in the launch demo</text>
+        <rect x="460" y="30" width="380" height="38" rx="10" fill="#122B4A"/>
+        <text class="cbT" x="478" y="55">"Reads right" - the real checks</text>
+        <rect x="460" y="68" width="380" height="180" rx="10" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="cbG" x="480" y="96">✓</text><text class="cbB" x="502" y="96">Everything on one screen, no scrolling</text>
+        <text class="cbG" x="480" y="126">✓</text><text class="cbB" x="502" y="126">Context beside every number: target, prior</text>
+        <text class="cbG" x="480" y="156">✓</text><text class="cbB" x="502" y="156">Right precision - $1.9M, not $1,943,207.18</text>
+        <text class="cbG" x="480" y="186">✓</text><text class="cbB" x="502" y="186">No decoration that carries no data</text>
+        <text class="cbG" x="480" y="216">✓</text><text class="cbB" x="502" y="216">Color only where it means something</text>
+        <rect x="40" y="292" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="cbN" x="64" y="304">Accept with the right column only. Everything in the left column can be added later - and usually should not be.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the acceptance board: judge dashboards by the right column, not the left</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Five checks in five minutes<span class="mini">6 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Run these on any delivered dashboard, in order, before you say "approved". Each one is a Few mistake inverted:</p>
+        <ul>
+          <li><strong>1 · One screen?</strong> Few's first mistake is exceeding the boundaries of a single screen. If the Monday answer requires scrolling or tab-hopping, part of it will simply never be seen.</li>
+          <li><strong>2 · Context next to every number?</strong> A lone "$1.9M" is trivia. Against target? Versus last month? Numbers without comparison points force the reader to supply memory - most will not.</li>
+          <li><strong>3 · Right precision?</strong> Excessive decimals are false accuracy and real clutter. Exec dashboards round; the detail lives a click deeper.</li>
+          <li><strong>4 · Any decoration?</strong> Gauges, 3D, backgrounds, logos beyond one corner - Few calls this useless decoration, and every pixel of it competes with the data.</li>
+          <li><strong>5 · Does color mean something?</strong> If four bars are four colors for variety, color has been spent on nothing. Color should mark the exception, the target breach, the thing to look at.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The five-minute sendback.</strong> A COO we know runs exactly this list on every new dashboard, out loud, with the builder in the room. First pass usually fails on checks 2 and 3. Second pass usually ships. The builders learned the list within a quarter - and started passing on the first try. Acceptance checks train your whole BI supply chain.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Context is the cheapest upgrade<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>If you only enforce one check, enforce check 2. The gap between a number and a decision is context, and context is almost free to add:</p>
+        <ul>
+          <li><strong>Number alone:</strong> "Revenue: $1.9M". The reader must remember the plan, last month, and last year to know if this is good news. Most readers shrug and move on.</li>
+          <li><strong>Number + target + delta:</strong> "Revenue: $1.9M · plan $2.0M · -5%". Now the dashboard has done the judging. The reader's next thought is "why?", which is exactly the conversation a dashboard exists to start.</li>
+        </ul>
+        <p>This costs the builder one measure and a few characters of layout. It converts a reporting artifact into a decision instrument - the highest return-on-effort edit in all of BI. When you send a dashboard back, "add the target and the delta" should usually be line one.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: ROLLOUT ============ -->
+  <section class="section" id="rollout">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers Few IDD ch14 (design process, rollout, validating effectiveness)</span>
+      <h2>Rollout and the habit loop <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">Few's final chapter is about moving from imagining to unveiling - and validating that the thing actually works after it ships. Here is the leader's translation: <strong>a dashboard succeeds when it enters a ritual</strong>. Not when it launches, not when people say it is nice - when the Monday standup opens with it on the screen, or the month-end review walks through it page by page. A proper launch has three moves: <strong>train</strong> the readers (fifteen minutes, live, on real numbers), <strong>pin</strong> it into the ritual where its question gets asked, and <strong>retire</strong> the old report - as long as the legacy spreadsheet survives, the dashboard is optional, and optional dashboards die.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Measure the dashboard itself<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Every BI platform counts views - so commission the meta-metric along with the dashboard. Few's chapter 14 insists on validating effectiveness after rollout; this is the lightweight version:</p>
+        <ul>
+          <li><strong>Watch usage weekly for the first month.</strong> Opens per intended reader, not total opens. Ten views that are all the builder refreshing their own work is a failed launch with good-looking numbers.</li>
+          <li><strong>Run the 2-week silence test.</strong> If a dashboard goes unopened for two weeks, it does not get a redesign - it gets a conversation: what question did we get wrong? Sometimes the answer is "the ritual moved"; often it is "the question was never real".</li>
+          <li><strong>Retire without guilt.</strong> A dashboard that failed the silence test twice gets archived. Dead dashboards are not harmless: they clutter the portal, dilute trust, and hide the certified content from a3 behind noise.</li>
+        </ul>
+        <div class="callout win">
+          <strong>★ The commissioning loop, closed</strong>
+          Brief → build → acceptance checks → ritual → usage review. Notice that four of the five stages belong to you, the commissioner, not the builder. Dashboards get used because leaders run this loop, not because analysts pick prettier charts.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Write the Daybreak exec brief together <span class="tag demo">★ 12 min · follow along</span></h2>
+    </div>
+    <p class="lede">Daybreak's founder wants "a monthly dashboard for the leadership meeting". Vague - perfect. We will run it through the five fields live, then check a real chart against the brief we just wrote.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Field 1 - who reads it:</strong> the founder plus two leads, in the monthly business review, projected on a meeting-room screen. One audience, one sitting. Already we know: glance product, not drill product.</p></div>
+      <div class="step"><p><strong>Field 2 - the question:</strong> "everything about the business" collapses under questioning into: <em>is monthly revenue on plan, and if not, where is the miss?</em> One sentence, no "and" joining unrelated topics. That is buildable.</p></div>
+      <div class="step"><p><strong>Fields 3 to 5 - decision, cadence, screen:</strong> decision = where to focus retention and marketing effort this month; cadence = monthly, five minutes at the top of the review; screen = one projected display, readable from the back of the room. Big text, one screen, no interaction needed mid-meeting.</p></div>
+      <div class="step"><p><strong>Now check a candidate chart against the brief.</strong> The box below shows monthly revenue as a line - the natural centerpiece for field 2. Does it answer "on plan?" on its own? No: there is no plan line, no target, no delta. Against the brief, this chart is necessary but not sufficient - it locates the dip (look at March) but cannot say whether we are missing plan. That gap is exactly what you would write in the acceptance notes.</p></div>
+    </div>
+
+    <div class="bibox" data-dim="month" data-measure="revenue" data-chart="line"
+         data-caption="The candidate centerpiece: monthly revenue. It shows the trend and a suspicious March dip - but the brief asks 'on plan?', and there is no plan in sight. Necessary, not sufficient."></div>
+
+    <div class="callout tip">
+      <strong>The brief is doing the arguing for you</strong>
+      Without the brief, "add a target line" sounds like taste. With the brief, it is a requirement: field 2 asks "on plan?", so the chart must show the plan. Commissioning documents turn design debates into requirement checks.
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: acceptance-check a chart <span class="tag demo">★ 8 min · you judge</span></h2>
+    </div>
+    <p class="lede">A builder just delivered the chart below for the same Daybreak review: orders by city. Run the five checks from Part 2 on it, out loud, and decide what you would send back. There is no single right answer - but there are checks it visibly fails.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Run checks 1 to 5.</strong> One screen: yes, it is a single chart. Context: is there a target or a prior period next to these bars? Precision: are the numbers rounded sanely? Decoration: anything not carrying data? Color: does the highlight mean something, or is it just pretty?</p></div>
+      <div class="step"><p><strong>Interrogate it against a brief.</strong> Which Monday-morning question does orders-by-city answer for a monthly exec review? If the review's question is "is revenue on plan?", is city even the right dimension - or is this chart an analyst's curiosity promoted to an exec screen?</p></div>
+      <div class="step"><p><strong>Write the sendback.</strong> One or two lines, requirement-shaped: "add prior month for context", "swap dimension to plan tier - city is not decision-relevant for this audience", or even "cut it - no decision changes on this chart". Cutting is a legitimate acceptance outcome.</p></div>
+    </div>
+
+    <div class="bibox" data-dim="city" data-measure="orders" data-chart="bar"
+         data-caption="The delivered chart: orders by city. Judge it with the five checks and the brief - would you accept, amend, or cut? Try other dimensions to test your sendback."></div>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Leaders who check get better dashboards.</strong> Builders calibrate to whatever their commissioners actually inspect. If launches only get "looks great!", the left column of the Part 2 board is what you will keep receiving. Five spoken minutes of reads-right checks, twice, permanently raises the quality of everything your team ships you.</p>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>Write a real five-field brief for one dashboard you genuinely want. If a field will not fill, the request is not ready - which is the brief doing its job.</li>
+      <li>Acceptance-check one dashboard you already receive: run the five checks and note what fails. Most inherited dashboards fail on context and one-screen.</li>
+      <li>For every dashboard you regularly receive, name the ritual it lives in - the standing meeting or review where it is actually opened. Any dashboard with no ritual goes on your 2-week silence watchlist.</li>
+      <li>Bring to a5: the dashboard request you most fear from your teams - the "can everyone just build their own?" one. Session a5 is self-service without chaos.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">This session translates the canonical dashboard-design literature into the commissioning leader's view - the designer's craft stays with Few and the vendor labs. This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Stephen Few · Information Dashboard Design 2e, ch2-4, ch13-14</span><span class="note">Thirteen mistakes as acceptance checks; requirements, fundamental considerations, real critiques, rollout and validation</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">MS Learn · "Scope report design requirements" (Design effective reports path, June 2025)</span><span class="note">Part 1 · audience, question, action before building - leader view of the module</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Google BI cert · course 3, stakeholder presentation angle</span><span class="note">Commissioning and stakeholder framing here; the builder-side presentation craft stays with Google</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · A VP asks you to sponsor "a dashboard of everything about sales". The first thing to pin down is...</p>
+      <button class="qopt" type="button">A · Which charts and colors the VP prefers</button>
+      <button class="qopt" type="button">B · Who will read it and what Monday-morning question it must answer</button>
+      <button class="qopt" type="button">C · Which BI tool the team should build it in</button>
+      <p class="qwhy">Audience and question are fields 1 and 2 of the brief - they determine everything else, including the charts. Few's requirements chapters and Microsoft's "Scope report design requirements" module both start exactly here: know audience, question, action before building.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · A delivered exec dashboard shows "Revenue: $1,943,207.18" as a lone number. Your highest-value sendback is...</p>
+      <button class="qopt" type="button">A · Ask for a gauge visual - it reads faster than plain text</button>
+      <button class="qopt" type="button">B · Ask for the number on every page so nobody misses it</button>
+      <button class="qopt" type="button">C · Ask for target and prior period beside it, rounded to $1.9M</button>
+      <p class="qwhy">Context is the cheapest upgrade: number + target + delta lets the dashboard do the judging, and sane precision removes false accuracy. Gauges are on Few's decoration list, and repetition adds clutter, not meaning.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · When is a dashboard actually "done"?</p>
+      <button class="qopt" type="button">A · When it enters a ritual - a standing meeting opens with it, and the old report is retired</button>
+      <button class="qopt" type="button">B · When it passes the launch demo and stakeholders applaud</button>
+      <button class="qopt" type="button">C · When every requested metric has been added to it</button>
+      <p class="qwhy">Launch applause and metric-completeness are both "looks right" signals. Few's ch14 ties success to validated use after unveiling: train, pin into the ritual, retire the old report - then watch usage and apply the 2-week silence test.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader session 4 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The five-field brief</b><span>Who reads it · what question · what decision · how often · what screen. No charts in the brief - fields decide charts.</span></div>
+      <div class="cheat-item"><b>One dashboard, one audience</b><span>Exec glance and analyst drill are different products. Two audiences = two dashboards, split at brief time.</span></div>
+      <div class="cheat-item"><b>The Monday-morning question</b><span>Excavate the real recurring question behind "everything". One sentence, no "and", a decision attached.</span></div>
+      <div class="cheat-item"><b>Few's ch4 four</b><span>Frequency of use, users, screen size, data type - settle these before any design work starts.</span></div>
+      <div class="cheat-item"><b>Five checks, five minutes</b><span>One screen? Context beside numbers? Right precision? No decoration? Color = meaning? Then accept.</span></div>
+      <div class="cheat-item"><b>Cheapest upgrade</b><span>Number + target + delta beats a lone number every time. Usually line one of the sendback.</span></div>
+      <div class="cheat-item"><b>Launch = 3 moves</b><span>Train the readers, pin it into a ritual, retire the old report. Optional dashboards die.</span></div>
+      <div class="cheat-item"><b>2-week silence test</b><span>Unopened for two weeks = wrong question, not wrong colors. Fix the question or archive without guilt.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 4 of 6 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a3-one-number-one-truth.html">← Session 3</a> &nbsp;·&nbsp; <a href="a5-self-service-without-chaos.html">Next: Self-service BI without chaos →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

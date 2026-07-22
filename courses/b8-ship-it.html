@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 8 · Ship it: refresh, security, distribution - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 8 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 8 of 10</div>
+    <h1>Ship <span class="accent">it</span></h1>
+    <p class="sub">A dashboard on your laptop helps exactly one person. Tonight it goes live: which workspace it lives in, how it refreshes (and what a gateway is for), who sees which rows, and how three hundred people find it without three hundred Slack messages. This is the least glamorous session in the track and the one that decides whether your b6 build becomes infrastructure or a screenshot.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip audience">Runs in your browser · no install</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-20 · Distribute + refresh</span>
+      <span class="a3" style="flex:5">20-42 · Security + build-along</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The launch checklist</h2>
+    </div>
+    <p class="lede">Shipping a dashboard is four questions, answered in writing before anyone gets a link: <strong>Where does it live?</strong> (workspace and app) <strong>How does it refresh?</strong> (cadence, and whether a gateway sits in the path) <strong>Who sees what?</strong> (roles and row-level security) <strong>How do people find it?</strong> (distribution method and endorsement). Every BI platform asks the same four; only the menu labels change. Tonight we answer all four for Daybreak's exec view.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ SQL box - runs a real database</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A distribution decision tree (app vs share vs embed vs subscription vs alert), a refresh plan that knows when a gateway is required, a working mental model of row-level security - static and dynamic - demonstrated in live SQL, and Daybreak's complete launch checklist you can copy for any real dashboard.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: DISTRIBUTION ============ -->
+  <section class="section" id="distribution">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers PL-300 "create and manage workspaces and assets"</span>
+      <h2>Workspaces, apps, and distribution <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">The workspace is where builders work; the <strong>app</strong> is the polished, read-only face that viewers actually open. Never hand executives a link into your dev workspace - they will bookmark a half-finished page and screenshot it into a board deck. Once the app exists, distribution is a menu with five honest options, and the right one follows from audience size and need.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Distribution decision tree: audience size and need mapped to app, direct share, embed, subscription, or alert">
+        <style>
+          .dtT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .dtS { font: 400 11px Inter, sans-serif; fill: #EAF1F9; }
+          .dtC { font: 600 11.5px Inter, sans-serif; fill: #122B4A; }
+          .dtN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .dtArr { stroke: #8FB4DC; stroke-width: 2; fill: none; marker-end: url(#dtAh); }
+        </style>
+        <defs>
+          <marker id="dtAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="120" width="190" height="70" rx="10" fill="#122B4A"/>
+        <text class="dtT" x="48" y="148">Dashboard ready.</text>
+        <text class="dtS" x="48" y="168">Who needs it, and how?</text>
+        <path class="dtArr" d="M220,140 C300,110 320,48 372,42"/>
+        <path class="dtArr" d="M220,148 C300,130 330,108 372,102"/>
+        <path class="dtArr" d="M220,158 L372,162"/>
+        <path class="dtArr" d="M220,168 C300,190 330,212 372,220"/>
+        <path class="dtArr" d="M220,176 C300,210 320,272 372,278"/>
+        <rect x="376" y="20" width="240" height="44" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="dtC" x="392" y="47">Broad, stable audience</text>
+        <rect x="376" y="80" width="240" height="44" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="dtC" x="392" y="107">A few people, ad-hoc</text>
+        <rect x="376" y="140" width="240" height="44" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="dtC" x="392" y="167">Lives in a portal or Teams</text>
+        <rect x="376" y="200" width="240" height="44" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="dtC" x="392" y="227">Email snapshot on schedule</text>
+        <rect x="376" y="260" width="240" height="44" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="dtC" x="392" y="287">Ping when a number crosses a line</text>
+        <path class="dtArr" d="M616,42 L666,42"/>
+        <path class="dtArr" d="M616,102 L666,102"/>
+        <path class="dtArr" d="M616,162 L666,162"/>
+        <path class="dtArr" d="M616,222 L666,222"/>
+        <path class="dtArr" d="M616,282 L666,282"/>
+        <rect x="670" y="20" width="180" height="44" rx="8" fill="#122B4A"/>
+        <text class="dtT" x="688" y="47">App</text>
+        <rect x="670" y="80" width="180" height="44" rx="8" fill="#1D4E79"/>
+        <text class="dtT" x="688" y="107">Direct share</text>
+        <rect x="670" y="140" width="180" height="44" rx="8" fill="#1D4E79"/>
+        <text class="dtT" x="688" y="167">Embed</text>
+        <rect x="670" y="200" width="180" height="44" rx="8" fill="#3B77B8"/>
+        <text class="dtT" x="688" y="227">Subscription</text>
+        <rect x="670" y="260" width="180" height="44" rx="8" fill="#3B77B8"/>
+        <text class="dtT" x="688" y="287">Alert</text>
+        <rect x="30" y="316" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="dtN" x="54" y="328">Default for anything exec-facing: the app. Sharing raw workspace links is how drafts leak.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the distribution decision tree: match the method to audience size and need</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Workspace hygiene - dev, test, prod<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Workspaces are cheap; sprawl is not. Three habits keep a tenant navigable:</p>
+        <ul>
+          <li><strong>Separate dev from what viewers see.</strong> Build and break in a dev workspace; promote to a test or prod workspace, and publish the app from prod. Viewers never watch you refactor live.</li>
+          <li><strong>Name for the finder, not the builder.</strong> "Daybreak - Revenue (Prod)" beats "phoebe_test_v3_final". Six months from now, someone searches - make sure they find the right one.</li>
+          <li><strong>One named owner per workspace.</strong> When refresh breaks at 6am (part 2), someone specific gets the alert. "The team owns it" means nobody does.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The forty-dashboard graveyard.</strong> A new analyst inherits a workspace with forty items: drafts, copies of copies, "v2_FINAL_new". Nobody knows which three the business actually uses, so nothing can be deleted, so trust in all forty erodes together. Hygiene is not tidiness - it is what keeps the real dashboard findable and believed.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The five methods, in vendor nouns<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Same tree, two toolbars:</p>
+        <ul>
+          <li><strong>App</strong> - broad, stable audiences get the curated bundle. <strong>Direct share</strong> - a link or permission for a handful of people, ad-hoc. <strong>Embed</strong> - the dashboard appears inside a portal, wiki, or Teams channel. <strong>Subscription</strong> - an emailed snapshot on a schedule. <strong>Alert</strong> - a notification when a number crosses a threshold.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>In Power BI / In Tableau</strong>
+          Power BI: workspaces publish <strong>apps</strong>; subscriptions and <strong>data alerts</strong> hang off dashboards; choosing the distribution method is a named PL-300 skill, alongside creating and configuring workspaces and publishing, importing, and updating items. Tableau: you <strong>publish workbooks and data sources</strong> to Server or Cloud, then manage them with subscriptions and data-driven alerts - domain 4 of the Data Analyst exam.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: REFRESH ============ -->
+  <section class="section" id="refresh">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers PL-300 semantic model scheduled refresh + identify when a gateway is required</span>
+      <h2>Refresh - the heartbeat <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">Import-mode data (b1's default answer) is a snapshot, and a snapshot starts aging the moment it is taken. <strong>Scheduled refresh</strong> is what keeps it honest. Two decisions: the cadence, and the path. Cadence follows the business question, not ambition. The path has one classic complication: when the source lives on-premises or behind a firewall, the cloud BI service cannot reach it - a <strong>gateway</strong> must relay the refresh. "Identify when a gateway is required" is a named PL-300 skill because it is the number-one "why is refresh failing" suspect in real tenants.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Refresh pipeline from source through optional gateway to semantic model and app viewers, with a failure-alert branch">
+        <style>
+          .rpT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .rpS { font: 400 11px Inter, sans-serif; fill: #EAF1F9; }
+          .rpG { font: 700 12.5px Inter, sans-serif; fill: #122B4A; }
+          .rpB { font: 400 11px Inter, sans-serif; fill: #182230; }
+          .rpN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .rpArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#rpAh); }
+          .rpFail { stroke: #C99700; stroke-width: 2; stroke-dasharray: 6 4; fill: none; marker-end: url(#rpAg); }
+        </style>
+        <defs>
+          <marker id="rpAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+          <marker id="rpAg" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#C99700"/>
+          </marker>
+        </defs>
+        <rect x="30" y="70" width="160" height="70" rx="10" fill="#122B4A"/>
+        <text class="rpT" x="48" y="98">Source</text>
+        <text class="rpS" x="48" y="118">warehouse or database</text>
+        <rect x="240" y="70" width="180" height="70" rx="10" fill="#EAF1F9" stroke="#1D4E79" stroke-width="2" stroke-dasharray="7 5"/>
+        <text class="rpG" x="258" y="98">Gateway</text>
+        <text class="rpB" x="258" y="118">only if source is on-prem</text>
+        <rect x="470" y="70" width="180" height="70" rx="10" fill="#1D4E79"/>
+        <text class="rpT" x="488" y="98">Semantic model</text>
+        <text class="rpS" x="488" y="118">refreshed on schedule</text>
+        <rect x="700" y="70" width="150" height="70" rx="10" fill="#3B77B8"/>
+        <text class="rpT" x="718" y="98">App viewers</text>
+        <text class="rpS" x="718" y="118">fresh numbers</text>
+        <path class="rpArr" d="M190,105 L235,105"/>
+        <path class="rpArr" d="M420,105 L465,105"/>
+        <path class="rpArr" d="M650,105 L695,105"/>
+        <path class="rpFail" d="M560,140 L560,196"/>
+        <rect x="440" y="200" width="240" height="52" rx="10" fill="#EAF1F9" stroke="#C99700" stroke-width="2"/>
+        <text class="rpG" x="458" y="222">Refresh fails →</text>
+        <text class="rpB" x="458" y="240">alert the named owner, not silence</text>
+        <text class="rpB" x="30" y="180">Cloud source? The gateway box disappears -</text>
+        <text class="rpB" x="30" y="198">the service reaches the source directly.</text>
+        <rect x="30" y="272" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="rpN" x="54" y="284">On-prem or firewalled source = gateway required. It is the first suspect when refresh fails.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the refresh path, with the gateway relay and the failure-alert branch every launch needs</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Choosing a cadence<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Match the refresh to the question's rhythm, not to "as often as possible":</p>
+        <ul>
+          <li><strong>Daily exec pack:</strong> decisions happen in a morning meeting → refresh once, before the meeting (6am). Hourly refresh would burn source capacity to update numbers nobody reads until tomorrow.</li>
+          <li><strong>Ops floor:</strong> people act within the hour → hourly, or consider a live connection (b1's trade-off returns).</li>
+          <li><strong>Monthly board view:</strong> monthly refresh after close, then endorsed and frozen. Mid-month wobble creates questions, not decisions.</li>
+        </ul>
+        <p>Then wire the <strong>failure alert</strong>: a refresh that fails silently is worse than no refresh, because the dashboard keeps confidently showing last week. Cadence + alert together are the heartbeat.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>The Monday-morning refresh postmortem<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The stale-dashboard incident.</strong> Friday night a database password rotates; the gateway's stored credentials go stale; every refresh through the weekend fails - silently, because nobody configured failure notifications. Monday 9am, a regional lead reads the exec dashboard, sees "flat week", and cancels a planned promotion push. The numbers were Thursday's. The data was fine, the model was fine, the charts were fine - the launch was incomplete: no failure alert, no named owner, no "last refreshed" timestamp on the page. All three cost nothing and any one of them would have caught it.</p>
+        </div>
+        <p>Moral: a shipped dashboard is data + refresh + <em>someone watching the refresh</em>. Put "last refreshed" on every page you ship; it is the cheapest trust signal in BI.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: SECURITY ============ -->
+  <section class="section" id="security">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers PL-300 "secure and govern Power BI items"</span>
+      <h2>Security - who sees what <span class="tag concept">8 min live</span></h2>
+    </div>
+    <p class="lede">Three layers, coarse to fine. <strong>Workspace roles</strong> (admin, member, contributor, viewer) decide who can edit versus only look. <strong>Item-level access</strong> shares one report or semantic model without opening the whole workspace. And the fine-grained star: <strong>row-level security</strong> - one dashboard, where each viewer sees only their own rows. RLS comes in two flavors: <strong>static</strong> roles carry a fixed filter (the "Seattle" role always filters city = Seattle), while <strong>dynamic</strong> RLS filters by the logged-in user's identity - one role, personalized rows, usually driven by group membership. On top sit trust markers: <strong>endorsement</strong> (promoted by the owner, or certified by a central authority - the tiers from leader a5) and <strong>sensitivity labels</strong> that follow the data into exports.</p>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>RLS in one line of SQL<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Strip away the portal screens and RLS is just this: the platform appends a WHERE clause the viewer never sees. Here is what Daybreak's dashboard effectively runs when the Seattle manager opens it:</p>
+        <div class="sqlbox" data-caption="RLS in one line: the WHERE clause a viewer never sees. The exec's version has no WHERE at all.">
+          <pre class="sql-src">SELECT c.city,
+       ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id
+JOIN customers c ON c.customer_id = o.customer_id
+WHERE c.city = 'Seattle'
+GROUP BY 1;</pre>
+        </div>
+        <p>Everything the platform adds - roles, group membership, the security dialog - exists to attach the right invisible WHERE to the right person, reliably, at scale.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Static vs dynamic RLS<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <table class="clean">
+          <thead><tr><th></th><th>Static RLS</th><th>Dynamic RLS</th></tr></thead>
+          <tbody>
+            <tr><td><strong>The filter</strong></td><td>Fixed per role: the Seattle role hard-codes city = Seattle</td><td>Computed per viewer: filter matches the logged-in user's identity</td></tr>
+            <tr><td><strong>Roles needed</strong></td><td>One per slice - 40 cities means 40 roles</td><td>One role serves everyone</td></tr>
+            <tr><td><strong>Needs</strong></td><td>Just the role definitions</td><td>A mapping table: user → city (or region, channel...)</td></tr>
+            <tr><td><strong>Maintenance</strong></td><td>New city = new role = model change</td><td>New manager = one row in the mapping table</td></tr>
+            <tr><td><strong>Best for</strong></td><td>A few stable slices</td><td>Many viewers, org-chart-shaped access</td></tr>
+          </tbody>
+        </table>
+        <p>Either way, membership is granted by adding users or groups to the RLS role - and PL-300 tests both the role setup and the membership step.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The RLS matrix - write it before you build it<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Before touching the security dialog, write the matrix in plain language and get it signed off. Daybreak's:</p>
+        <table class="clean">
+          <thead><tr><th>Role</th><th>Sees</th><th>Flavor</th></tr></thead>
+          <tbody>
+            <tr><td>Exec</td><td>All rows, all cities, all channels</td><td>No RLS filter</td></tr>
+            <tr><td>City manager</td><td>Only their own city's customers and orders</td><td>Dynamic (user → city mapping)</td></tr>
+            <tr><td>Channel lead</td><td>Only orders from their own channel</td><td>Dynamic (user → channel mapping)</td></tr>
+          </tbody>
+        </table>
+        <p>A written matrix turns "did we secure it right?" from a feeling into a checklist - and it is the artifact auditors ask for.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Write Daybreak's launch checklist <span class="tag demo">★ 12 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">The b6 exec view goes live tonight - on paper. We answer the four launch questions in order, and the result is a one-page checklist you can reuse for any real dashboard at work.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Name the home.</strong> Workspace "Daybreak - Revenue (Prod)", owner: you. Publish the app "Daybreak Executive View" from it - viewers open the app, never the workspace.</p></div>
+      <div class="step"><p><strong>Set the heartbeat.</strong> Scheduled refresh daily at 6am, before the 9am leadership sync. Failure alert to the owner. Gateway needed? No - Daybreak's warehouse is a cloud source, so the service reaches it directly.</p></div>
+      <div class="step"><p><strong>Define who sees what.</strong> Copy the RLS matrix from part 3: exec sees all, city managers see their city (dynamic), channel leads see their channel (dynamic). Add the manager group to the role membership.</p></div>
+      <div class="step"><p><strong>Endorse it.</strong> Request certification for the exec view so it carries the highest trust mark - this is the same promoted-vs-certified ladder leader session a5 set up, now applied to your own build.</p></div>
+      <div class="step"><p><strong>Announce and pin.</strong> One message in the leadership channel with the app link, plus a pin where the audience already lives. Distribution without an announcement is a tree falling in an empty forest - the habit loop from leader a4.</p></div>
+    </div>
+
+    <div class="callout win">
+      <strong>★ The reusable artifact</strong>
+      Four questions, five steps, one page: home + heartbeat + who-sees-what + trust mark + announcement. Every dashboard you ever ship gets this checklist; only the answers change.
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: route it, secure it, re-run it <span class="tag demo">★ 8 min · build your own</span></h2>
+    </div>
+    <p class="lede">Three quick reps: pick distribution methods against the tree, write one dynamic-RLS sentence, then play viewer-switcher in live SQL.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Rep 1 · Pick the method for each audience<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Route these through part 1's decision tree, then check yourself:</p>
+        <ul>
+          <li><strong>300-viewer exec pack, read every morning</strong> → the <strong>app</strong>: broad, stable audience, curated bundle.</li>
+          <li><strong>The CFO wants Monday's numbers in email at 7am</strong> → a <strong>subscription</strong>: scheduled snapshot, no login required.</li>
+          <li><strong>Ops needs a ping if daily orders cross a threshold</strong> → an <strong>alert</strong>: nobody should stare at a chart waiting for a number to move.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Rep 2 · Write the dynamic-RLS sentence<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Every dynamic rule reduces to one sentence of the form: <em>"Filter [table] to rows where [column] equals the value mapped to the logged-in user."</em> For "each city manager sees own city":</p>
+        <p><strong>"Filter customers to rows where city equals the city mapped to the logged-in user in the manager-city table."</strong></p>
+        <p>One role, any number of managers, and onboarding a new one is a single mapping row - no model change. If you can write the sentence, you can build the role in any tool.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Rep 3 · Switch viewers in live SQL<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>You are the RLS engine now. Edit <code>'Seattle'</code> to another city and re-run - you just switched which viewer is logged in. (Not sure which cities exist? Run <code>SELECT DISTINCT city FROM customers;</code> first.)</p>
+        <div class="sqlbox" data-caption="Change the city and re-run: each edit is what dynamic RLS does automatically per logged-in viewer.">
+          <pre class="sql-src">SELECT c.city,
+       ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id
+JOIN customers c ON c.customer_id = o.customer_id
+WHERE c.city = 'Seattle'
+GROUP BY 1;</pre>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 25-35 min total</span></h2>
+    </div>
+    <ul>
+      <li>Draw the refresh path for one real dashboard you use: source → (gateway?) → model → viewers. Is there a gateway in the path, and who gets alerted when refresh fails?</li>
+      <li>Write that dashboard's RLS matrix - roles down the side, "sees" across. If the answer is "everyone sees everything", write that down too; an explicit decision beats an accident.</li>
+      <li>Audit your org's portal: which dashboards are certified or promoted, and which are random direct shares? Count them. That ratio is your org's trust posture in one number.</li>
+      <li>Bring to b9: the March-dip story slide from b7 and tonight's launch checklist - next session we investigate the dip end to end and ship the answer.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">This session is the deployment slice of both major exams, taught tool-agnostic. Portal click-paths stay with the vendors (mapped in b10). This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Create and manage workspaces and assets</span><span class="note">Parts 1-2 · workspaces, apps, publishing, distribution method, subscriptions and alerts, endorsement, scheduled refresh, when a gateway is required</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Secure and govern Power BI items</span><span class="note">Part 3 · workspace roles, item-level access, static and dynamic RLS, role membership, sensitivity labels - concepts here; portal clicks stay with Microsoft</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Tableau Data Analyst · Publish and Manage Content (domain 4)</span><span class="note">Part 1 · publish workbooks and data sources, scheduled extract refreshes, subscriptions and alerts - concept level</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">MS Learn · Manage and secure Power BI path</span><span class="note">Parts 2-3 · conceptual core; tenant-admin depth stays with Microsoft</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · Scheduled refresh keeps failing for a dashboard whose source is a SQL Server inside the office network. First suspect?</p>
+      <button class="qopt" type="button">A · The chart types - too many visuals slow the refresh down</button>
+      <button class="qopt" type="button">B · The workspace role - the owner needs admin instead of member</button>
+      <button class="qopt" type="button">C · The gateway - an on-prem source needs one, and its credentials or service are the classic failure point</button>
+      <p class="qwhy">A cloud BI service cannot reach an on-prem or firewalled source directly; a gateway relays the refresh. "Identify when a gateway is required" is a named PL-300 skill for exactly this diagnosis.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · Forty city managers should each see only their own city on one dashboard. Best setup?</p>
+      <button class="qopt" type="button">A · Dynamic RLS - one role filtering by the logged-in user via a user-to-city mapping</button>
+      <button class="qopt" type="button">B · Static RLS - create forty roles, one hard-coded per city</button>
+      <button class="qopt" type="button">C · Forty copies of the dashboard, one filtered per city</button>
+      <p class="qwhy">Static roles work for a few stable slices; at forty, maintenance explodes. Dynamic RLS keeps one role and personalizes rows by identity - a new manager is one mapping row, not a model change.</p>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · The exec pack has 300 viewers who will read it every week for years. App or direct share?</p>
+      <button class="qopt" type="button">A · Direct share - just send everyone the workspace link</button>
+      <button class="qopt" type="button">B · App - a curated, read-only bundle built for broad, stable audiences</button>
+      <button class="qopt" type="button">C · Neither - export to PDF weekly and email it</button>
+      <p class="qwhy">Direct share is for a few people, ad-hoc. A broad stable audience gets the app: polished face, no dev clutter, permissions managed once. Workspace links leak drafts.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 8 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Four launch questions</b><span>Where does it live? How does it refresh? Who sees what? How do people find it? Answer in writing, then ship.</span></div>
+      <div class="cheat-item"><b>Workspace vs app</b><span>Builders work in the workspace; viewers open the app. Never share dev links - drafts leak.</span></div>
+      <div class="cheat-item"><b>Distribution menu</b><span>App (broad stable) · direct share (few, ad-hoc) · embed (portals/Teams) · subscription (email snapshot) · alert (threshold ping).</span></div>
+      <div class="cheat-item"><b>Refresh cadence</b><span>Follow the question's rhythm: daily exec pack = daily 6am; ops = hourly or live. Never "as often as possible".</span></div>
+      <div class="cheat-item"><b>Gateway rule</b><span>On-prem or firewalled source = gateway required. First suspect when refresh fails. Cloud source = no gateway.</span></div>
+      <div class="cheat-item"><b>RLS</b><span>One dashboard, per-viewer rows: an invisible WHERE clause. Static = fixed filter per role; dynamic = filter by logged-in user via a mapping.</span></div>
+      <div class="cheat-item"><b>Trust marks</b><span>Promoted (owner vouches) vs certified (central authority vouches) + sensitivity labels that follow exports. Ties to leader a5.</span></div>
+      <div class="cheat-item"><b>Silent failure kills</b><span>Refresh failure alert + named owner + "last refreshed" on the page - three free defenses against the stale-dashboard incident.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 8 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b7-storytelling-analytics.html">← Session 7</a> &nbsp;·&nbsp; <a href="b9-march-dip-case.html">Next: The March dip, end to end →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/sql-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader session 3 · One number, one truth - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Leader session 3 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Leader track · Session 3 of 6</div>
+    <h1>One number, <span class="accent">one truth</span></h1>
+    <p class="sub">Sales says $2.1M. Finance says $1.8M. Both dashboards are technically correct, and the meeting still burns forty minutes arguing about arithmetic instead of deciding anything. This session is the one no vendor course teaches leaders: why correct dashboards disagree, what a semantic layer actually is, and the one organizational fix - an owner and a written definition for every number the company runs on.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Leader track</span>
+      <span class="chip audience">Leaders: execs · sponsors · managers</span>
+      <span class="chip time">No code · 45 minutes</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-16 · Why numbers disagree</span>
+      <span class="a3" style="flex:5">16-31 · The semantic layer</span>
+      <span class="a4" style="flex:4">31-45 · Governance + your turn</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The most expensive meeting in your company</h2>
+    </div>
+    <p class="lede">Every organization has a version of it: two teams present the same metric with two different values, and the room debates whose number is real. Nobody lied. Nobody miscounted. The dashboards diverged for reasons that are completely knowable - and completely fixable, once someone with authority decides to fix them. That someone is you. This is the flagship session of the leader track, because it is the one BI problem that only leadership can solve.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The four reasons two correct dashboards disagree, a plain-language picture of what a semantic layer is (the same idea hiding inside Power BI, Looker, and dbt), and a one-page metric charter you can enact next week: every load-bearing metric gets an owner, a written definition, and a certified home.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: WHY TWO DASHBOARDS DISAGREE ============ -->
+  <section class="section" id="why-disagree">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · the meeting every leader has survived</span>
+      <h2>Why two dashboards disagree <span class="tag concept">13 min live</span></h2>
+    </div>
+    <p class="lede">Here is the anatomy of the classic fight. Sales reports $2.1M because their dashboard counts every order the moment it is <strong>booked</strong>, cancelled or not. Finance reports $1.8M because theirs counts only <strong>recognized</strong> revenue on completed orders, refreshed from last night's close. Same warehouse, same month, two defensible queries. The disagreement lives in the definitions, not the data.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One warehouse feeding two dashboards that show different revenue numbers, with the divergence points annotated">
+        <style>
+          .dvT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .dvS { font: 400 11.5px Inter, sans-serif; fill: #EAF1F9; }
+          .dvH { font: 700 12px Inter, sans-serif; fill: #122B4A; }
+          .dvB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .dvX { font: 400 12.5px Inter, sans-serif; fill: #5A6B80; }
+          .dvN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .dvArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#dvAh); }
+        </style>
+        <defs>
+          <marker id="dvAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="120" width="160" height="80" rx="10" fill="#122B4A"/>
+        <text class="dvT" x="48" y="150">Warehouse</text>
+        <text class="dvS" x="48" y="170">one orders table</text>
+        <text class="dvS" x="48" y="188">same rows for all</text>
+        <rect x="280" y="40" width="220" height="90" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="dvH" x="298" y="64">Sales team's query</text>
+        <text class="dvB" x="298" y="86">keeps cancelled orders</text>
+        <text class="dvB" x="298" y="104">counts when booked</text>
+        <text class="dvB" x="298" y="122">refreshed hourly</text>
+        <rect x="280" y="200" width="220" height="90" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="dvH" x="298" y="224">Finance team's query</text>
+        <text class="dvB" x="298" y="246">drops cancelled orders</text>
+        <text class="dvB" x="298" y="264">counts when recognized</text>
+        <text class="dvB" x="298" y="282">refreshed nightly</text>
+        <rect x="590" y="52" width="180" height="66" rx="10" fill="#1D4E79"/>
+        <text class="dvT" x="608" y="80">Sales dashboard</text>
+        <text class="dvS" x="608" y="100">revenue: $2.1M</text>
+        <rect x="590" y="212" width="180" height="66" rx="10" fill="#3B77B8"/>
+        <text class="dvT" x="608" y="240">Finance dashboard</text>
+        <text class="dvS" x="608" y="260">revenue: $1.8M</text>
+        <path class="dvArr" d="M190,140 C230,120 240,100 275,85"/>
+        <path class="dvArr" d="M190,180 C230,200 240,220 275,245"/>
+        <path class="dvArr" d="M500,85 L585,85"/>
+        <path class="dvArr" d="M500,245 L585,245"/>
+        <text class="dvX" x="205" y="168">filters · definitions</text>
+        <text class="dvX" x="205" y="184">joins · refresh</text>
+        <rect x="30" y="306" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="dvN" x="54" y="318">Neither number is wrong. Both queries run on the same rows - the definitions differ. The fix is structural.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - one warehouse, two correct queries, two different truths</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The four divergence points<span class="mini">6 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>When two dashboards disagree, the gap almost always enters at one of exactly four places. Learn these and you can chair the "whose number is right" meeting in five minutes instead of forty:</p>
+        <ul>
+          <li><strong>Different filters.</strong> Are cancelled orders in or out? Refunds? Test accounts? Internal orders? Each yes/no silently moves the number.</li>
+          <li><strong>Different definitions.</strong> Booked revenue vs recognized revenue. Active customer as "ordered this month" vs "has a live subscription". Same word, different formula.</li>
+          <li><strong>Different joins.</strong> One query joins orders to order items, another joins through subscriptions - and rows quietly duplicate or drop along the way.</li>
+          <li><strong>Different refresh times.</strong> Sales refreshed at 2pm, finance at midnight. On a fast-moving day, that alone explains a real gap.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The forty-minute audit.</strong> A leadership team we know ran the same "whose churn number is right" argument monthly for a year. The eventual answer: one dashboard counted paused subscriptions as churned, the other did not. Four hours of analyst time to diagnose, one sentence to fix - once someone wrote the definition down and made it official.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Anatomy of a metric definition<span class="mini">4 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A metric is not a name - it is a small contract with six clauses. If any clause is unwritten, two teams will fill it in differently. Here is the full anatomy, using Daybreak's "revenue" as the example:</p>
+        <table class="clean">
+          <thead><tr><th>Field</th><th>What it pins down</th><th>Daybreak "revenue" example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Name</strong></td><td>The one official label</td><td>Net product revenue</td></tr>
+            <tr><td><strong>Formula</strong></td><td>The exact math</td><td>sum of quantity x unit price per order item</td></tr>
+            <tr><td><strong>Grain</strong></td><td>What one row means</td><td>order item, rolled up by order date</td></tr>
+            <tr><td><strong>Filters</strong></td><td>What is in and out</td><td>excludes cancelled orders and test accounts</td></tr>
+            <tr><td><strong>Owner</strong></td><td>Who arbitrates changes</td><td>VP Finance</td></tr>
+            <tr><td><strong>Refresh</strong></td><td>How fresh it is</td><td>nightly at 2am, complete through yesterday</td></tr>
+          </tbody>
+        </table>
+        <p>Six short rows. Most metric fights in most companies trace back to one of these rows never having been written down.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: THE SEMANTIC LAYER ============ -->
+  <section class="section" id="semantic-layer">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers Power BI semantic models, Looker LookML, dbt MetricFlow (concepts)</span>
+      <h2>The semantic layer: define once, agree everywhere <span class="tag concept">15 min live</span></h2>
+    </div>
+    <p class="lede">You could fix metric drift with discipline: memos, reminders, heroic analysts checking each other's SQL. It will not hold. The durable fix is <strong>structural</strong>: encode the business definitions once, in a layer that sits between the warehouse and every chart, so that no dashboard computes "revenue" on its own. The industry calls this a semantic layer - a governed dictionary that every tool is forced to read from.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hourglass shape: many warehouse tables converge into one semantic layer, which fans out to many dashboards and tools">
+        <style>
+          .hgT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .hgS { font: 400 11.5px Inter, sans-serif; fill: #EAF1F9; }
+          .hgG { font: 700 13px Inter, sans-serif; fill: #3A2B00; }
+          .hgGs { font: 400 11.5px Inter, sans-serif; fill: #3A2B00; }
+          .hgX { font: 400 12.5px Inter, sans-serif; fill: #5A6B80; }
+          .hgN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .hgArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#hgAh); }
+        </style>
+        <defs>
+          <marker id="hgAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="30" width="180" height="58" rx="10" fill="#122B4A"/>
+        <text class="hgT" x="48" y="55">Orders tables</text>
+        <text class="hgS" x="48" y="75">raw transactions</text>
+        <rect x="30" y="118" width="180" height="58" rx="10" fill="#122B4A"/>
+        <text class="hgT" x="48" y="143">Billing tables</text>
+        <text class="hgS" x="48" y="163">invoices, refunds</text>
+        <rect x="30" y="206" width="180" height="58" rx="10" fill="#122B4A"/>
+        <text class="hgT" x="48" y="231">Customer tables</text>
+        <text class="hgS" x="48" y="251">plans, subscriptions</text>
+        <rect x="340" y="105" width="200" height="90" rx="10" fill="#C99700"/>
+        <text class="hgG" x="358" y="133">Semantic layer</text>
+        <text class="hgGs" x="358" y="153">"revenue" defined ONCE</text>
+        <text class="hgGs" x="358" y="171">filters, grain, owner</text>
+        <rect x="670" y="30" width="180" height="58" rx="10" fill="#1D4E79"/>
+        <text class="hgT" x="688" y="55">Exec dashboard</text>
+        <text class="hgS" x="688" y="75">same $1.94M</text>
+        <rect x="670" y="118" width="180" height="58" rx="10" fill="#3B77B8"/>
+        <text class="hgT" x="688" y="143">Team reports</text>
+        <text class="hgS" x="688" y="163">same $1.94M</text>
+        <rect x="670" y="206" width="180" height="58" rx="10" fill="#3B77B8"/>
+        <text class="hgT" x="688" y="231">AI assistant</text>
+        <text class="hgS" x="688" y="251">same $1.94M</text>
+        <path class="hgArr" d="M210,59 C280,70 300,100 335,120"/>
+        <path class="hgArr" d="M210,147 L335,149"/>
+        <path class="hgArr" d="M210,235 C280,224 300,196 335,178"/>
+        <path class="hgArr" d="M540,120 C580,100 600,70 665,59"/>
+        <path class="hgArr" d="M540,149 L665,147"/>
+        <path class="hgArr" d="M540,178 C580,196 600,224 665,235"/>
+        <rect x="30" y="296" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="hgN" x="54" y="308">The hourglass waist is the fix: change a definition once here, and every dashboard, report, and AI answer moves together.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the hourglass: many sources, one definitions layer, many consumers</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The same idea in every vendor<span class="mini">6 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Vendors brand this layer differently, and the branding hides how converged the industry actually is. Strip the names and all three are the same move: a governed metadata layer between warehouse and consumption, centralizing business definitions so every tool computes the same numbers.</p>
+        <table class="clean">
+          <thead><tr><th>Vendor</th><th>What they call it</th><th>Who edits it</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Microsoft Power BI</strong></td><td>Semantic model - a star schema plus measures plus business terminology, positioned as the single source of truth. Renamed from "dataset" in November 2023, precisely to signal it carries meaning, not just data.</td><td>BI developers, in the model layer</td></tr>
+            <tr><td><strong>Looker</strong></td><td>LookML - a language defining dimensions, measures, views, and models. Looker generates the SQL from it, so business users explore freely and never write a query.</td><td>The data team, in versioned LookML files</td></tr>
+            <tr><td><strong>dbt Semantic Layer</strong></td><td>MetricFlow - metrics defined once in YAML on top of semantic models. The pitch is literally "define once, use everywhere", and any downstream tool can request the metric.</td><td>Analytics engineers, in the dbt project</td></tr>
+          </tbody>
+        </table>
+        <div class="callout tip">
+          <strong>The leader takeaway</strong>
+          You do not need to pick a vendor today. You need to know that whichever BI stack your team runs, this layer exists - and if nobody in your organization is deliberately curating it, your definitions are being set by accident, one dashboard at a time.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What it costs - the honest trade-offs<span class="mini">4 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A semantic layer is not free, and pretending otherwise is how these initiatives die in month three. Budget for three real costs:</p>
+        <ul>
+          <li><strong>Modeling time up front.</strong> Someone has to interview the business, reconcile the competing definitions, and encode the winners. For a mid-size company's top 20 metrics, that is weeks of skilled work, not days.</li>
+          <li><strong>A gatekeeping function.</strong> Once definitions are governed, changing one requires a request and a review. That is the point - but teams used to editing their own dashboard formulas will feel slowed down, and will say so.</li>
+          <li><strong>A slower first chart.</strong> Ad-hoc tools let anyone chart anything in minutes. Through a semantic layer, a brand-new metric must be defined before it can be charted. You are trading speed on the first chart for trust on every chart after it.</li>
+        </ul>
+        <p>The trade is worth it for the numbers the company steers by. It is overkill for one-off explorations - which is exactly why Part 3 separates certified content from ad-hoc content instead of governing everything.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: METRIC GOVERNANCE ============ -->
+  <section class="section" id="governance">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · the org fix only leaders can enact</span>
+      <h2>Metric governance for leaders <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">The technology in Part 2 needs an organizational spine, and it is small enough to write on an index card: <strong>every key metric gets an owner, a written definition, and a certified home</strong>. The owner arbitrates disputes and approves changes. The definition is the six-field contract from Part 1. The certified home is the one dashboard where the official number lives - marked as certified, so everyone can tell it apart from the ad-hoc charts teams spin up for their own exploration. Ad-hoc content stays legal and fast; it just cannot masquerade as the official number. Then a light ritual keeps it alive: a quarterly <em>metrics review</em> where owners walk through changes, retire dead metrics, and settle open disputes.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Your metric charter<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>This is the whole program. If you enact nothing else from this course, enact this checklist:</p>
+        <ul>
+          <li><strong>List the load-bearing metrics.</strong> The 5 to 15 numbers that appear in board decks and steer real decisions. Not fifty - the ones people fight about.</li>
+          <li><strong>Name one owner per metric.</strong> A person, not a committee. Ties go to whoever answers for the number when it is wrong.</li>
+          <li><strong>Write the six-field definition.</strong> Name, formula, grain, filters, owner, refresh. One page for all of them.</li>
+          <li><strong>Certify one home per metric.</strong> One dashboard is the official source; it gets the certified mark. Everything else is clearly ad-hoc.</li>
+          <li><strong>Schedule the metrics review.</strong> Quarterly, 45 minutes, owners present. Definition changes happen here and nowhere else.</li>
+        </ul>
+        <div class="callout win">
+          <strong>★ Why this is a leadership act</strong>
+          Analysts can draft every one of these artifacts - but only leadership can make the certified number the one that settles arguments. The charter works the day an executive says, in a real meeting, "that is not the certified number, so we are not debating it."
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Watch definitions matter <span class="tag demo">★ 12 min · follow along</span></h2>
+    </div>
+    <p class="lede">Daybreak, our coffee-subscription company, has one warehouse and one innocent-looking question: what is our revenue? Watch how one definitional choice - do cancelled orders count? - moves the company's headline number. No code; just pick and read.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Look at revenue by order status.</strong> The box below splits Daybreak's revenue by status. Some of that money sits on cancelled orders. Should "revenue" include it? Sales-style booked revenue says yes; finance-style recognized revenue says no. There is no math answer - it is a definition decision.</p></div>
+      <div class="step"><p><strong>Now look at the single company number.</strong> The KPI box below shows total revenue as one figure. Whichever choice a team makes in step 1 silently moves this number - and this is the number that opens the board deck.</p></div>
+      <div class="step"><p><strong>Press Show SQL on both boxes.</strong> Read the generated query. The definition IS the query: a one-line filter on status is the entire difference between the $2.1M meeting and the $1.8M meeting. Whoever controls that line controls the truth.</p></div>
+    </div>
+
+    <div class="bibox" data-dim="status" data-measure="revenue" data-chart="bar"
+         data-caption="Revenue by order status. The cancelled bar is the whole fight: in, or out? Press Show SQL and find where a filter would go."></div>
+
+    <div class="bibox" data-dim="month" data-measure="revenue" data-chart="kpi"
+         data-caption="The headline number. It has no opinion about cancelled orders - someone's definition decided for it. Show SQL to see whose."></div>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>This is what a semantic layer would freeze.</strong> In a governed setup, the status filter lives in the definitions layer, written once by the metric owner. Neither sales nor finance could produce a different "revenue" without visibly requesting a definition change. The forty-minute meeting becomes structurally impossible.</p>
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: draft a definition card <span class="tag demo">★ 8 min · pen and paper</span></h2>
+    </div>
+    <p class="lede">Pick the metric your organization fights about most - revenue, churn, active users, pipeline, headcount, utilization. Draft its six-field definition card right now, in the session. Incomplete is fine; the blanks you cannot fill are the most valuable output.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Name the fight.</strong> Which metric triggered the last "whose number is right" moment you personally sat through? Write its official name - or the two competing names, which is itself a finding.</p></div>
+      <div class="step"><p><strong>Fill the six fields.</strong> Name, formula (in words, not code), grain, filters (what is in and out - be specific about cancellations, refunds, test data), owner, refresh. Prompt yourself: could a new analyst rebuild this number from my card alone?</p></div>
+      <div class="step"><p><strong>Circle the blanks.</strong> Every field you could not fill is a divergence point waiting to fire. If you could not name an owner, you have found the root cause - a number nobody owns is a number everyone redefines.</p></div>
+    </div>
+
+    <div class="callout tip">
+      <strong>Bring it to the metrics review</strong>
+      This card is the unit of work for the whole governance program. Ten cards like it, owned and certified, and your organization has a semantic layer on paper - which is the correct first version. The tooling in Part 2 just automates what the cards agree on.
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>List your organization's 5 load-bearing metrics - the ones that appear in board decks and settle arguments. Ruthlessly exclude everything else.</li>
+      <li>For each, find the owner. Ask around: "if this number is wrong, who answers for it?" Where the honest answer is "nobody", write exactly that - an unowned metric is your finding, not your failure.</li>
+      <li>Draft one full six-field definition card (Demo 2 format) for your most-fought-over metric and float it past one person from a different function. Their edits show you the divergence in the wild.</li>
+      <li>Bring to a4: your worst two-dashboards-disagree story - what the meeting cost, and which of the four divergence points caused it. Session a4 turns that pain into a commissioning process.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">No commercial platform teaches semantic-layer governance to leaders - the vendors each document their own layer for practitioners. This session unifies those documents into the leader view. This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Microsoft · Power BI semantic model documentation</span><span class="note">Part 2 · the concept and the November 2023 rename; hands-on modeling stays in b4</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Looker LookML + dbt Semantic Layer (MetricFlow) documentation</span><span class="note">Part 2 · the same governed-definitions idea across vendors, concept level</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">PL-300 · "semantic model" terminology and model design</span><span class="note">Builder depth - measures in b4, certification mapping in b10</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · Sales shows $2.1M, finance shows $1.8M, and both queries ran correctly on the same warehouse. The most likely cause is...</p>
+      <button class="qopt" type="button">A · Someone falsified a dashboard and an audit is needed</button>
+      <button class="qopt" type="button">B · Different definitions or filters - like whether cancelled orders count - applied to the same data</button>
+      <button class="qopt" type="button">C · The warehouse lost rows between the two refreshes</button>
+      <p class="qwhy">Correct queries with different results almost always diverge at one of four points: filters, definitions, joins, or refresh timing. It is a definitions problem, not a fraud or infrastructure problem - which is why the fix is a written definition, not an investigation.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · What does a semantic layer actually store?</p>
+      <button class="qopt" type="button">A · A faster copy of the warehouse data</button>
+      <button class="qopt" type="button">B · Backups of every dashboard in case one breaks</button>
+      <button class="qopt" type="button">C · Business definitions - metrics, filters, terminology - that every tool reads, so the data itself stays in the warehouse</button>
+      <p class="qwhy">The semantic layer holds meaning, not data: what "revenue" is, which orders count, what one row means. Power BI semantic models, LookML, and dbt MetricFlow are all this same governed dictionary - define once, agree everywhere.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · Your organization wants "one version of the truth". The right first step is...</p>
+      <button class="qopt" type="button">A · Give each key metric a named owner and a written six-field definition</button>
+      <button class="qopt" type="button">B · Buy a new BI platform with a stronger semantic layer</button>
+      <button class="qopt" type="button">C · Lock all dashboards so only the BI team can build charts</button>
+      <p class="qwhy">Tools automate agreements; they cannot create them. Until a named owner and a written definition exist, any platform will faithfully compute several versions of the truth. Governance first, technology second - and locking everything down just drives teams back to spreadsheets.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Leader session 3 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>The classic fight</b><span>Two correct dashboards, two revenue numbers. The disagreement lives in definitions, not data.</span></div>
+      <div class="cheat-item"><b>Four divergence points</b><span>Filters · definitions · joins · refresh times. Check them in that order and the mystery dies in minutes.</span></div>
+      <div class="cheat-item"><b>Metric anatomy</b><span>Name, formula, grain, filters, owner, refresh. Six fields; any blank one becomes a fight later.</span></div>
+      <div class="cheat-item"><b>Semantic layer</b><span>Business definitions encoded once between warehouse and charts. Definitions, not data. The hourglass waist.</span></div>
+      <div class="cheat-item"><b>Vendor names</b><span>Power BI semantic model (ex "dataset", renamed Nov 2023) · Looker LookML · dbt MetricFlow. Same idea, three logos.</span></div>
+      <div class="cheat-item"><b>Honest costs</b><span>Modeling time, a gatekeeping function, slower first chart. Trading first-chart speed for every-chart trust.</span></div>
+      <div class="cheat-item"><b>Certified vs ad-hoc</b><span>One certified home per metric; ad-hoc stays legal but can never pose as the official number.</span></div>
+      <div class="cheat-item"><b>The metric charter</b><span>Owner + written definition + certified home per key metric, plus a quarterly metrics review. That is the whole program.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Leader session 3 of 6 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a2-reading-a-dashboard.html">← Session 2</a> &nbsp;·&nbsp; <a href="a4-commissioning-dashboards.html">Next: Commissioning dashboards that get used →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

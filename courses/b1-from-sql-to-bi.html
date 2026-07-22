@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 1 · From SQL to BI - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 1 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 1 of 10</div>
+    <h1>From SQL to <span class="accent">BI</span></h1>
+    <p class="sub">You can query a database - now meet the layer that turns queries into dashboards the whole company reads. This track lives inside one small warehouse: Daybreak, a coffee-subscription brand. Every page has a live mini-BI tool that runs a real database in your browser. Pick a dimension and a measure, and watch it write the SQL for you - that trick is the heart of every BI platform on earth.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip audience">Runs in your browser · no install</span>
+      <span class="chip time">Start here</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · The BI layer</span>
+      <span class="a3" style="flex:5">18-42 · Build-along: first charts</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>How this track works</h2>
+    </div>
+    <p class="lede">Ten sessions, one warehouse: <strong>Daybreak</strong>, a direct-to-consumer coffee-subscription brand with customers, products, orders, and subscriptions - the same database from <a href="https://phoebefu6.github.io/learn-sql-with-phoebe/">learn-sql-with-phoebe</a>, all grown up. Tonight you build your first chart. By b9 you will model a star schema, define governed measures, and ship an executive dashboard that explains a real revenue dip. Every concept is tool-agnostic and mapped to Power BI and Tableau in sidebars, so it transfers straight to whatever your company runs.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      A picture of where BI sits in the data stack, the five-stage BI workflow (connect, prepare, model, visualize, share), the difference between importing data and querying it live, and a browser tab where you can build real charts on real data - no install, ever.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: THE BI LAYER ============ -->
+  <section class="section" id="bi-layer">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers PL-300 "Prepare the data" framing, Google BI "Foundations"</span>
+      <h2>What BI adds on top of SQL <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">SQL answers one question for one person who can write SQL. Business intelligence answers the <em>same questions, refreshed daily, for everyone</em> - including people who will never write a query. A BI platform is the machinery that makes that scale: it connects to data, reshapes it, models it into business terms, draws it, and distributes it with security attached. Every tool - Power BI, Tableau, Looker, Metabase - is a variation on the same five stages.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The five-stage BI workflow: connect, prepare, model, visualize, share">
+        <style>
+          .wfT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .wfS { font: 400 11.5px Inter, sans-serif; fill: #EAF1F9; }
+          .wfX { font: 400 12.5px Inter, sans-serif; fill: #5A6B80; }
+          .wfN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .wfArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#wfAh); }
+        </style>
+        <defs>
+          <marker id="wfAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="50" width="140" height="66" rx="10" fill="#122B4A"/>
+        <text class="wfT" x="48" y="78">1 · Connect</text>
+        <text class="wfS" x="48" y="98">to the warehouse</text>
+        <rect x="205" y="50" width="140" height="66" rx="10" fill="#1D4E79"/>
+        <text class="wfT" x="223" y="78">2 · Prepare</text>
+        <text class="wfS" x="223" y="98">clean and shape</text>
+        <rect x="380" y="50" width="140" height="66" rx="10" fill="#1D4E79"/>
+        <text class="wfT" x="398" y="78">3 · Model</text>
+        <text class="wfS" x="398" y="98">business terms</text>
+        <rect x="555" y="50" width="140" height="66" rx="10" fill="#3B77B8"/>
+        <text class="wfT" x="573" y="78">4 · Visualize</text>
+        <text class="wfS" x="573" y="98">charts, dashboards</text>
+        <rect x="730" y="50" width="120" height="66" rx="10" fill="#3B77B8"/>
+        <text class="wfT" x="748" y="78">5 · Share</text>
+        <text class="wfS" x="748" y="98">with security</text>
+        <path class="wfArr" d="M170,83 L200,83"/>
+        <path class="wfArr" d="M345,83 L375,83"/>
+        <path class="wfArr" d="M520,83 L550,83"/>
+        <path class="wfArr" d="M695,83 L725,83"/>
+        <text class="wfX" x="30" y="160">SQL lives inside stages 1-3. BI wraps it in refresh schedules, drag-and-drop charting,</text>
+        <text class="wfX" x="30" y="180">and governed distribution - so the answer reaches people who never see the query.</text>
+        <rect x="30" y="210" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="wfN" x="54" y="222">Sessions b2-b8 walk this pipeline left to right. Memorize the five stages - they are the whole course.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the five-stage BI workflow, your map for all ten sessions</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>BI vs analytics vs data science - who does what<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>These words blur together in job ads, but the split is clean when you look at the <strong>question each one answers</strong>:</p>
+        <ul>
+          <li><strong>BI answers "what is happening?"</strong> - recurring, standardized, self-serve. Revenue this month, churn by plan, orders by channel. Freshness and trust matter more than cleverness.</li>
+          <li><strong>Analytics answers "why did it happen?"</strong> - one-off investigations, ad-hoc SQL, notebooks. The March dip in b9 starts as a BI observation and becomes an analytics investigation.</li>
+          <li><strong>Data science answers "what will happen, and what should we do?"</strong> - models, forecasts, experiments. It usually consumes the same modeled data BI built.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The 9am test.</strong> If a question gets asked every Monday at 9am by someone who cannot write SQL, that is BI. If it got asked once by the CFO after a weird board meeting, that is analytics. Teams that route both through the same ad-hoc channel burn their analysts on repeat questions a dashboard should have answered.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Where BI sits in the modern data stack<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>In a modern company the flow is: operational systems (Shopify, Stripe, the app database) → ingestion (Fivetran, Airbyte) → warehouse (Snowflake, BigQuery, Databricks) → transformation (dbt) → <strong>BI (this course)</strong> → humans and, increasingly, AI agents. BI is the last mile - which is exactly why it gets blamed when anything upstream breaks. Session b10 zooms out to this full stack.</p>
+        <ul>
+          <li><strong>BI reads, it does not own:</strong> the warehouse owns storage; BI owns meaning and presentation.</li>
+          <li><strong>The semantic model is the handshake:</strong> business definitions ("revenue", "active customer") get encoded once, so every chart agrees. That idea gets its own session (b4) and its own leader session (a3).</li>
+          <li><strong>Daybreak simplification:</strong> our whole "warehouse" is one small SQLite database in your browser - tiny, but structurally identical to the real thing.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: IMPORT VS LIVE ============ -->
+  <section class="section" id="import-vs-live">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers PL-300 "choose Import / DirectQuery / DirectLake", Tableau "live vs extract"</span>
+      <h2>Import the data, or query it live? <span class="tag concept">6 min live</span></h2>
+    </div>
+    <p class="lede">The first real decision in any BI tool: does the tool take a <strong>copy</strong> of the data (fast, snapshot-stale) or <strong>ask the source every time</strong> (always fresh, only as fast as the source)? Every vendor names it differently; the trade-off is identical. Get this wrong and you either ship stale numbers or melt the warehouse.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Import versus live connection versus lake-native modes compared">
+        <style>
+          .ivT { font: 700 14px Inter, sans-serif; fill: #FFFFFF; }
+          .ivH { font: 700 12px Inter, sans-serif; fill: #122B4A; }
+          .ivB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .ivN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+        </style>
+        <rect x="30" y="30" width="260" height="34" rx="8" fill="#122B4A"/>
+        <text class="ivT" x="48" y="52">Import (copy)</text>
+        <rect x="30" y="64" width="260" height="140" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="ivH" x="48" y="90">Tool stores its own copy</text>
+        <text class="ivB" x="48" y="112">Blazing fast to explore</text>
+        <text class="ivB" x="48" y="132">Stale until next refresh</text>
+        <text class="ivB" x="48" y="152">Needs a refresh schedule</text>
+        <text class="ivB" x="48" y="172">PBI: Import · Tableau: Extract</text>
+        <rect x="310" y="30" width="260" height="34" rx="8" fill="#1D4E79"/>
+        <text class="ivT" x="328" y="52">Live (ask every time)</text>
+        <rect x="310" y="64" width="260" height="140" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="ivH" x="328" y="90">Every click hits the source</text>
+        <text class="ivB" x="328" y="112">Always current</text>
+        <text class="ivB" x="328" y="132">Speed = source speed</text>
+        <text class="ivB" x="328" y="152">Source pays the query bill</text>
+        <text class="ivB" x="328" y="172">PBI: DirectQuery · Tableau: Live</text>
+        <rect x="590" y="30" width="260" height="34" rx="8" fill="#3B77B8"/>
+        <text class="ivT" x="608" y="52">Lake-native (newest)</text>
+        <rect x="590" y="64" width="260" height="140" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="ivH" x="608" y="90">Reads lake files directly</text>
+        <text class="ivB" x="608" y="112">Near-import speed</text>
+        <text class="ivB" x="608" y="132">Near-live freshness</text>
+        <text class="ivB" x="608" y="152">Needs a lakehouse setup</text>
+        <text class="ivB" x="608" y="172">PBI on Fabric: DirectLake</text>
+        <rect x="30" y="238" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="ivN" x="54" y="250">Default answer: Import/Extract with a sensible refresh. Go live only when staleness genuinely hurts.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copy-vs-live decision every BI tool makes you take first</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>How to choose - the three questions<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Ask these in order, and the mode picks itself:</p>
+        <ul>
+          <li><strong>How fresh must it be?</strong> "Yesterday is fine" (most finance and exec reporting) → Import. "Up to the minute" (ops floor, fraud) → live.</li>
+          <li><strong>How big is it?</strong> Fits comfortably in memory after filtering to what you need → Import. Billions of rows you only ever aggregate → live against a warehouse built for it.</li>
+          <li><strong>Who pays for queries?</strong> Live mode sends every viewer's every click to the source. A dashboard with 500 viewers can hammer a warehouse. Import absorbs that on the BI side.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>In Power BI / In Tableau</strong>
+          Power BI calls the copy <strong>Import</strong>, the live path <strong>DirectQuery</strong>, and the Fabric lakehouse hybrid <strong>DirectLake</strong>. Tableau calls the copy an <strong>Extract</strong> (.hyper file) and the live path a <strong>Live connection</strong>. Same trade-off, different nouns - PL-300 and the Tableau exams both test exactly this choice.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Where our playground fits<span class="mini">2 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The mini-BI tool on this page is technically an <strong>import</strong>: your browser downloaded a copy of the whole Daybreak database once, and every chart is computed locally against that copy - fast, and it costs the "warehouse" nothing. It is also how Power BI Import mode feels in practice: interactions are instant because the data is already in memory. When b8 covers refresh schedules, remember: our "refresh" is you reloading the page.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: MEET THE MINI-BI ============ -->
+  <section class="section" id="meet-mini-bi">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · the running playground for all ten sessions</span>
+      <h2>Meet the mini-BI: it writes the SQL for you <span class="tag concept">4 min live</span></h2>
+    </div>
+    <p class="lede">Here is the same question answered two ways. First, the SQL way - you write the query. Then, the BI way - you pick <em>Dimension: month</em> and <em>Measure: revenue</em>, and the tool writes the query. Click <strong>Show SQL</strong> on the mini-BI and compare: it generated what you would have typed. That generation step is what Power BI's semantic model, Looker's LookML, and dbt's metrics layer all do for a living.</p>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The SQL way - you write it<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Straight from the SQL course: revenue by month, typed by hand. Run it.</p>
+        <div class="sqlbox" data-caption="The hand-written version. Every character is on you - including the join logic.">
+          <pre class="sql-src">SELECT strftime('%Y-%m', o.order_date) AS month,
+       ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id
+GROUP BY 1
+ORDER BY 1;</pre>
+        </div>
+      </div>
+    </details>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The BI way - you pick, it writes<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Same answer, zero typing. Now press <strong>Show SQL</strong> and read what it wrote. Then change the measure to <em>Orders</em> and watch both the chart and the SQL change together.</p>
+        <div class="bibox" data-dim="month" data-measure="revenue" data-chart="line"
+             data-caption="A real mini-BI tool: dimension x measure x chart, SQL generated underneath - the semantic-layer idea in one box."></div>
+        <div class="callout win">
+          <strong>★ The one idea to keep</strong>
+          A BI tool is a machine that turns <em>declarations</em> ("revenue by month, as a line") into <em>queries</em>. Whoever defines that translation - the semantic model - controls what every chart in the company says. That is why b4 (measures) and a3 (one number, one truth) exist.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Build your first three charts <span class="tag demo">★ 12 min · everyone builds</span></h2>
+    </div>
+    <p class="lede">Daybreak's founder asks three questions. Answer each by picking the right dimension, measure, and chart type in the box below - one box, three configurations. This is the core loop of every BI tool: question → dimension + measure → chart.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>"How is revenue trending month over month?"</strong> Dimension: Month · Measure: Revenue · Chart: Line. Notice anything odd around March? Hold that thought until b9.</p></div>
+      <div class="step"><p><strong>"Which cities buy the most?"</strong> Dimension: City · Measure: Revenue · Chart: Bar. The gold bar is your top category - a styling choice you will justify in b5.</p></div>
+      <div class="step"><p><strong>"How big are we overall?"</strong> Chart: KPI card · Measure: Revenue. One governed number, no dimension - the shape every executive dashboard leads with.</p></div>
+    </div>
+
+    <div class="bibox" data-dim="city" data-measure="revenue" data-chart="bar"
+         data-caption="Work through the three steps here. Show SQL after each change and read what the tool wrote."></div>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>This loop is the job.</strong> A BI developer's day is largely: hear a business question, translate it to dimension + measure, pick the chart that answers it fastest, repeat. The people who look senior are not drawing fancier charts - they are translating questions faster and defining measures everyone trusts. Tools change; that loop does not.</p>
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: three questions, your charts <span class="tag demo">★ 10 min · build your own</span></h2>
+    </div>
+    <p class="lede">No recipe this time. For each question, decide the dimension, the measure, and the chart type yourself - then check your choice against the hint. Wrong first picks are normal; noticing <em>why</em> a chart fails to answer the question is the actual lesson.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q1 · Do Pro-plan customers spend more than Basic?<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <div class="bibox" data-dim="plan" data-measure="revenue" data-chart="bar"
+             data-caption="Hint: two plans = two bars. Try Avg order value as the measure too - does the story change?"></div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q2 · Which product category drives the most units?<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <div class="bibox" data-dim="category" data-measure="units" data-chart="bar"
+             data-caption="Hint: Units sold, not revenue - cheap add-ons can win on volume and lose on dollars. Check both."></div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Q3 · How many distinct customers actually order each month?<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A taste of b4: "Buying customers" is a <code>COUNT(DISTINCT ...)</code> - a measure that cannot be summed across months (a customer active in two months is not two customers). Semi-additive measures like this are where hand-rolled reporting quietly goes wrong.</p>
+        <div class="bibox" data-dim="month" data-measure="customers" data-chart="line"
+             data-caption="Show SQL and find the DISTINCT - that word is doing all the work."></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this week <span class="tag exercise">◐ 20-30 min total</span></h2>
+    </div>
+    <ul>
+      <li>Bookmark this page - the mini-BI is your chart scratchpad for the whole track.</li>
+      <li>Explore every dimension with Revenue as the measure. Write down the single most surprising thing you find in Daybreak's data.</li>
+      <li>For each chart you build, press Show SQL and read the query until nothing in it surprises you. If the SQL course is fuzzy, sessions b3-b4 of <a href="https://phoebefu6.github.io/learn-sql-with-phoebe/">learn-sql</a> are the refresher.</li>
+      <li>Find one dashboard at work (or any public one) and identify its dimensions, measures, and chart types. Every dashboard decomposes this way.</li>
+      <li>Bring to b2: one example of messy data you have met in real life - wrong types, duplicates, mystery nulls. b2 is where we clean.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">This track teaches the shared core of the Microsoft PL-300, Tableau Data Analyst, and Google BI curricula, tool-agnostic and live. Certificates, videos, and click-path labs stay with the vendors (mapped in b10). This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Get or connect to data - Import vs DirectQuery vs DirectLake</span><span class="note">Part 2 · the storage-mode decision, tool-agnostic</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Tableau Specialist · live connection vs extract</span><span class="note">Part 2 · same trade-off, Tableau nouns</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Google BI cert · Foundations of Business Intelligence</span><span class="note">Part 1 · BI vs analytics framing; Google's org-strategy depth returns in the leader track</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">MS Learn · Discover data analysis + Get started building with Power BI</span><span class="note">Parts 1-3 · conceptual core; Desktop click-paths stay with Microsoft</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · A question gets asked every Monday at 9am by managers who cannot write SQL. That is a job for...</p>
+      <button class="qopt" type="button">A · Analytics - an analyst should run the query each week</button>
+      <button class="qopt" type="button">B · Data science - build a model to predict the answer</button>
+      <button class="qopt" type="button">C · BI - a refreshed, self-serve dashboard answering it without an analyst</button>
+      <p class="qwhy">Recurring + standardized + non-technical audience = BI. Analysts should be freed for the "why" questions, not re-running Monday's numbers.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · Your exec revenue dashboard needs yesterday's numbers, loads fast, and has 300 viewers. Best connection mode?</p>
+      <button class="qopt" type="button">A · Import/Extract with a nightly refresh - fast for viewers, cheap on the warehouse</button>
+      <button class="qopt" type="button">B · DirectQuery/Live - always ask the source</button>
+      <button class="qopt" type="button">C · Export to a spreadsheet every morning</button>
+      <p class="qwhy">Daily freshness is enough, so take the copy: instant interactions for 300 viewers and zero per-click load on the source. Live mode would send every click to the warehouse.</p>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · You picked "revenue by month" and the mini-BI produced SQL. Which BI concept did you just watch?</p>
+      <button class="qopt" type="button">A · Data cleaning - the tool fixed the data</button>
+      <button class="qopt" type="button">B · The semantic layer - business definitions translated into a generated query</button>
+      <button class="qopt" type="button">C · Row-level security - the tool restricted your rows</button>
+      <p class="qwhy">Declaration in, query out - that translation IS the semantic layer. Power BI's model, LookML, and dbt metrics are industrial versions of the same move (b4 and a3 go deep).</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 1 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>BI is</b><span>recurring answers, refreshed and self-serve, for people who never write SQL. The 9am test.</span></div>
+      <div class="cheat-item"><b>The 5 stages</b><span>Connect → Prepare → Model → Visualize → Share. Sessions b2-b8 walk them in order.</span></div>
+      <div class="cheat-item"><b>Import vs live</b><span>Copy = fast but snapshot (Import/Extract). Live = fresh but source-speed (DirectQuery/Live). Default: copy + refresh.</span></div>
+      <div class="cheat-item"><b>DirectLake</b><span>Power BI on Fabric reads lake files directly - near-import speed, near-live freshness.</span></div>
+      <div class="cheat-item"><b>The core loop</b><span>Question → dimension + measure → chart. Every dashboard decomposes into this.</span></div>
+      <div class="cheat-item"><b>Semantic layer</b><span>The declaration-to-SQL translator. Define "revenue" once; every chart agrees. b4 + a3.</span></div>
+      <div class="cheat-item"><b>Daybreak's 6 tables</b><span>customers · products · orders · order_items · subscriptions · events - same DB as learn-sql.</span></div>
+      <div class="cheat-item"><b>Running project</b><span>Something is off in March. We will notice it properly in b5, and solve it in b9.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 1 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← All sessions</a> &nbsp;·&nbsp; <a href="b2-shape-the-data.html">Next: Shape the data →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/sql-live.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

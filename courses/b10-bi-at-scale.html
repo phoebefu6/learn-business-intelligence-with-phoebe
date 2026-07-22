@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builder session 10 · BI at scale + the modern stack - learn business intelligence with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-business-intelligence-with-phoebe</a> / Builder session 10 of 10</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe · Builder track · Session 10 of 10</div>
+    <h1>BI at scale + the modern <span class="accent">stack</span></h1>
+    <p class="sub">The finale. Everything the mini-BI did in one browser tab, companies do at industrial scale: semantic layers with git review, performance engineering on 100-million-row models, lakehouse storage modes, and Copilot writing report pages over governed definitions. Tonight we zoom out - how the ideas you built with map onto Power BI, Looker, dbt, and Fabric in 2026, and exactly which certification to book next.</p>
+    <div class="chip-row">
+      <span class="chip level">🔴 Builder track</span>
+      <span class="chip audience">Practitioners: analysts · DE · DS · PMs</span>
+      <span class="chip time">Finale</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-20 · Semantic layers + performance</span>
+      <span class="a3" style="flex:5">20-42 · The 2026 stack + your cert roadmap</span>
+      <span class="a4" style="flex:1">42-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>The last session zooms out</h2>
+    </div>
+    <p class="lede">Nine sessions inside Daybreak taught you the durable mechanics: star schemas, governed measures, chart grammar, security, and one full investigation. This session connects those mechanics to the tools your company actually runs. The bibox was never a toy - it is a scale model. Every "pick a dimension, press Show SQL" moment maps to a production feature you can now name, evaluate, and put on your resume.</p>
+    <div class="legend">
+      <span class="pill solid">Live - presented in session</span>
+      <span class="pill light">Self-study - read after class</span>
+      <span class="pill peach">▶ Mini-BI - interactive playground</span>
+      <span class="pill inkpill">Official sources covered</span>
+    </div>
+    <div class="callout win">
+      <strong>★ What you walk out with today</strong>
+      The semantic layer across vendors (Power BI, Looker, dbt) and why definitions-as-code wins, a four-move performance playbook with the two diagnosis tools PL-300 tests, the 2026 stack map (Fabric, DirectLake, Copilot-era BI), and a concrete certification roadmap with a booked-date challenge at the end.
+    </div>
+  </section>
+
+  <!-- ============ PART 1: SEMANTIC LAYER, INDUSTRIAL EDITION ============ -->
+  <section class="section" id="semantic-industrial">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers Power BI semantic model, LookML, and dbt MetricFlow docs (concept level)</span>
+      <h2>The semantic layer, industrial edition <span class="tag concept">8 min live</span></h2>
+    </div>
+    <p class="lede">Everything the bibox did - turn a declaration ("revenue by city") into SQL - is what a semantic layer does for a living: a governed metadata layer between the warehouse and BI consumption that centralizes business definitions so every tool computes the same numbers. The vendors package it differently, but it is one idea wearing three outfits.</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Vendor flavor</th><th>What it is called</th><th>Where definitions live</th><th>Who edits it</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Power BI</strong></td><td>Semantic model (renamed from "dataset", Nov 2023) - star schema + DAX measures + business terminology as a single source of truth</td><td>Inside the Power BI model</td><td>BI developers</td></tr>
+        <tr><td><strong>Looker</strong></td><td>LookML - dimensions, measures, views, models, and Explores; Looker generates the SQL from the model</td><td>Code files in git</td><td>Analytics engineers</td></tr>
+        <tr><td><strong>dbt</strong></td><td>dbt Semantic Layer, powered by MetricFlow - metrics defined once in YAML over semantic models (entities, dimensions, measures) forming a semantic graph. "Define once, use everywhere." Apache 2.0, dbt 1.6+</td><td>YAML in the dbt repo</td><td>Analytics engineers</td></tr>
+      </tbody>
+    </table>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One warehouse feeding a semantic layer in three vendor flavors, which serves dashboards, spreadsheets, and AI">
+        <style>
+          .slT { font: 700 13px Inter, sans-serif; fill: #FFFFFF; }
+          .slS { font: 400 11px Inter, sans-serif; fill: #EAF1F9; }
+          .slH { font: 700 13px Inter, sans-serif; fill: #122B4A; }
+          .slN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .slArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#slAh); }
+        </style>
+        <defs>
+          <marker id="slAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="115" width="150" height="80" rx="10" fill="#122B4A"/>
+        <text class="slT" x="48" y="148">Warehouse</text>
+        <text class="slS" x="48" y="168">one source of rows</text>
+        <rect x="255" y="30" width="300" height="270" rx="12" fill="#EAF1F9" stroke="#8FB4DC" stroke-width="1.5"/>
+        <text class="slH" x="275" y="56">Semantic layer</text>
+        <rect x="275" y="72" width="260" height="56" rx="8" fill="#1D4E79"/>
+        <text class="slT" x="291" y="95">PBI semantic model</text>
+        <text class="slS" x="291" y="114">star + DAX measures</text>
+        <rect x="275" y="142" width="260" height="56" rx="8" fill="#1D4E79"/>
+        <text class="slT" x="291" y="165">Looker LookML</text>
+        <text class="slS" x="291" y="184">views + Explores in git</text>
+        <rect x="275" y="212" width="260" height="56" rx="8" fill="#1D4E79"/>
+        <text class="slT" x="291" y="235">dbt MetricFlow</text>
+        <text class="slS" x="291" y="254">metrics in YAML, once</text>
+        <rect x="640" y="72" width="210" height="56" rx="8" fill="#3B77B8"/>
+        <text class="slT" x="656" y="95">Dashboards</text>
+        <text class="slS" x="656" y="114">exec + self-serve</text>
+        <rect x="640" y="142" width="210" height="56" rx="8" fill="#3B77B8"/>
+        <text class="slT" x="656" y="165">Spreadsheets</text>
+        <text class="slS" x="656" y="184">connected, not exported</text>
+        <rect x="640" y="212" width="210" height="56" rx="8" fill="#3B77B8"/>
+        <text class="slT" x="656" y="235">AI agents</text>
+        <text class="slS" x="656" y="254">Copilot + copilots' kin</text>
+        <path class="slArr" d="M180,155 L250,155"/>
+        <path class="slArr" d="M555,100 L635,100"/>
+        <path class="slArr" d="M555,170 L635,170"/>
+        <path class="slArr" d="M555,240 L635,240"/>
+        <rect x="30" y="312" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="slN" x="54" y="324">Define "revenue" once in the layer. Every consumer - human or AI - computes the same number.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - one warehouse, one layer of definitions, many consumers</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Which layer wins?<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The boring, correct answer: <strong>the one closest to where your definitions already live.</strong> Microsoft shop with BI developers who own the model? The Power BI semantic model is already your layer. Analytics engineers who live in git? LookML or dbt MetricFlow - because definitions-as-code gets you pull requests, review, and history on every metric change.</p>
+        <ul>
+          <li><strong>The strategic point:</strong> definitions-as-code + git review = metric governance that actually scales. This is the a3 idea ("one number, one truth") engineered - a metric change becomes a reviewed diff, not a Tuesday-afternoon edit nobody saw.</li>
+          <li><strong>The anti-pattern:</strong> definitions living in four tools at once. That is how two dashboards disagree about March revenue - which you now know from experience is a very expensive meeting.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>The metric PR.</strong> At dbt-shaped companies, changing the definition of "active customer" looks exactly like changing application code: open a pull request on the YAML, a colleague reviews the diff, CI checks it, merge, and every dashboard updates together. Compare that to editing a measure inside one workbook and hoping the other twelve copies get the memo.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>BI as a consumer of dbt<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>An increasingly common 2026 architecture: transform in dbt, define metrics once in MetricFlow YAML, and let Power BI or Looker <em>read</em> those definitions instead of redefining them. The BI tool keeps what it is great at - visuals, interaction, distribution - and stops being the place business logic hides.</p>
+        <ul>
+          <li><strong>Why teams do it:</strong> one semantic graph serves BI, notebooks, and AI agents alike - "define once, use everywhere" is the whole pitch.</li>
+          <li><strong>What to watch:</strong> the join is still maturing; not every BI feature understands every MetricFlow metric type. Pilot with your top ten metrics before betting the company.</li>
+          <li><strong>Daybreak mapping:</strong> our bibox measures (revenue, orders, AOV) are exactly what would move into YAML first.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 2: PERFORMANCE ============ -->
+  <section class="section" id="performance">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers PL-300 "Optimize model performance"</span>
+      <h2>Performance - why dashboards get slow <span class="tag concept">8 min live</span></h2>
+    </div>
+    <p class="lede">Every slow dashboard traces back to a small set of causes, and PL-300 tests the same four fixes pros reach for. The skill is not memorizing them - it is diagnosing <em>which one</em> applies, using tools that show you what the visual actually asked the model to do.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Performance diagnosis funnel from slow visual through Performance Analyzer and DAX query view to model fix, with four fixes listed">
+        <style>
+          .pfT { font: 700 13.5px Inter, sans-serif; fill: #FFFFFF; }
+          .pfS { font: 400 11px Inter, sans-serif; fill: #EAF1F9; }
+          .pfH { font: 700 12.5px Inter, sans-serif; fill: #122B4A; }
+          .pfB { font: 400 11.5px Inter, sans-serif; fill: #182230; }
+          .pfN { font: 600 13px Inter, sans-serif; fill: #3A2B00; }
+          .pfArr { stroke: #8FB4DC; stroke-width: 2.5; fill: none; marker-end: url(#pfAh); }
+        </style>
+        <defs>
+          <marker id="pfAh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 z" fill="#8FB4DC"/>
+          </marker>
+        </defs>
+        <rect x="30" y="40" width="180" height="66" rx="10" fill="#122B4A"/>
+        <text class="pfT" x="48" y="68">Visual is slow</text>
+        <text class="pfS" x="48" y="88">users complain</text>
+        <rect x="250" y="40" width="190" height="66" rx="10" fill="#1D4E79"/>
+        <text class="pfT" x="268" y="68">Perf Analyzer</text>
+        <text class="pfS" x="268" y="88">which visual, how long</text>
+        <rect x="480" y="40" width="190" height="66" rx="10" fill="#1D4E79"/>
+        <text class="pfT" x="498" y="68">DAX query view</text>
+        <text class="pfS" x="498" y="88">what query it ran</text>
+        <rect x="710" y="40" width="140" height="66" rx="10" fill="#3B77B8"/>
+        <text class="pfT" x="728" y="68">Model fix</text>
+        <text class="pfS" x="728" y="88">pick from the 4</text>
+        <path class="pfArr" d="M210,73 L245,73"/>
+        <path class="pfArr" d="M440,73 L475,73"/>
+        <path class="pfArr" d="M670,73 L705,73"/>
+        <rect x="30" y="140" width="400" height="64" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="pfH" x="48" y="164">Fix 1 · Reduce granularity</text>
+        <text class="pfB" x="48" y="186">daily rows, not per-second events</text>
+        <rect x="450" y="140" width="400" height="64" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="pfH" x="468" y="164">Fix 2 · Remove unused rows + columns</text>
+        <text class="pfB" x="468" y="186">import less; every column costs memory</text>
+        <rect x="30" y="216" width="400" height="64" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="pfH" x="48" y="240">Fix 3 · Measures over calculated columns</text>
+        <text class="pfB" x="48" y="262">compute at query time, not in storage</text>
+        <rect x="450" y="216" width="400" height="64" rx="8" fill="#EAF1F9" stroke="#8FB4DC"/>
+        <text class="pfH" x="468" y="240">Fix 4 · Fix relationship problems</text>
+        <text class="pfB" x="468" y="262">bi-directional everywhere = slow + ambiguous</text>
+        <rect x="30" y="296" width="14" height="14" rx="3" fill="#C99700"/>
+        <text class="pfN" x="54" y="308">Diagnose first, fix second. Guessing fixes without the analyzer is how weekends disappear.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the diagnosis funnel and the four fixes PL-300 expects you to know</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Seeing the query is the whole trick<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Power BI's <strong>Performance Analyzer</strong> tells you which visual is slow; <strong>DAX query view</strong> shows the exact query that visual generated. Our playground's Show SQL button is the toy version of exactly that pair. Press it below and read the query - being able to SEE what the tool generated is how professionals debug slowness instead of guessing.</p>
+        <div class="bibox" data-dim="city" data-measure="revenue" data-chart="bar"
+             data-caption="Press Show SQL. Read the joins and the GROUP BY - this is your Performance Analyzer + DAX query view moment."></div>
+        <div class="callout tip">
+          <strong>In Power BI / In Tableau</strong>
+          Power BI: Performance Analyzer (ribbon) + DAX query view (Desktop). Tableau's equivalent is the Performance Recorder plus the query log. Same discipline everywhere: find the slow visual, read its generated query, then fix the model - not the chart.
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The granularity lever<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The biggest single lever is almost always <strong>granularity</strong>. Picture a 100-million-row fact table logging every per-second event, feeding an exec dashboard that only ever shows monthly revenue by city. Aggregate it to one row per day per city and the dashboard is identical - on roughly 1000x less data.</p>
+        <ul>
+          <li><strong>Ask of every fact table:</strong> what is the finest grain any visual actually displays? Store that, aggregate the rest upstream.</li>
+          <li><strong>Daybreak's events table</strong> is the local example: no exec view needs individual events, so a daily rollup would serve every chart we built in b5-b7.</li>
+          <li><strong>This is also fix 2 in disguise:</strong> fewer rows AND you get to drop the columns only the raw grain needed.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 3: THE 2026 STACK ============ -->
+  <section class="section" id="stack-2026">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers Fabric/DirectLake docs (concept) + PL-300 Copilot sub-skills</span>
+      <h2>The 2026 stack: Fabric, DirectLake, Copilot-era BI <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede"><strong>Fabric</strong> is Microsoft's lake-centric platform: one lakehouse under everything, with Power BI as its face. Its headline trick, <strong>DirectLake</strong>, reads delta files in the lake directly - near-import speed with near-live freshness. Remember b1's import-vs-live trade-off? DirectLake is that trade-off <em>dissolving</em>: when the lake IS the source, you stop choosing between a fast copy and a fresh query. And on top of the governed model now sits Copilot - which is why the semantic layer matters more in the AI era, not less.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>DirectLake in one breath<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>DirectLake = Fabric-only storage mode that reads lake files directly: near-import speed, near-live freshness, no scheduled copy.</strong> PL-300 now frames the storage-mode question as choose between DirectLake, DirectQuery, and Import. The b1 decision tree still applies - DirectLake just adds a third branch that wins when your data already lives in a Fabric lakehouse.</p>
+        <ul>
+          <li><strong>Import:</strong> fast, snapshot-stale, needs refresh - still the default outside Fabric.</li>
+          <li><strong>DirectQuery:</strong> always fresh, only as fast as the source.</li>
+          <li><strong>DirectLake:</strong> both, if (and only if) the lakehouse is your source.</li>
+        </ul>
+        <div class="callout example">
+          <span class="ex-pill">Real world</span>
+          <p><strong>Copilot is on the exam now.</strong> PL-300 (skills as of April 2026) tests four Copilot sub-skills: build a <em>narrative visual</em> with Copilot, have Copilot <em>create report pages</em>, have it <em>suggest page content</em>, and have it <em>summarize the semantic model</em>. Notice what all four have in common: they only produce trustworthy output over a well-modeled, well-named semantic model. Garbage star schema in, confident garbage narrative out.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What stays true when tools churn<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>BI increasingly serves AI agents, not just humans. An agent asked "why did revenue dip in March?" needs exactly what a human analyst needed in b9: governed definitions, a sound model, and queryable history. The tools will keep churning; this course bet on the durable 80% that survives every rebrand:</p>
+        <ul>
+          <li><strong>Star schemas</strong> - every semantic layer, every vendor, still models facts and dimensions (b3).</li>
+          <li><strong>Governed measures</strong> - define once, agree everywhere; now also what keeps AI answers honest (b4, a3).</li>
+          <li><strong>Chart grammar</strong> - question → dimension + measure → chart never changed (b5-b7).</li>
+          <li><strong>The investigation loop</strong> - notice, decompose, isolate, explain (b9). Copilot can draft the narrative; you still own the reasoning.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PART 4: CERT ROADMAP ============ -->
+  <section class="section" id="cert-roadmap">
+    <div class="section-kicker">
+      <span class="klabel">Part 4 · covers PL-300 + Tableau cert guides (roadmap level)</span>
+      <h2>Your cert roadmap + where next <span class="tag concept">7 min live</span></h2>
+    </div>
+    <p class="lede">You have quietly covered most of two certification syllabi. Here is the honest map - what this track already taught you, what the exams weight it at, and what you still owe the vendors.</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>This course</th><th>PL-300 domain (weight)</th><th>Tableau Data Analyst domain (weight)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>b2</strong> · shape the data</td><td>Prepare the data (25-30%)</td><td>Connect &amp; Transform (24%)</td></tr>
+        <tr><td><strong>b3 + b4</strong> · star schema + measures</td><td>Model the data (25-30%)</td><td>spread across domains - Tableau models less formally</td></tr>
+        <tr><td><strong>b5-b7</strong> · charts, dashboards, interaction</td><td>Visualize and analyze the data (25-30%)</td><td>Explore &amp; Analyze (41%) + Create Content (26%)</td></tr>
+        <tr><td><strong>b8</strong> · refresh, share, secure</td><td>Manage and secure (15-20%)</td><td>Publish &amp; Manage (9%)</td></tr>
+        <tr><td><strong>b9</strong> · the March dip</td><td>applied analytics - the scenario questions</td><td>the hands-on lab, in spirit</td></tr>
+        <tr><td><strong>b10</strong> · this session</td><td>Optimize model performance + landscape</td><td>landscape</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <strong>Exam logistics, one line each</strong>
+      <strong>PL-300:</strong> 100 minutes, passing score 700, renews annually with a free online assessment. <strong>Tableau Desktop Specialist:</strong> 60 minutes, 30 questions, never expires - the gentle first step. <strong>Tableau Certified Data Analyst:</strong> 120 minutes including a hands-on lab, valid 2 years.
+    </div>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What this course deliberately did NOT cover<span class="mini">3 min read</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Honesty section. The tool-agnostic core is yours; these stayed with the vendors on purpose:</p>
+        <ul>
+          <li><strong>Power BI Desktop click-paths</strong> - which ribbon, which pane. Get it from the free MS Learn PL-300 paths; it is muscle memory, not concept.</li>
+          <li><strong>Deep DAX syntax</strong> - CALCULATE, filter context, time intelligence. MS Learn plus Maven Analytics go deep.</li>
+          <li><strong>Paginated reports</strong> - the pixel-perfect invoice-style corner of PL-300. MS Learn module.</li>
+          <li><strong>Tableau Prep authoring</strong> - Tableau's data-prep tool. Tableau eLearning covers it.</li>
+          <li><strong>Fabric administration</strong> - capacities, tenant settings. MS Learn's Fabric paths, when your org actually adopts it.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The 30-day plan<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <ul>
+          <li><strong>Week 0:</strong> pick ONE cert - PL-300 if your company runs Microsoft, Tableau Data Analyst if it runs Tableau. Undecided? PL-300 has the bigger job market pull.</li>
+          <li><strong>Weeks 1-3:</strong> one MS Learn path (or Tableau eLearning unit) per week, in the tool, hands on keyboard.</li>
+          <li><strong>Week 4:</strong> rebuild the b9 March-dip investigation in the real tool, end to end - import Daybreak-like data, model it, build the exec page, write the narrative.</li>
+          <li><strong>Then book the exam.</strong> Deadlines create study; study without a date creates browser tabs.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DEMO 1 ============ -->
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Demo 1 of 2</span>
+      <h2>Optimize the Daybreak model on paper <span class="tag demo">★ 10 min · everyone works</span></h2>
+    </div>
+    <p class="lede">No new tool tonight - instead, the exercise pros do before touching any tool: audit a model against the four fixes. Daybreak is small enough to hold in your head and structurally identical to the 100-million-row version you will meet at work.</p>
+
+    <div class="steps">
+      <div class="step"><p><strong>Audit for fix 2 (unused columns).</strong> Walk the six tables. If the exec dashboard only shows revenue, orders, and customers by month/city/plan - which columns would you drop from a real Daybreak import? (Start with customers.signup_date vs events - which earns its memory?)</p></div>
+      <div class="step"><p><strong>Audit for fix 1 (granularity).</strong> The events table logs every customer event. What grain does the exec view actually need - per event, per day, per month? Write the one-line aggregation you would push upstream.</p></div>
+      <div class="step"><p><strong>Simulate Performance Analyzer thinking.</strong> Build the chart below, press Show SQL, and read the joins. Ask of each: is this join needed for THIS visual? That question is 80% of a real DAX query view session.</p></div>
+    </div>
+
+    <div class="bibox" data-dim="plan" data-measure="aov" data-chart="bar"
+         data-caption="Show SQL, count the joins, and ask which tables this visual truly needs - Performance Analyzer thinking on training wheels."></div>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The audit before the rebuild.</strong> Consultants charge serious money for exactly what you just did: list the visuals, find the finest grain any of them displays, list the columns none of them touch, and hand back a model half the size and twice the speed. The four fixes are the whole checklist.</p>
+    </div>
+  </section>
+
+  <!-- ============ DEMO 2 ============ -->
+  <section class="section" id="demo-2">
+    <div class="section-kicker">
+      <span class="klabel">Demo 2 of 2</span>
+      <h2>Your turn: place your company on the stack map <span class="tag demo">★ 8 min · your context</span></h2>
+    </div>
+    <p class="lede">The finale exercise is about YOUR stack, not Daybreak's. Three questions - answer them for the company you work at (or the one you want to work at), and you have your personal b10 takeaway.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q1 · Where do your definitions live today?<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Where is "revenue" defined at your company - a Power BI model? LookML? dbt YAML? A SQL snippet passed around Slack? Someone's spreadsheet? Naming the current home honestly is step one; most companies discover the answer is "in four places, disagreeing".</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q2 · Which semantic layer fits?<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Apply Part 1's rule: the layer closest to where definitions already live. Microsoft shop, BI-developer-owned → Power BI semantic model. Git-native analytics engineering team → LookML or dbt MetricFlow. Write one sentence: "Our metric definitions should live in ___ because ___." That sentence is a very good thing to say in your next architecture meeting.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Q3 · Which cert matches your stack?<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Power BI shop → PL-300. Tableau shop → Desktop Specialist first if you want a fast win (no expiry), Data Analyst if you want the one with the hands-on lab. Looker/dbt shop → skip vendor certs for now and put the metric PR from Part 1 into practice instead; it will teach (and signal) more.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Try it yourself - this month <span class="tag exercise">◐ the big one</span></h2>
+    </div>
+    <ul>
+      <li><strong>Rebuild the b9 investigation in a real tool.</strong> Power BI Desktop (free) or Tableau Public (free): load a Daybreak-like dataset, model it, rebuild the March-dip exec page, write the narrative. This single artifact is a portfolio piece, an exam rehearsal, and proof the track stuck.</li>
+      <li><strong>Map your company's metric definitions to one semantic-layer home.</strong> Use the Demo 2 sentence. Bonus: find two dashboards that currently disagree on the same number and trace why.</li>
+      <li><strong>Book the cert date.</strong> Not "plan to book" - book. Deadlines create study. The 30-day plan in Part 4 is your calendar.</li>
+    </ul>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Source material</span>
+      <h2>Official sources covered</h2>
+    </div>
+    <p class="lede">The finale closes out the optimization domain and maps the whole track back to the vendor curricula. This page covers:</p>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">PL-300 · Optimize model performance - four fixes, Performance Analyzer, DAX query view</span><span class="note">Part 2 + Demo 1 · full conceptual coverage</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Power BI semantic model + Fabric/DirectLake docs</span><span class="note">Parts 1 + 3 · concept level; Fabric admin stays with MS Learn</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">LookML + dbt MetricFlow docs</span><span class="note">Part 1 · concept level; authoring stays with vendor docs</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">PL-300 · Copilot sub-skills (narrative visual, create pages, suggest content, summarize model)</span><span class="note">Part 3 · named and framed; hands-on requires a Fabric tenant</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Tableau cert guides · Desktop Specialist + Certified Data Analyst</span><span class="note">Part 4 · roadmap level - domains, weights, logistics</span></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions before you go 🎯 <span class="tag exercise">◐ 90 seconds</span></h2>
+    </div>
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · A report user says one visual takes ten seconds to load. Your FIRST tool?</p>
+      <button class="qopt" type="button">A · DAX query view - read every query in the model</button>
+      <button class="qopt" type="button">B · Performance Analyzer - confirm which visual is slow and how long it takes</button>
+      <button class="qopt" type="button">C · Rebuild the model at a coarser granularity immediately</button>
+      <p class="qwhy">Diagnose before fixing: Performance Analyzer identifies the slow visual, THEN DAX query view shows the query it ran, THEN you pick one of the four fixes. Jumping straight to a fix is guessing.</p>
+    </div>
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · What is DirectLake's promise?</p>
+      <button class="qopt" type="button">A · Always-fresh data by sending every click to the warehouse</button>
+      <button class="qopt" type="button">B · The fastest possible dashboards via a nightly imported copy</button>
+      <button class="qopt" type="button">C · Near-import speed AND near-live freshness by reading lake files directly</button>
+      <p class="qwhy">DirectLake (Fabric-only) reads delta files in the lakehouse directly - dissolving the b1 import-vs-live trade-off when the lake is your source. A describes DirectQuery; B describes Import.</p>
+    </div>
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · Where do LookML definitions live?</p>
+      <button class="qopt" type="button">A · Code files in git - reviewed like any other code change</button>
+      <button class="qopt" type="button">B · Inside each dashboard, next to the charts that use them</button>
+      <button class="qopt" type="button">C · In the warehouse, as SQL views only DBAs can edit</button>
+      <p class="qwhy">LookML is definitions-as-code: dimensions, measures, views, models, and Explores in git files, edited by analytics engineers - which is exactly what makes metric governance scale.</p>
+    </div>
+    <p class="quiz-score"></p>
+  </section>
+
+  <!-- ============ CHEAT SHEET ============ -->
+  <section class="cheat" id="cheatsheet">
+    <h3>Builder session 10 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Semantic layer</b><span>Governed definitions between warehouse and consumption. PBI semantic model / LookML / dbt MetricFlow - one idea, three outfits.</span></div>
+      <div class="cheat-item"><b>Definitions-as-code</b><span>Git + review on metric changes = governance that scales. The a3 idea, engineered.</span></div>
+      <div class="cheat-item"><b>The 4 perf fixes</b><span>Reduce granularity · remove unused rows/columns · measures over calculated columns · fix relationships.</span></div>
+      <div class="cheat-item"><b>Diagnosis pair</b><span>Performance Analyzer (which visual) → DAX query view (what query). Show SQL was the toy version.</span></div>
+      <div class="cheat-item"><b>DirectLake</b><span>Fabric-only: reads lake files directly - near-import speed, near-live freshness. b1's trade-off, dissolved.</span></div>
+      <div class="cheat-item"><b>The durable 80%</b><span>Star schemas · governed measures · chart grammar · the investigation loop. Survives every tool churn - and feeds the AI agents too.</span></div>
+      <div class="cheat-item"><b>PL-300</b><span>100 min, pass 700, free annual renewal. Domains: Prepare 25-30 · Model 25-30 · Visualize 25-30 · Manage 15-20.</span></div>
+      <div class="cheat-item"><b>Tableau certs</b><span>Desktop Specialist: 60 min, 30 Qs, no expiry. Data Analyst: 120 min incl hands-on lab, 2 yrs.</span></div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>Builder session 10 of 10 · learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a><br>🎉 The builder track is complete. If you now want the org lens - governance, adoption, tool choice - the leader track (a1-a6) reads fast.</span>
+    <span><a href="b9-march-dip-case.html">← Session 9</a> &nbsp;·&nbsp; <a href="../index.html">Back to all sessions →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/daybreak-seed.js?v=1"></script>
+<script src="../assets/sql-wasm.js?v=1"></script>
+<script src="../assets/bi-live.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>learn business intelligence with phoebe - a two-track course with a live mini-BI in your browser</title>
+<link rel="stylesheet" href="assets/style.css?v=1">
+<style>
+  .stats-row { display: flex; gap: 2.4rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .stat b { display: block; font-size: 2.1rem; font-weight: 800; line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: .72rem; opacity: .85; text-transform: uppercase; letter-spacing: .09em; font-weight: 600; }
+
+  .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .course-card {
+    border: 1px solid var(--hairline);
+    border-top: 4px solid var(--diff, var(--indigo));
+    border-radius: var(--radius);
+    padding: 1.2rem 1.3rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    text-decoration: none;
+    color: var(--ink);
+    background: #fff;
+    transition: box-shadow .15s ease, border-color .15s ease, transform .15s ease;
+    position: relative;
+  }
+  .course-card:hover { border-color: var(--indigo-soft); border-top-color: var(--diff, var(--indigo)); box-shadow: 0 8px 28px rgba(29,78,121,.12); transform: translateY(-3px); }
+  .course-card .cicon { font-size: 1.7rem; line-height: 1; }
+  .course-card .cnum { font-size: .72rem; font-weight: 700; color: var(--indigo); text-transform: uppercase; letter-spacing: .1em; }
+  .course-card h3 { font-size: 1.05rem; font-weight: 800; line-height: 1.3; }
+  .course-card p { font-size: .85rem; color: var(--muted); flex: 1; }
+  .course-card .meta { display: flex; gap: .4rem; flex-wrap: wrap; }
+
+  .diff-legend { display: flex; gap: 1rem; margin-top: 1.6rem; font-size: .74rem; color: var(--muted); font-weight: 600; flex-wrap: wrap; }
+  .diff-legend i { display: inline-block; width: .85rem; height: .35rem; border-radius: 999px; margin-right: .35rem; vertical-align: middle; }
+
+  .paths { margin-top: 2.6rem; }
+  .paths h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: .3rem; }
+  .paths .plede { color: var(--muted); font-size: .92rem; margin-bottom: .8rem; }
+  .path { display: flex; gap: .55rem; align-items: center; padding: .75rem 0; border-bottom: .5px solid var(--hairline); flex-wrap: wrap; }
+  .path:last-child { border-bottom: none; }
+  .path b { min-width: 15.5rem; font-size: .9rem; }
+  .path .pstep { background: var(--indigo-50); color: var(--indigo); border-radius: 999px; padding: .16rem .68rem; font-weight: 700; font-size: .8rem; text-decoration: none; transition: all .12s ease; }
+  .path .pstep:hover { background: var(--indigo); color: #fff; }
+  .path .parr { color: var(--faint); font-weight: 700; }
+
+  .mm-section { margin-top: 1.6rem; }
+  .mm-section h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: .2rem; }
+  .mm-section .mm-lede { color: var(--muted); font-size: .92rem; margin-bottom: .4rem; }
+  .mm-wrap { border: 1px solid var(--hairline); border-radius: var(--radius); background: linear-gradient(180deg,#fff,#F1F5FA); padding: .6rem; overflow-x: auto; }
+  .mm-svg { width: 100%; height: auto; display: block; max-width: 60rem; margin: 0 auto; min-width: 34rem; }
+  .mm-link { cursor: pointer; text-decoration: none; }
+  .mm-node rect { transition: opacity .15s ease, filter .15s ease; }
+  .mm-node text { pointer-events: none; }
+  .mm-link:hover .mm-node rect { filter: brightness(1.06); }
+  .mm-edge { transition: opacity .15s ease; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn Business Intelligence with Phoebe</div>
+    <h1>Two tracks from dashboard-curious to dashboard-fluent</h1>
+    <p class="sub">A leader track that teaches you to read, question, commission, and govern dashboards without touching a tool - and a builder track that takes you from your first chart to a star schema, governed measures, a shipped executive dashboard, and a real revenue-dip investigation. Both run on one small warehouse, Daybreak, inside a live mini-BI right in your browser: pick a dimension and a measure, and watch it write the SQL. No install, no login, no license.</p>
+    <div class="stats-row">
+      <div class="stat"><b data-count="2">2</b><span>tracks</span></div>
+      <div class="stat"><b data-count="16">16</b><span>sessions</span></div>
+      <div class="stat"><b data-count="1">1</b><span>live mini-BI</span></div>
+      <div class="stat"><b data-count="45">45</b><span>min per session</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section">
+    <div class="paths" style="margin-top:0">
+      <h2>The leader track 🤝 <span style="font-size:.85rem;font-weight:600;color:var(--muted)">· for C-level, managers &amp; commissioners of dashboards · 6 x 45 min · no code</span></h2>
+      <p class="plede">Thinking mode: what BI is, how to read and interrogate a dashboard, why two dashboards disagree (and the semantic-layer fix), how to commission ones that get used, self-service without chaos, and a clear-eyed take on tools and AI.</p>
+    </div>
+    <div class="course-grid">
+      <a class="course-card" href="courses/a1-what-bi-is.html" style="--diff:#34D399">
+        <span class="cicon">🧭</span>
+        <span class="cnum">Leader 1 · easy</span>
+        <h3>What BI is (and is not)</h3>
+        <p>The 9am test, BI vs analytics vs data science, the value chain from data to decisions, and why most dashboards die unread.</p>
+        <span class="meta"><span class="pill amber">▶ Leaders start here</span></span>
+      </a>
+      <a class="course-card" href="courses/a2-reading-a-dashboard.html" style="--diff:#34D399">
+        <span class="cicon">👓</span>
+        <span class="cnum">Leader 2 · easy</span>
+        <h3>Reading a dashboard like a leader</h3>
+        <p>KPI-card anatomy, snapshot vs trend, and the five-question interrogation protocol to run before trusting any number.</p>
+        <span class="meta"><span class="pill light">Interrogation drill</span></span>
+      </a>
+      <a class="course-card" href="courses/a3-one-number-one-truth.html" style="--diff:#FBBF24">
+        <span class="cicon">⚖️</span>
+        <span class="cnum">Leader 3 · medium</span>
+        <h3>One number, one truth</h3>
+        <p>Why sales and finance report different revenue, the semantic layer that fixes it structurally, and metric governance for leaders.</p>
+        <span class="meta"><span class="pill light">The flagship session</span></span>
+      </a>
+      <a class="course-card" href="courses/a4-commissioning-dashboards.html" style="--diff:#FBBF24">
+        <span class="cicon">📝</span>
+        <span class="cnum">Leader 4 · medium</span>
+        <h3>Commissioning dashboards that get used</h3>
+        <p>The five-field brief, Few's 13 mistakes flipped into an acceptance checklist, and the ritual that keeps a dashboard alive.</p>
+        <span class="meta"><span class="pill light">Brief-writing exercise</span></span>
+      </a>
+      <a class="course-card" href="courses/a5-self-service-without-chaos.html" style="--diff:#FBBF24">
+        <span class="cicon">🛡️</span>
+        <span class="cnum">Leader 5 · medium</span>
+        <h3>Self-service BI without chaos</h3>
+        <p>Central vs self-serve vs hub-and-spoke, certified content and trust tiers, RLS as a leader decision, and the champion network.</p>
+        <span class="meta"><span class="pill light">Operating-model design</span></span>
+      </a>
+      <a class="course-card" href="courses/a6-tools-and-ai.html" style="--diff:#FB923C">
+        <span class="cicon">🤖</span>
+        <span class="cnum">Leader 6 · deciding</span>
+        <h3>The tool landscape + AI in BI</h3>
+        <p>Power BI vs Tableau vs Looker vs open source in one table, what Copilot-era AI really delivers, and your 90-day roadmap.</p>
+        <span class="meta"><span class="pill light">Tool-choice exercise</span></span>
+      </a>
+    </div>
+
+    <div class="paths">
+      <h2>The builder track 🛠️ <span style="font-size:.85rem;font-weight:600;color:var(--muted)">· for practitioners · 10 x 45 min · live mini-BI in your browser</span></h2>
+      <p class="plede">One warehouse, Daybreak, built into a real BI stack session by session: shape the data, model the star, define governed measures, choose charts, assemble and ship the dashboard - then investigate the March dip end to end.</p>
+    </div>
+    <div class="course-grid">
+      <a class="course-card" href="courses/b1-from-sql-to-bi.html" style="--diff:#34D399">
+        <span class="cicon">🚪</span>
+        <span class="cnum">Builder 1 · easy</span>
+        <h3>From SQL to BI</h3>
+        <p>The five-stage BI workflow, import vs live connections, and your first charts in a mini-BI that writes the SQL for you.</p>
+        <span class="meta"><span class="pill amber">▶ Builders start here</span></span>
+      </a>
+      <a class="course-card" href="courses/b2-shape-the-data.html" style="--diff:#34D399">
+        <span class="cicon">🧹</span>
+        <span class="cnum">Builder 2 · easy</span>
+        <h3>Shape the data</h3>
+        <p>The 10-minute profiling routine, the six transforms that cover 90% of prep, merge vs append, and keys the model will need.</p>
+        <span class="meta"><span class="pill light">Profile Daybreak</span></span>
+      </a>
+      <a class="course-card" href="courses/b3-model-star-schema.html" style="--diff:#FBBF24">
+        <span class="cicon">⭐</span>
+        <span class="cnum">Builder 3 · medium</span>
+        <h3>Model like a pro: the star schema</h3>
+        <p>Facts, dimensions, grain, cardinality, role-playing dates, and Daybreak rebuilt as a star - the shape every BI tool wants.</p>
+        <span class="meta"><span class="pill light">Build the star</span></span>
+      </a>
+      <a class="course-card" href="courses/b4-measures-that-mean.html" style="--diff:#FBBF24">
+        <span class="cicon">🧮</span>
+        <span class="cnum">Builder 4 · medium</span>
+        <h3>Measures that mean something</h3>
+        <p>Measures vs columns, filter context (the idea that unlocks DAX), time intelligence, and the semi-additive traps.</p>
+        <span class="meta"><span class="pill light">Govern the metrics</span></span>
+      </a>
+      <a class="course-card" href="courses/b5-chart-choice.html" style="--diff:#FBBF24">
+        <span class="cicon">📊</span>
+        <span class="cnum">Builder 5 · medium</span>
+        <h3>Chart choice + dashboard grammar</h3>
+        <p>The question picks the chart, Few's KPI-bullet-sparkline library, and the declutter pass that makes charts read instantly.</p>
+        <span class="meta"><span class="pill light">Chart-doctor drill</span></span>
+      </a>
+      <a class="course-card" href="courses/b6-build-the-dashboard.html" style="--diff:#FBBF24">
+        <span class="cicon">🧱</span>
+        <span class="cnum">Builder 6 · medium</span>
+        <h3>Build the dashboard</h3>
+        <p>The 5-second layout system, interactivity without overload, mobile and accessibility - assembled live from mini-BI panels.</p>
+        <span class="meta"><span class="pill light">Assemble the exec view</span></span>
+      </a>
+      <a class="course-card" href="courses/b7-storytelling-analytics.html" style="--diff:#FB923C">
+        <span class="cicon">🎬</span>
+        <span class="cnum">Builder 7 · hands-on</span>
+        <h3>Storytelling + analytics extras</h3>
+        <p>Takeaway titles, the gold-accent attention discipline, annotations, reference lines, forecasting and anomaly detection.</p>
+        <span class="meta"><span class="pill light">The story slide</span></span>
+      </a>
+      <a class="course-card" href="courses/b8-ship-it.html" style="--diff:#FB923C">
+        <span class="cicon">🚢</span>
+        <span class="cnum">Builder 8 · hands-on</span>
+        <h3>Ship it: refresh, security, distribution</h3>
+        <p>Workspaces and apps, refresh schedules and gateways, row-level security, endorsement - the launch checklist.</p>
+        <span class="meta"><span class="pill light">Launch checklist</span></span>
+      </a>
+      <a class="course-card" href="courses/b9-march-dip-case.html" style="--diff:#FB923C">
+        <span class="cicon">🕵️</span>
+        <span class="cnum">Builder 9 · capstone</span>
+        <h3>Case study: the March dip</h3>
+        <p>The board wants answers by Friday. Confirm, decompose, drill, explain, recommend - a full BI investigation, end to end.</p>
+        <span class="meta"><span class="pill light">End-to-end capstone</span></span>
+      </a>
+      <a class="course-card" href="courses/b10-bi-at-scale.html" style="--diff:#F87171">
+        <span class="cicon">🏔️</span>
+        <span class="cnum">Builder 10 · hardest</span>
+        <h3>BI at scale + the modern stack</h3>
+        <p>The semantic layer across Power BI, LookML and dbt, the performance playbook, Fabric and DirectLake, and your cert roadmap.</p>
+        <span class="meta"><span class="pill light">PL-300 / Tableau map</span></span>
+      </a>
+    </div>
+    <div class="diff-legend">
+      <span><i style="background:#34D399"></i>easy - everyone</span>
+      <span><i style="background:#FBBF24"></i>medium</span>
+      <span><i style="background:#FB923C"></i>hands-on / deciding</span>
+      <span><i style="background:#F87171"></i>hardest</span>
+    </div>
+
+    <div class="paths">
+      <h2>Choose your path 🗺️</h2>
+      <p class="plede">Two doors, one warehouse. Leaders never open a BI tool; builders never sit through theory they have not just clicked themselves.</p>
+      <div class="path"><b>🤝 Leader (read &amp; govern)</b>
+        <a class="pstep" href="courses/a1-what-bi-is.html">a1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a2-reading-a-dashboard.html">a2</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a3-one-number-one-truth.html">a3</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a4-commissioning-dashboards.html">a4</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a5-self-service-without-chaos.html">a5</a><span class="parr">→</span>
+        <a class="pstep" href="courses/a6-tools-and-ai.html">a6</a>
+      </div>
+      <div class="path"><b>🛠️ Builder (build on Daybreak)</b>
+        <a class="pstep" href="courses/b1-from-sql-to-bi.html">b1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b2-shape-the-data.html">b2</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b3-model-star-schema.html">b3</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b4-measures-that-mean.html">b4</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b5-chart-choice.html">b5</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b6-build-the-dashboard.html">b6</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b7-storytelling-analytics.html">b7</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b8-ship-it.html">b8</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b9-march-dip-case.html">b9</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b10-bi-at-scale.html">b10</a>
+      </div>
+      <div class="path"><b>🌱 Coming from learn-sql</b>
+        <a class="pstep" href="courses/b1-from-sql-to-bi.html">b1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b3-model-star-schema.html">b3</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b4-measures-that-mean.html">b4</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b9-march-dip-case.html">b9</a>
+      </div>
+      <div class="path"><b>🚀 Full journey (lead AND build)</b>
+        <a class="pstep" href="courses/a1-what-bi-is.html">a1-a6</a><span class="parr">→</span>
+        <a class="pstep" href="courses/b1-from-sql-to-bi.html">b1-b10</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section mm-section">
+    <h2>The knowledge map 🧠</h2>
+    <p class="mm-lede">Both tracks at a glance - hover a session to spotlight its concepts, click any node to jump in.</p>
+    <div class="mm-wrap"><div id="mindmap"></div></div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>learn-business-intelligence-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a> · taught from the PL-300 + Tableau exam guides, Google BI cert, Few &amp; Knaflic · mini-BI runs on SQLite via sql.js · sequel to <a href="https://phoebefu6.github.io/learn-sql-with-phoebe/">learn-sql-with-phoebe</a></span>
+  </footer>
+</main>
+
+<script>
+window.MINDMAP_DATA = {
+  title: "Learn\nBI",
+  centerColor: "#122B4A",
+  sessions: [
+    { label: "What BI is\n(and is not)", href: "courses/a1-what-bi-is.html", color: "#34D399",
+      concepts: [
+        { label: "The 9am test", href: "courses/a1-what-bi-is.html" },
+        { label: "BI vs analytics vs DS", href: "courses/a1-what-bi-is.html" },
+        { label: "Why dashboards fail", href: "courses/a1-what-bi-is.html" } ] },
+    { label: "Reading a\ndashboard", href: "courses/a2-reading-a-dashboard.html", color: "#34D399",
+      concepts: [
+        { label: "KPI-card anatomy", href: "courses/a2-reading-a-dashboard.html" },
+        { label: "5-question protocol", href: "courses/a2-reading-a-dashboard.html" },
+        { label: "Snapshot vs trend", href: "courses/a2-reading-a-dashboard.html" } ] },
+    { label: "One number,\none truth", href: "courses/a3-one-number-one-truth.html", color: "#FBBF24",
+      concepts: [
+        { label: "Why numbers disagree", href: "courses/a3-one-number-one-truth.html" },
+        { label: "The semantic layer", href: "courses/a3-one-number-one-truth.html" },
+        { label: "Metric governance", href: "courses/a3-one-number-one-truth.html" } ] },
+    { label: "Commissioning\ndashboards", href: "courses/a4-commissioning-dashboards.html", color: "#FBBF24",
+      concepts: [
+        { label: "The 5-field brief", href: "courses/a4-commissioning-dashboards.html" },
+        { label: "Acceptance checklist", href: "courses/a4-commissioning-dashboards.html" } ] },
+    { label: "Self-service\nwithout chaos", href: "courses/a5-self-service-without-chaos.html", color: "#FBBF24",
+      concepts: [
+        { label: "Hub-and-spoke", href: "courses/a5-self-service-without-chaos.html" },
+        { label: "Certified content", href: "courses/a5-self-service-without-chaos.html" },
+        { label: "RLS for leaders", href: "courses/a5-self-service-without-chaos.html" } ] },
+    { label: "Tools +\nAI in BI", href: "courses/a6-tools-and-ai.html", color: "#FB923C",
+      concepts: [
+        { label: "The landscape 2x2", href: "courses/a6-tools-and-ai.html" },
+        { label: "Copilot-era BI", href: "courses/a6-tools-and-ai.html" } ] },
+    { label: "From SQL\nto BI", href: "courses/b1-from-sql-to-bi.html", color: "#34D399",
+      concepts: [
+        { label: "The 5-stage workflow", href: "courses/b1-from-sql-to-bi.html" },
+        { label: "Import vs live", href: "courses/b1-from-sql-to-bi.html" },
+        { label: "The mini-BI loop", href: "courses/b1-from-sql-to-bi.html" } ] },
+    { label: "Shape\nthe data", href: "courses/b2-shape-the-data.html", color: "#34D399",
+      concepts: [
+        { label: "Profiling routine", href: "courses/b2-shape-the-data.html" },
+        { label: "Merge vs append", href: "courses/b2-shape-the-data.html" },
+        { label: "Keys", href: "courses/b2-shape-the-data.html" } ] },
+    { label: "The star\nschema", href: "courses/b3-model-star-schema.html", color: "#FBBF24",
+      concepts: [
+        { label: "Facts & dimensions", href: "courses/b3-model-star-schema.html" },
+        { label: "Grain", href: "courses/b3-model-star-schema.html" },
+        { label: "Cardinality", href: "courses/b3-model-star-schema.html" } ] },
+    { label: "Measures that\nmean something", href: "courses/b4-measures-that-mean.html", color: "#FBBF24",
+      concepts: [
+        { label: "Filter context", href: "courses/b4-measures-that-mean.html" },
+        { label: "Time intelligence", href: "courses/b4-measures-that-mean.html" },
+        { label: "Semi-additive traps", href: "courses/b4-measures-that-mean.html" } ] },
+    { label: "Chart choice\n+ grammar", href: "courses/b5-chart-choice.html", color: "#FBBF24",
+      concepts: [
+        { label: "Question picks chart", href: "courses/b5-chart-choice.html" },
+        { label: "KPI, bullet, sparkline", href: "courses/b5-chart-choice.html" },
+        { label: "The declutter pass", href: "courses/b5-chart-choice.html" } ] },
+    { label: "Build the\ndashboard", href: "courses/b6-build-the-dashboard.html", color: "#FBBF24",
+      concepts: [
+        { label: "5-second layout", href: "courses/b6-build-the-dashboard.html" },
+        { label: "Interactivity budget", href: "courses/b6-build-the-dashboard.html" },
+        { label: "Mobile + a11y", href: "courses/b6-build-the-dashboard.html" } ] },
+    { label: "Storytelling\n+ extras", href: "courses/b7-storytelling-analytics.html", color: "#FB923C",
+      concepts: [
+        { label: "Takeaway titles", href: "courses/b7-storytelling-analytics.html" },
+        { label: "The gold accent", href: "courses/b7-storytelling-analytics.html" },
+        { label: "Forecast honesty", href: "courses/b7-storytelling-analytics.html" } ] },
+    { label: "Ship\nit", href: "courses/b8-ship-it.html", color: "#FB923C",
+      concepts: [
+        { label: "Apps & distribution", href: "courses/b8-ship-it.html" },
+        { label: "Refresh & gateways", href: "courses/b8-ship-it.html" },
+        { label: "Row-level security", href: "courses/b8-ship-it.html" } ] },
+    { label: "The March\ndip case", href: "courses/b9-march-dip-case.html", color: "#FB923C",
+      concepts: [
+        { label: "Confirm the drop", href: "courses/b9-march-dip-case.html" },
+        { label: "Decompose & drill", href: "courses/b9-march-dip-case.html" },
+        { label: "The story slide", href: "courses/b9-march-dip-case.html" } ] },
+    { label: "BI at scale\n+ modern stack", href: "courses/b10-bi-at-scale.html", color: "#F87171",
+      concepts: [
+        { label: "Semantic layers", href: "courses/b10-bi-at-scale.html" },
+        { label: "Performance playbook", href: "courses/b10-bi-at-scale.html" },
+        { label: "Cert roadmap", href: "courses/b10-bi-at-scale.html" } ] }
+  ]
+};
+</script>
+<script src="assets/mindmap.js?v=1"></script>
+<script src="assets/app.js?v=1"></script>
+</body>
+</html>
